@@ -115,4 +115,80 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   public void attack(Tribe enemy) {
     // math magic
   }
+
+  /**
+   * Get the average lifespan of a species
+   * @return The average lifespan
+   */
+  public int getAverageLifeSpan() {
+    return this.members.get(0).getAverageLifeSpan();
+  }
+
+  /**
+   * Get litter size, the maximum number of children when giving birth
+   * @return litter size
+   */
+  public int getLitterSize() {
+    return this.members.get(0).getLitterSize();
+  }
+
+  /**
+   * Get the aggressiveness value
+   * @return Agressiveness value
+   */
+  public int getAggressiveness() {
+    return this.members.get(0).getAggressiveness();
+  }
+
+  /**
+   * Get the force of the species
+   * @return Force of the species
+   */
+  public int getForce() {
+    return this.members.get(0).getForce();
+  }
+
+  /**
+   * Get the reproductivity chance of the species
+   * @return Value of the reproductivity
+   */
+  public int getReproductivity() {
+    return this.members.get(0).getReproductivity();
+  }
+
+  /**
+   * Get the value of the mutual aid chance of the species
+   * @return Value of the mutual aid
+   */
+  public int getMutualAid() {
+    return this.members.get(0).getMutualAid();
+  }
+
+  /**
+   * Get the value of courage of the species
+   * @return Value of courage
+   */
+  public int getCourage() {
+    return this.members.get(0).getCourage();
+  }
+
+  /**
+   * Get the speed value of the species
+   * @return Value of the speed
+   */
+  public float getSpeed() {
+    return this.members.get(0).getSpeed();
+  }
+
+  public void runAI(float deltaTime) {
+
+  }
+
+  public void update(float deltaTime) {
+
+  }
+
+  public void render() {
+
+  }
 }
