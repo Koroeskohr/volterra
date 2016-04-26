@@ -76,7 +76,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * Get distance from Tribe pos to this.target pos
    * @return Distance as double
    */
-  public double getDistanceToTarget() {
+  protected double getDistanceToTarget() {
     return getDistance(this.target.getX(), this.target.getY());
   }
 
