@@ -17,6 +17,81 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
+    public float getY() {
+        return _originalTribe.getY();
+    }
+
+    @Override
+    public float getX() {
+        return _originalTribe.getX();
+    }
+
+    @Override
+    public Tribe getTarget() {
+        return _originalTribe.getTarget();
+    }
+
+    @Override
+    public State getState() {
+        return _originalTribe.getState();
+    }
+
+    @Override
+    public void setState(State state) {
+        _originalTribe.setState(state);
+    }
+
+    @Override
+    public int size() {
+        return _originalTribe.size();
+    }
+
+    @Override
+    public int radius() {
+        return _originalTribe.radius();
+    }
+
+    @Override
+    public double getDistanceToTarget() {
+        return _originalTribe.getDistanceToTarget();
+    }
+
+    @Override
+    public boolean isBusy() {
+        return _originalTribe.isBusy();
+    }
+
+    @Override
+    public boolean isInAttackRange() {
+        return _originalTribe.isInAttackRange();
+    }
+
+    @Override
+    public void aggress(Tribe enemy) {
+        _originalTribe.aggress(enemy);
+    }
+
+    @Override
+    public void attack(Tribe enemy) {
+        _originalTribe.attack(enemy);
+    }
+
+    @Override
+    public void runAI(float deltaTime) {
+        _originalTribe.runAI(deltaTime);
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        _originalTribe.update(deltaTime);
+    }
+
+    @Override
+    public void render() {
+        _originalTribe.render();
+    }
+
+    @Override
     public float getSpeed() {
         return this._originalTribe.getSpeed();
     }

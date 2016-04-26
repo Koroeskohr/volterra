@@ -11,22 +11,22 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   /**
    * Coordinates of the tribe and center of the circle
    */
-  private float x, y;
+  protected float x, y;
 
   /**
    * Current state of the tribe AI.
    */
-  private State state;
+  protected State state;
 
   /**
    * All the members of a group. They all belong to the same species.
    */
-  private ArrayList<T> members;
+  protected ArrayList<T> members;
 
   /**
    * The tribe *this* is aggressing. NULL if not aggressing anyone.
    */
-  private Tribe target;
+  protected Tribe target;
 
 
   public float getY() {
@@ -76,7 +76,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * Get distance from Tribe pos to this.target pos
    * @return Distance as double
    */
-  private double getDistanceToTarget() {
+  public double getDistanceToTarget() {
     return getDistance(this.target.getX(), this.target.getY());
   }
 
