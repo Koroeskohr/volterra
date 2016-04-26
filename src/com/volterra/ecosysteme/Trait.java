@@ -6,6 +6,9 @@ package com.volterra.ecosysteme;
  * Decorator to add character <i>Traits</i> that give some bonuses or penalties to a <i>Tribe</i>.
  */
 public abstract class Trait<T extends Species> extends Tribe<T> {
+    /**
+     * The <i>Tribe</i> on which the trait is added
+     */
     protected Tribe<T> _originalTribe;
 
     /**
@@ -52,7 +55,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
-    public double getDistanceToTarget() {
+    protected double getDistanceToTarget() {
         return _originalTribe.getDistanceToTarget();
     }
 
