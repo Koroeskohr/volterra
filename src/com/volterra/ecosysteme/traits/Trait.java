@@ -1,4 +1,7 @@
-package com.volterra.ecosysteme;
+package com.volterra.ecosysteme.traits;
+
+import com.volterra.ecosysteme.Species;
+import com.volterra.ecosysteme.Tribe;
 
 /**
  * Created by Christophe on 25/04/2016.
