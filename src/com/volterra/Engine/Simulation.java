@@ -1,6 +1,9 @@
 package com.volterra.Engine;
 
+import com.volterra.ecosysteme.AggressionManager;
+import com.volterra.ecosysteme.Renderable;
 import com.volterra.ecosysteme.Tribe;
+import processing.core.PApplet;
 
 import java.util.ArrayList;
 
@@ -9,7 +12,7 @@ import java.util.ArrayList;
  *
  * This class manage the different steps of a turn
  */
-public class Simulation {
+public class Simulation implements Renderable {
     static private Simulation instance = null;
 
     /**
@@ -20,7 +23,7 @@ public class Simulation {
     /**
      * The <i>AggressionManager</i> used in the simulation to determine the current conflicts on the map.
      */
-    private AggressionManager agressionManager;
+    private AggressionManager aggressionManager;
 
     private Simulation() {
         super();
@@ -41,7 +44,7 @@ public class Simulation {
                 if (Simulation.instance == null) {
                     Simulation.instance = new Simulation();
                     Simulation.instance.tribes = tribes;
-                    Simulation.instance.agressionManager = new AgressionManager();
+                    Simulation.instance.aggressionManager = new AggressionManager();
                 }
             }
         }
@@ -60,18 +63,25 @@ public class Simulation {
     }
 
     public void runAi() {
-
+        for (Tribe tribe :tribes) {
+            tribe.runAI(1);
+        }
     }
 
-    public void update() {
+    public void update(float delta) {
+        this.aggressionManager.processAgressions();
         for (Tribe tribe :tribes) {
             tribe.update(1);
         }
     }
 
-    public void render() {
+    /**
+     * Display the tribes containing in the simulation on the screen.
+     * @param ctx The PApplet which draw the <i>Renderable</i> elements.
+     */
+    public void render(PApplet ctx) {
         for (Tribe tribe :tribes) {
-            tribe.render();
+            tribe.render(ctx);
         }
     }
 }

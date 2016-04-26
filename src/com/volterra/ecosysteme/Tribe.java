@@ -1,12 +1,12 @@
 package com.volterra.ecosysteme;
 
 import java.util.ArrayList;
+import processing.core.PApplet;
 
 /**
  * Created by Koroeskohr on 25/04/2016.
  */
 public abstract class Tribe<T extends Species> implements AIStateMachine, Renderable {
-
 
   /**
    * Coordinates of the tribe and center of the circle
@@ -80,7 +80,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * Get distance from Tribe pos to this.target pos
    * @return Distance as double
    */
-  protected double getDistanceToTarget() {
+  public double getDistanceToTarget() {
     return getDistance(this.target.getX(), this.target.getY());
   }
 
@@ -192,7 +192,11 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   }
 
-  public void render() {
-
+  /**
+   * Display the tribe on the screen.
+   * @param ctx The PApplet which draw the <i>Renderable</i> element.
+     */
+  public void render(PApplet ctx) {
+    ctx.ellipse(this.x, this.y, this.size(), this.size());
   }
 }

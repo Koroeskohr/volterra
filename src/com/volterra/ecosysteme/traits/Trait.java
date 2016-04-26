@@ -2,6 +2,7 @@ package com.volterra.ecosysteme.traits;
 
 import com.volterra.ecosysteme.Species;
 import com.volterra.ecosysteme.Tribe;
+import processing.core.PApplet;
 
 /**
  * Created by Christophe on 25/04/2016.
@@ -58,7 +59,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
-    protected double getDistanceToTarget() {
+    public double getDistanceToTarget() {
         return _originalTribe.getDistanceToTarget();
     }
 
@@ -93,8 +94,8 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
-    public void render() {
-        _originalTribe.render();
+    public void render(PApplet ctx) {
+        _originalTribe.render(ctx);
     }
 
     @Override
