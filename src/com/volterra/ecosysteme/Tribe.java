@@ -23,6 +23,10 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    */
   protected ArrayList<T> members;
 
+  public void setTarget(Tribe target) {
+    this.target = target;
+  }
+
   /**
    * The tribe *this* is aggressing. NULL if not aggressing anyone.
    */
