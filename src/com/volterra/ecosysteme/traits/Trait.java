@@ -2,6 +2,7 @@ package com.volterra.ecosysteme.traits;
 
 import com.volterra.ecosysteme.Species;
 import com.volterra.ecosysteme.Tribe;
+import processing.core.PApplet;
 
 /**
  * Created by Christophe on 25/04/2016.
@@ -9,6 +10,9 @@ import com.volterra.ecosysteme.Tribe;
  * Decorator to add character <i>Traits</i> that give some bonuses or penalties to a <i>Tribe</i>.
  */
 public abstract class Trait<T extends Species> extends Tribe<T> {
+    /**
+     * The <i>Tribe</i> on which the trait is added
+     */
     protected Tribe<T> _originalTribe;
 
     /**
@@ -90,8 +94,8 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
-    public void render() {
-        _originalTribe.render();
+    public void render(PApplet ctx) {
+        _originalTribe.render(ctx);
     }
 
     @Override
