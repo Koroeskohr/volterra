@@ -1,5 +1,7 @@
 package com.volterra.ecosysteme;
 
+import com.volterra.Engine.Simulation;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -33,11 +35,15 @@ public class TribeFactory {
     Random rand = new Random();
     int variation = rand.nextInt((5 - (-5)) + 1) + (-5);
     int size = BASE_TRIBE_SIZE + variation;
+    float x = rand.nextFloat() * Simulation.getSimulation().getWindowWidth();
+    float y = rand.nextFloat() * Simulation.getSimulation().getWindowHeight();
+    System.out.println(x + "    " + y);
 
     Class associatedClass = enumClassMap.get(species);
     ArrayList<Species> members = null;
     members = generateMembers(associatedClass, size);
-    tribe = new TribeWithTraits(members);
+
+    tribe = new TribeWithTraits(members, x, y);
     String[] speciesBaseTraits = null;
     try {
       Method method = associatedClass.getMethod("getSpeciesTraits");
