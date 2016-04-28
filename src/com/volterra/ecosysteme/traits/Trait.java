@@ -95,7 +95,10 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
 
     @Override
     public void render(PApplet ctx) {
-        _originalTribe.render(ctx);
+        ctx.fill(255,255,255);
+        ctx.stroke(this.getAggressiveness() * 2,this.getCourage() * 2,this.getForce() * 2);
+        ctx.strokeWeight(this.size() * 0.4f);
+        ctx.ellipse(_originalTribe.getX(), _originalTribe.getY(), this.size(), this.size());
     }
 
     @Override
@@ -136,5 +139,10 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     @Override
     public int getAverageLifeSpan() {
         return this._originalTribe.getAverageLifeSpan();
+    }
+
+    @Override
+    public void setTarget(Tribe target) {
+        super.setTarget(target);
     }
 }
