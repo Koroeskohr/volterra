@@ -3,10 +3,13 @@ package com.volterra.Engine;
 import com.volterra.ecosysteme.AggressionManager;
 import com.volterra.ecosysteme.Renderable;
 import com.volterra.ecosysteme.Tribe;
+import com.volterra.ecosysteme.TribeFactory;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by Christophe on 26/04/2016.
@@ -31,11 +34,11 @@ public class Simulation implements Renderable {
     }
 
     /**
-     * Initialize a <i>Simulation</i> object if it doesn't exist. Else, returns a reference on the <i>Simulation</i> that already exists.
-     * @param tribes the list of tribes contained by the <i>Simulation</i>
-     * @return A reference on the <i>Simulation</i> created or a reference on the <i>Simulation</i> that already exists
+     * Initialize the simulation and all of its components (tribes, agressionManager, ...)
+     * @param nbTribe Number of tribes to create in the simulation
+     * @return A reference to the instance of <i>Simulation</i>
      */
-    public static Simulation initialize(ArrayList<Tribe> tribes) {
+    public static Simulation initialize(int nbTribe) {
 
         if (Simulation.instance == null) {
             // Le mot-clé synchronized sur ce bloc empêche toute instanciation
@@ -44,7 +47,16 @@ public class Simulation implements Renderable {
             synchronized(Simulation.class) {
                 if (Simulation.instance == null) {
                     Simulation.instance = new Simulation();
-                    Simulation.instance.tribes = tribes;
+                    Simulation.instance.tribes = new ArrayList<>();
+                    Tribe tmpTribe;
+                    int indexEnum;
+                    long seed = new Date().getTime();
+                    Random randGenerator = new Random(seed);
+                    for (int i = 0; i < nbTribe; i++) {
+                        indexEnum = randGenerator.nextInt(TribeFactory.numberOfSpecies());
+                        tmpTribe = TribeFactory.create(TribeFactory.getSpeciesFromInt(indexEnum));
+                        Simulation.instance.tribes.add(tmpTribe);
+                    }
                     Simulation.instance.aggressionManager = new AggressionManager();
                 }
             }
@@ -84,6 +96,6 @@ public class Simulation implements Renderable {
         for (Tribe tribe :tribes) {
             tribe.render(ctx);
         }
-        ctx.filter(PConstants.BLUR, 5);
+        ctx.filter(PConstants.BLUR, 2);
     }
 }

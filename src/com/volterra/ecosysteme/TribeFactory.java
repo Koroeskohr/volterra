@@ -104,6 +104,23 @@ public class TribeFactory {
     return list;
   }
 
+  /**
+   * Get the number of <i>Species</i> contained in SpeciesEnum.
+   * @return An int that represent the number of existing <i>Species</i>
+     */
+  public static int numberOfSpecies() {
+    return SpeciesEnum.values().length;
+  }
+
+  /**
+   * Return an element of <i>SpeciesEnum</i> corresponding to the integer passed in parameter
+   * @param index An int corresponding to the index of an element in <i>SpeciesEnum</i>
+   * @return The SpeciesEnum corresponding
+     */
+  public static SpeciesEnum getSpeciesFromInt(int index) {
+    return SpeciesEnum.values()[index];
+  }
+
   public static void main(String[] args) {
     Tribe<Human> t = TribeFactory.create(SpeciesEnum.HUMAN);
   }
