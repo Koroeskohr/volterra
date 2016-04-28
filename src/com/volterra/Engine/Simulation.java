@@ -1,9 +1,6 @@
 package com.volterra.Engine;
 
-import com.volterra.ecosysteme.AggressionManager;
-import com.volterra.ecosysteme.Renderable;
-import com.volterra.ecosysteme.Tribe;
-import com.volterra.ecosysteme.TribeFactory;
+import com.volterra.ecosysteme.*;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -84,8 +81,52 @@ public class Simulation implements Renderable {
     public void update(float delta) {
         this.aggressionManager.processAgressions();
         for (Tribe tribe :tribes) {
-            tribe.update(delta);
+            updateTribeCoordinates((int) delta, tribe);
         }
+    }
+
+    private void updateTribeCoordinates(int delta, Tribe tribe) {
+        Random random = new Random();
+        float xd = tribe.getXd();
+        float yd = tribe.getYd();
+        float x = tribe.getX();
+        float y = tribe.getY();
+        AIStateMachine.State state = tribe.getState();
+
+        if (state == AIStateMachine.State.NEUTRAL) {
+            if (delta % (random.nextInt(30) + 30) == 0) {
+                if (x >= 1000) xd = random.nextInt(2);
+                else if (x <= 0) xd = random.nextInt(2) - 1;
+                else xd = random.nextInt(3) - 1;
+
+                if (y >= 500) yd = random.nextInt(2) - 1;
+                else if (y <= 0) yd = random.nextInt(2);
+                else yd = random.nextInt(3) - 1;
+
+                if (random.nextInt(4) == 0) {
+                    xd = 0;
+                    yd = 0;
+                }
+            }
+        }
+        else if (state == AIStateMachine.State.AGGRESSING) {
+
+        }
+
+        x += xd*tribe.getSpeed();
+        y += yd*tribe.getSpeed();
+
+        if (x > 1000) x = 1000;
+        else if (x < 0) x = 0;
+        if (y > 500) y = 500;
+        else if (y < 0) y = 0;
+
+        System.out.println(x + " " + y);
+
+        tribe.setX(x);
+        tribe.setY(y);
+        tribe.setXd(xd);
+        tribe.setYd(yd);
     }
 
     /**

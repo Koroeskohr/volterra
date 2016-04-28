@@ -34,6 +34,36 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
+    public void setX(float x) {
+        _originalTribe.setX(x);
+    }
+
+    @Override
+    public void setY(float y) {
+        _originalTribe.setY(y);
+    }
+
+    @Override
+    public float getYd() {
+        return _originalTribe.getYd();
+    }
+
+    @Override
+    public float getXd() {
+        return _originalTribe.getXd();
+    }
+
+    @Override
+    public void setXd(float xd) {
+        _originalTribe.setXd(xd);
+    }
+
+    @Override
+    public void setYd(float yd) {
+        _originalTribe.setYd(yd);
+    }
+
+    @Override
     public float getR() {
         return _originalTribe.getR();
     }
