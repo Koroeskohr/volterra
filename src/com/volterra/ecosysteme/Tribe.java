@@ -2,6 +2,7 @@ package com.volterra.ecosysteme;
 
 import java.util.ArrayList;
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 /**
  * Created by Koroeskohr on 25/04/2016.
@@ -197,6 +198,9 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @param ctx The PApplet which draw the <i>Renderable</i> element.
      */
   public void render(PApplet ctx) {
+    ctx.fill(255,255,255);
+    ctx.stroke(this.getAggressiveness() * 2,this.getCourage() * 2,this.getForce() * 2);
+    ctx.strokeWeight(this.size() * 0.4f);
     ctx.ellipse(this.x, this.y, this.size(), this.size());
   }
 }

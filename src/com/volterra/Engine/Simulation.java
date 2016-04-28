@@ -4,6 +4,7 @@ import com.volterra.ecosysteme.AggressionManager;
 import com.volterra.ecosysteme.Renderable;
 import com.volterra.ecosysteme.Tribe;
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 import java.util.ArrayList;
 
@@ -83,5 +84,6 @@ public class Simulation implements Renderable {
         for (Tribe tribe :tribes) {
             tribe.render(ctx);
         }
+        ctx.filter(PConstants.BLUR, 5);
     }
 }
