@@ -1,8 +1,6 @@
 package com.volterra.ecosysteme;
 
 import com.volterra.Engine.Simulation;
-import com.volterra.ecosysteme.traits.Aggressive;
-import com.volterra.ecosysteme.traits.Fugitive;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ public class Applet extends PApplet {
   public void setup(){
     background(125);
     smooth();
-
   }
 
   public void draw(){

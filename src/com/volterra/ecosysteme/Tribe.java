@@ -1,5 +1,6 @@
 package com.volterra.ecosysteme;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,8 +17,8 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    */
   protected float x, y;
 
-  protected float xd = 0;
-  protected float yd = 0;
+  protected float xd = 0.0f;
+  protected float yd = 0.0f;
 
   /**
    * Current state of the tribe AI.
@@ -47,28 +48,28 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     return x;
   }
 
-  /**
-   * Get the value of red component in the color of species composing the tribe.
-   * @return Value of red component
-   */
-  public float getR() {
-    return this.members.get(0).getR();
+  public void setX(float x) {
+    this.x = x;
   }
 
-  /**
-   * Get the value of red component in the color of species composing the tribe.
-   * @return Value of red component
-   */
-  public float getG() {
-    return this.members.get(0).getG();
+  public void setY(float y) {
+    this.y = y;
   }
 
-  /**
-   * Get the value of red component in the color of species composing the tribe.
-   * @return Value of red component
-   */
-  public float getB() {
-    return this.members.get(0).getB();
+  public float getXd() {
+    return xd;
+  }
+
+  public void setXd(float xd) {
+    this.xd = xd;
+  }
+
+  public float getYd() {
+    return yd;
+  }
+
+  public void setYd(float yd) {
+    this.yd = yd;
   }
 
   /**
@@ -226,37 +227,14 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     return this.members.get(0).getSpeed();
   }
 
+  public Color getColor() { return this.members.get(0).getColor(); }
+
   public void runAI(float deltaTime) {
 
   }
 
-  public void update(float deltaTime) {
-    Random random = new Random();
-    if (this.state == State.NEUTRAL) {
-      if (deltaTime % (random.nextInt(30) + 30) == 0) {
+  public void update(float delta) {
 
-        if (this.x >= 1000) xd = random.nextInt(2);
-        else if (this.x <= 0) xd = random.nextInt(2) - 1;
-        else xd = random.nextInt(3) - 1;
-
-        if (this.y >= 500) yd = random.nextInt(2) - 1;
-        else if (this.y <= 0) yd = random.nextInt(2);
-        else yd = random.nextInt(3) - 1;
-
-        if (random.nextInt(4) == 0) {
-          xd = 0;
-          yd = 0;
-        }
-      }
-    }
-
-    this.x += xd;
-    this.y += yd;
-
-    if (this.x > 1000) this.x = 1000;
-    else if (this.x < 0) this.x = 0;
-    if (this.y > 500) this.y = 500;
-    else if (this.y < 0) this.y = 0;
   }
 
   /**
@@ -264,8 +242,8 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @param ctx The PApplet which draw the <i>Renderable</i> element.
      */
   public void render(PApplet ctx) {
-    ctx.fill(255,255,255);
-    ctx.stroke(this.getR(),this.getG(),this.getB());
+    ctx.fill(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
+    ctx.stroke(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
     ctx.strokeWeight(this.size() * 0.4f);
     ctx.ellipse(this.x, this.y, this.size(), this.size());
   }

@@ -1,6 +1,8 @@
 package com.volterra.ecosysteme;
 
 
+import java.awt.*;
+
 /**
  * Created by YellowFish on 25/04/2016.
  */
@@ -53,7 +55,7 @@ public abstract class Species {
   /**
    * R, G, B components to define the tribe color
    */
-  private float r, g, b;
+  private Color color;
 
   /**
    * Default constructor
@@ -68,6 +70,7 @@ public abstract class Species {
     this.mutualAid = 0;
     this.courage = 0;
     this.speed = 0;
+    this.color = new Color((int)0,(int)0,(int)0);
   }
 
   /**
@@ -82,7 +85,7 @@ public abstract class Species {
    * @param courage
    * @param speed
    */
-  public Species(Species[] friendlySpecies, int averageLifeSpan, int litterSize, int aggressiveness, int force, int reproductivity, int mutualAid, int courage, float speed) {
+  public Species(Species[] friendlySpecies, int averageLifeSpan, int litterSize, int aggressiveness, int force, int reproductivity, int mutualAid, int courage, float speed, Color color) {
     this.friendlySpecies = friendlySpecies;
     this.averageLifeSpan = averageLifeSpan;
     this.litterSize = litterSize;
@@ -92,6 +95,7 @@ public abstract class Species {
     this.mutualAid = mutualAid;
     this.courage = courage;
     this.speed = speed;
+    this.color = color;
   }
 
   /**
@@ -239,59 +243,10 @@ public abstract class Species {
   }
 
   /**
-   * Get the value of red component in species color.
-   * @return Value of red component
-     */
-  public float getR() {
-    return r;
-  }
-
-  /**
-   * Set the value of blue component in species color
-   * @param r the new value of blue component
+   * Get Species color
+   * @return color
    */
-  public void setR(float r) {
-    if (r > 255) {
-      r = 255;
-    }
-    this.r = r;
-  }
-
-  /**
-   * Get the value of green component in species color.
-   * @return Value of green component
-   */
-  public float getG() {
-    return g;
-  }
-
-  /**
-   * Set the value of blue component in species color
-   * @param g the new value of blue component
-   */
-  public void setG(float g) {
-    if (g > 255) {
-      g = 255;
-    }
-    this.g = g;
-  }
-
-  /**
-   * Get the value of blue component in species color.
-   * @return Value of blue component
-   */
-  public float getB() {
-    return b;
-  }
-
-  /**
-   * Set the value of blue component in species color
-   * @param b the new value of blue component
-     */
-  public void setB(float b) {
-    if (b > 255) {
-      b = 255;
-    }
-    this.b = b;
+  public Color getColor() {
+    return color;
   }
 }

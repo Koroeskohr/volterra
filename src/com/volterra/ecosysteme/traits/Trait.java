@@ -4,6 +4,8 @@ import com.volterra.ecosysteme.Species;
 import com.volterra.ecosysteme.Tribe;
 import processing.core.PApplet;
 
+import java.awt.*;
+
 /**
  * Created by Christophe on 25/04/2016.
  *
@@ -34,23 +36,46 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
-    public float getR() {
-        return _originalTribe.getR();
+    public void setX(float x) {
+        _originalTribe.setX(x);
     }
 
     @Override
-    public float getG() {
-        return _originalTribe.getG();
+    public void setY(float y) {
+        _originalTribe.setY(y);
     }
 
     @Override
-    public float getB() {
-        return _originalTribe.getB();
+    public float getYd() {
+        return _originalTribe.getYd();
     }
+
+    @Override
+    public float getXd() {
+        return _originalTribe.getXd();
+    }
+
+    @Override
+    public void setXd(float xd) {
+        _originalTribe.setXd(xd);
+    }
+
+    @Override
+    public void setYd(float yd) {
+        _originalTribe.setYd(yd);
+    }
+
+    @Override
+    public Color getColor() { return _originalTribe.getColor(); }
 
     @Override
     public Tribe getTarget() {
         return _originalTribe.getTarget();
+    }
+
+    @Override
+    public void setTarget(Tribe target) {
+        _originalTribe.setTarget(target);
     }
 
     @Override
@@ -151,10 +176,5 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     @Override
     public int getAverageLifeSpan() {
         return this._originalTribe.getAverageLifeSpan();
-    }
-
-    @Override
-    public void setTarget(Tribe target) {
-        super.setTarget(target);
     }
 }
