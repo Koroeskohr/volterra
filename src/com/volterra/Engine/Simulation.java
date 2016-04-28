@@ -80,6 +80,15 @@ public class Simulation implements Renderable {
 
     public void update(float delta) {
         this.aggressionManager.processAgressions();
+
+        // REMOVE when AggressionManager functional: test code for aggressing and fleeing movement
+        if (delta % 300 == 0) {
+            tribes.get(0).setTarget(tribes.get(1));
+            tribes.get(0).setState(AIStateMachine.State.AGGRESSING);
+            tribes.get(1).setTarget(tribes.get(0));
+            tribes.get(1).setState(AIStateMachine.State.FLEEING);
+        }
+
         for (Tribe tribe :tribes) {
             updateTribeCoordinates((int) delta, tribe);
         }
@@ -110,7 +119,26 @@ public class Simulation implements Renderable {
             }
         }
         else if (state == AIStateMachine.State.AGGRESSING) {
+            float xVictim = tribe.getTarget().getX();
+            float yVictim = tribe.getTarget().getY();
 
+            if (xVictim > x) xd = 1;
+            else if (xVictim < x) xd = -1;
+            else xd = 0;
+
+            if (yVictim > y) yd = 1;
+            else if (yVictim < y) yd = -1;
+            else yd = 0;
+        }
+        else if (state == AIStateMachine.State.FLEEING) {
+            float xAssailant = tribe.getTarget().getX();
+            float yAssailant = tribe.getTarget().getY();
+
+            if (xAssailant > x) xd = -1;
+            else if (xAssailant < x) xd = 1;
+
+            if (yAssailant > y) yd = -1;
+            else if (yAssailant < y) yd = 1;
         }
 
         x += xd*tribe.getSpeed();
@@ -120,8 +148,6 @@ public class Simulation implements Renderable {
         else if (x < 0) x = 0;
         if (y > 500) y = 500;
         else if (y < 0) y = 0;
-
-        System.out.println(x + " " + y);
 
         tribe.setX(x);
         tribe.setY(y);
