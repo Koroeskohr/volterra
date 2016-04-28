@@ -52,7 +52,7 @@ public class Applet extends PApplet {
     tribes.add(myTribe);
     tribes.add(myTribe2);
 
-    Simulation simulation = Simulation.initialize(tribes);
+    Simulation simulation = Simulation.initialize(3);
 
     clear();
 
