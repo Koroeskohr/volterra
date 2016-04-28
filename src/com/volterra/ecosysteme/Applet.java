@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by Koroeskohr on 08/04/2016.
  */
 public class Applet extends PApplet {
-  private int x = 0;
+  private int time = 0;
   private Simulation simulation;
 
   public void settings() {
@@ -27,8 +27,10 @@ public class Applet extends PApplet {
   }
 
   public void draw(){
+    time++;
     clear();
 
+    simulation.update(time);
     simulation.render(this);
 
 
