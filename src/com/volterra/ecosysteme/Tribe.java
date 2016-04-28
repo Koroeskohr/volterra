@@ -42,14 +42,50 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     return x;
   }
 
+  /**
+   * Get the value of red component in the color of species composing the tribe.
+   * @return Value of red component
+   */
+  public float getR() {
+    return this.members.get(0).getR();
+  }
+
+  /**
+   * Get the value of red component in the color of species composing the tribe.
+   * @return Value of red component
+   */
+  public float getG() {
+    return this.members.get(0).getG();
+  }
+
+  /**
+   * Get the value of red component in the color of species composing the tribe.
+   * @return Value of red component
+   */
+  public float getB() {
+    return this.members.get(0).getB();
+  }
+
+  /**
+   * Get the tribe which is the current tribe's target in a battle.
+   * @return The target tribe
+   */
   public Tribe getTarget() {
     return target;
   }
 
+  /**
+   * Get the current state of a tribe
+   * @return The state of the tribe
+     */
   public State getState() {
     return this.state;
   }
 
+  /**
+   * Set the state of a tribe
+   * @param state The new state to apply on the tribe
+     */
   public void setState(State state) {
     this.state = state;
   }
@@ -199,7 +235,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
      */
   public void render(PApplet ctx) {
     ctx.fill(255,255,255);
-    ctx.stroke(this.getAggressiveness() * 2,this.getCourage() * 2,this.getForce() * 2);
+    ctx.stroke(this.getR(),this.getG(),this.getB());
     ctx.strokeWeight(this.size() * 0.4f);
     ctx.ellipse(this.x, this.y, this.size(), this.size());
   }

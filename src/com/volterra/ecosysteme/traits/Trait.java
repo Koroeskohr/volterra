@@ -34,6 +34,21 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
+    public float getR() {
+        return _originalTribe.getR();
+    }
+
+    @Override
+    public float getG() {
+        return _originalTribe.getG();
+    }
+
+    @Override
+    public float getB() {
+        return _originalTribe.getB();
+    }
+
+    @Override
     public Tribe getTarget() {
         return _originalTribe.getTarget();
     }
@@ -95,10 +110,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
 
     @Override
     public void render(PApplet ctx) {
-        ctx.fill(255,255,255);
-        ctx.stroke(this.getAggressiveness() * 2,this.getCourage() * 2,this.getForce() * 2);
-        ctx.strokeWeight(this.size() * 0.4f);
-        ctx.ellipse(_originalTribe.getX(), _originalTribe.getY(), this.size(), this.size());
+        _originalTribe.render(ctx);
     }
 
     @Override

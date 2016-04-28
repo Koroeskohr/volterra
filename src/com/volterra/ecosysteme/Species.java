@@ -50,7 +50,10 @@ public abstract class Species {
    */
   private float speed;
 
-
+  /**
+   * R, G, B components to define the tribe color
+   */
+  private float r, g, b;
 
   /**
    * Default constructor
@@ -235,5 +238,60 @@ public abstract class Species {
       this.speed = speed;
   }
 
+  /**
+   * Get the value of red component in species color.
+   * @return Value of red component
+     */
+  public float getR() {
+    return r;
+  }
 
+  /**
+   * Set the value of blue component in species color
+   * @param r the new value of blue component
+   */
+  public void setR(float r) {
+    if (r > 255) {
+      r = 255;
+    }
+    this.r = r;
+  }
+
+  /**
+   * Get the value of green component in species color.
+   * @return Value of green component
+   */
+  public float getG() {
+    return g;
+  }
+
+  /**
+   * Set the value of blue component in species color
+   * @param g the new value of blue component
+   */
+  public void setG(float g) {
+    if (g > 255) {
+      g = 255;
+    }
+    this.g = g;
+  }
+
+  /**
+   * Get the value of blue component in species color.
+   * @return Value of blue component
+   */
+  public float getB() {
+    return b;
+  }
+
+  /**
+   * Set the value of blue component in species color
+   * @param b the new value of blue component
+     */
+  public void setB(float b) {
+    if (b > 255) {
+      b = 255;
+    }
+    this.b = b;
+  }
 }
