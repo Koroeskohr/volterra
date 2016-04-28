@@ -1,6 +1,8 @@
 package com.volterra.ecosysteme;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -13,6 +15,9 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * Coordinates of the tribe and center of the circle
    */
   protected float x, y;
+
+  protected float xd = 0;
+  protected float yd = 0;
 
   /**
    * Current state of the tribe AI.
@@ -226,7 +231,32 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   public void update(float deltaTime) {
+    Random random = new Random();
+    if (this.state == State.NEUTRAL) {
+      if (deltaTime % (random.nextInt(30) + 30) == 0) {
 
+        if (this.x >= 1000) xd = random.nextInt(2);
+        else if (this.x <= 0) xd = random.nextInt(2) - 1;
+        else xd = random.nextInt(3) - 1;
+
+        if (this.y >= 500) yd = random.nextInt(2) - 1;
+        else if (this.y <= 0) yd = random.nextInt(2);
+        else yd = random.nextInt(3) - 1;
+
+        if (random.nextInt(4) == 0) {
+          xd = 0;
+          yd = 0;
+        }
+      }
+    }
+
+    this.x += xd;
+    this.y += yd;
+
+    if (this.x > 1000) this.x = 1000;
+    else if (this.x < 0) this.x = 0;
+    if (this.y > 500) this.y = 500;
+    else if (this.y < 0) this.y = 0;
   }
 
   /**
