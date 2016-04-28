@@ -39,7 +39,6 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    */
   protected Tribe target;
 
-
   public float getY() {
     return y;
   }
@@ -83,7 +82,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   /**
    * Get the current state of a tribe
    * @return The state of the tribe
-     */
+   */
   public State getState() {
     return this.state;
   }
@@ -91,7 +90,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   /**
    * Set the state of a tribe
    * @param state The new state to apply on the tribe
-     */
+   */
   public void setState(State state) {
     this.state = state;
   }
@@ -124,7 +123,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @return Distance as double
    */
   public double getDistanceToTarget() {
-    return getDistance(this.target.getX(), this.target.getY());
+    return getDistance((this.target.getX() - this.x), (this.target.getY() - this.y));
   }
 
   /**
@@ -145,6 +144,12 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   /**
+   * TODO: define dynamic value for aggression range in Specie definition
+   * @return if enemy if in aggression range
+     */
+  public boolean isInAggressionRange() { return getDistanceToTarget() < (radius() + 100); }
+
+  /**
    * Starts an aggression with a tribe, putting it in fleeing or aggressing state as well, depending on a courage test.
    * @param enemy the tribe *this* is attacking
    */
@@ -153,6 +158,15 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
     // TODO : determine what to do with that
     // enemy.notifyOfAggression(this);
+  }
+
+  /**
+   * TODO: define a better test
+   * @return
+   */
+  public boolean aggressionTest() {
+    Random random = new Random();
+    return (random.nextInt(this.getAggressiveness()) > random.nextInt(50));
   }
 
   /**
@@ -244,7 +258,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   public void render(PApplet ctx) {
     ctx.fill(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
     ctx.stroke(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
-    ctx.strokeWeight(this.size() * 0.4f);
+    ctx.strokeWeight(this.radius());
     ctx.ellipse(this.x, this.y, this.size(), this.size());
   }
 }
