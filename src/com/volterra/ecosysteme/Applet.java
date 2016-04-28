@@ -12,6 +12,8 @@ import java.util.ArrayList;
  */
 public class Applet extends PApplet {
   private int x = 0;
+  private Simulation simulation;
+
   public void settings() {
     //fullScreen();
     size(1000, 500);
@@ -20,40 +22,11 @@ public class Applet extends PApplet {
   public void setup(){
     background(125);
     smooth();
+
+    simulation = Simulation.initialize(3);
   }
 
   public void draw(){
-    Human Theo = new Human();
-    ArrayList<Human> members = new ArrayList<>();
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-    members.add(Theo);
-
-    TribeWithTraits<Human> myTribe = new TribeWithTraits<>(750, 250, AIStateMachine.State.NEUTRAL, members, null);
-
-    Tribe<Human> myTribe2 = new Fugitive<>(new Aggressive<>(new TribeWithTraits<>(140, 220, AIStateMachine.State.NEUTRAL, members, null)));
-
-    ArrayList<Tribe> tribes = new ArrayList<>();
-    tribes.add(myTribe);
-    tribes.add(myTribe2);
-
-    Simulation simulation = Simulation.initialize(3);
-
     clear();
 
     simulation.render(this);
