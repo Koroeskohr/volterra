@@ -25,9 +25,9 @@ public class TribeWithTraits<T extends Species> extends Tribe<T> {
       this.target = target;
   }
 
-  public TribeWithTraits(ArrayList<T> members) {
-    this.x = 1.0f;
-    this.y = 1.0f;
+  public TribeWithTraits(ArrayList<T> members, float x, float y) {
+    this.x = x;
+    this.y = y;
     this.state = State.NEUTRAL;
     this.members = members;
     this.target = null;
