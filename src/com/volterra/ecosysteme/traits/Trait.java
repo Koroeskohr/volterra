@@ -84,6 +84,11 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
+    public void setTarget(Tribe target) {
+        _originalTribe.setTarget(target);
+    }
+
+    @Override
     public State getState() {
         return _originalTribe.getState();
     }
@@ -181,10 +186,5 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     @Override
     public int getAverageLifeSpan() {
         return this._originalTribe.getAverageLifeSpan();
-    }
-
-    @Override
-    public void setTarget(Tribe target) {
-        super.setTarget(target);
     }
 }
