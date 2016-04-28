@@ -11,13 +11,14 @@ import java.util.Random;
  * Created by Victor on 26/04/2016.
  */
 public class TribeFactory {
-  enum SpeciesEnum { HUMAN };
+  enum SpeciesEnum { HUMAN, ALIEN };
 
   private static final HashMap<SpeciesEnum, Class> enumClassMap;
   static
   {
     enumClassMap = new HashMap<>();
     enumClassMap.put(SpeciesEnum.HUMAN, Human.class);
+    enumClassMap.put(SpeciesEnum.ALIEN, Alien.class);
   }
 
   private static final int BASE_TRIBE_SIZE = 15;
