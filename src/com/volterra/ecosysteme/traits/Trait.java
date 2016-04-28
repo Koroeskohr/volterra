@@ -4,6 +4,8 @@ import com.volterra.ecosysteme.Species;
 import com.volterra.ecosysteme.Tribe;
 import processing.core.PApplet;
 
+import java.awt.*;
+
 /**
  * Created by Christophe on 25/04/2016.
  *
@@ -64,19 +66,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
-    public float getR() {
-        return _originalTribe.getR();
-    }
-
-    @Override
-    public float getG() {
-        return _originalTribe.getG();
-    }
-
-    @Override
-    public float getB() {
-        return _originalTribe.getB();
-    }
+    public Color getColor() { return _originalTribe.getColor(); }
 
     @Override
     public Tribe getTarget() {

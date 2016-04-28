@@ -1,5 +1,7 @@
 package com.volterra.ecosysteme;
 
+import java.awt.*;
+
 /**
  * Created by YellowFish on 25/04/2016.
  */
@@ -19,7 +21,7 @@ public class Human extends Species {
 
 
     public Human() {
-        // super(friendlySpecies, averageLifeSpan, litterSize, aggressiveness, force, reproductivity, mutualAid, courage, speed);
-        super(null, 0, 0, 30, 10, 0, 0, 50, 1);
+        // super(friendlySpecies, averageLifeSpan, litterSize, aggressiveness, force, reproductivity, mutualAid, courage, speed, color);
+        super(null, 0, 0, 30, 10, 0, 0, 50, 1, new Color(0,0,255));
     }
 }

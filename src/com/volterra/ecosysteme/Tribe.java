@@ -1,5 +1,6 @@
 package com.volterra.ecosysteme;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -69,30 +70,6 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   public void setYd(float yd) {
     this.yd = yd;
-  }
-
-  /**
-   * Get the value of red component in the color of species composing the tribe.
-   * @return Value of red component
-   */
-  public float getR() {
-    return this.members.get(0).getR();
-  }
-
-  /**
-   * Get the value of red component in the color of species composing the tribe.
-   * @return Value of red component
-   */
-  public float getG() {
-    return this.members.get(0).getG();
-  }
-
-  /**
-   * Get the value of red component in the color of species composing the tribe.
-   * @return Value of red component
-   */
-  public float getB() {
-    return this.members.get(0).getB();
   }
 
   /**
@@ -250,6 +227,8 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     return this.members.get(0).getSpeed();
   }
 
+  public Color getColor() { return this.members.get(0).getColor(); }
+
   public void runAI(float deltaTime) {
 
   }
@@ -263,8 +242,8 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @param ctx The PApplet which draw the <i>Renderable</i> element.
      */
   public void render(PApplet ctx) {
-    ctx.fill(255,255,255);
-    ctx.stroke(this.getR(),this.getG(),this.getB());
+    ctx.fill(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
+    ctx.stroke(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
     ctx.strokeWeight(this.size() * 0.4f);
     ctx.ellipse(this.x, this.y, this.size(), this.size());
   }
