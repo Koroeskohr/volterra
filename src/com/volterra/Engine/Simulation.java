@@ -84,7 +84,7 @@ public class Simulation implements Renderable {
     public void update(float delta) {
         this.aggressionManager.processAgressions();
         for (Tribe tribe :tribes) {
-            tribe.update(1);
+            tribe.update(delta);
         }
     }
 
