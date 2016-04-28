@@ -19,7 +19,7 @@ public class Fugitive<T extends Species> extends Trait<T> {
 
     @Override
     public float getSpeed() {
-        return this._originalTribe.getSpeed() + 1;
+        return this._originalTribe.getSpeed() + 0.5f;
     }
 
     @Override
