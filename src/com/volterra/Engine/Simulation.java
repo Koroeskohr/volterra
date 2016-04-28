@@ -104,8 +104,8 @@ public class Simulation implements Renderable {
 
         if (state == AIStateMachine.State.NEUTRAL) {
             if (delta % (random.nextInt(30) + 30) == 0) {
-                if (x >= 1000) xd = random.nextInt(2);
-                else if (x <= 0) xd = random.nextInt(2) - 1;
+                if (x >= 1000) xd = random.nextInt(2) - 1;
+                else if (x <= 0) xd = random.nextInt(2);
                 else xd = random.nextInt(3) - 1;
 
                 if (y >= 500) yd = random.nextInt(2) - 1;
