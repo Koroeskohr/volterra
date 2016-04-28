@@ -23,7 +23,7 @@ public class Applet extends PApplet {
     background(125);
     smooth();
 
-    simulation = Simulation.initialize(3);
+    simulation = Simulation.initialize(5);
   }
 
   public void draw(){
