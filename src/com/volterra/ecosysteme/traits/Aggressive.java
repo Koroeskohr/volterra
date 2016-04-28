@@ -19,7 +19,7 @@ public class Aggressive<T extends Species> extends Trait<T> {
 
     @Override
     public int getAggressiveness() {
-        return this._originalTribe.getAggressiveness() + 10;
+        return this._originalTribe.getAggressiveness() + 50;
     }
 
     @Override

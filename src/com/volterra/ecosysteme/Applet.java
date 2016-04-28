@@ -1,6 +1,8 @@
 package com.volterra.ecosysteme;
 
 import com.volterra.Engine.Simulation;
+import com.volterra.ecosysteme.traits.Aggressive;
+import com.volterra.ecosysteme.traits.Fugitive;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ public class Applet extends PApplet {
   private int x = 0;
   public void settings() {
     //fullScreen();
+    size(1000, 500);
   }
 
   public void setup(){
@@ -31,10 +34,19 @@ public class Applet extends PApplet {
     members.add(Theo);
     members.add(Theo);
     members.add(Theo);
+    members.add(Theo);
+    members.add(Theo);
+    members.add(Theo);
+    members.add(Theo);
+    members.add(Theo);
+    members.add(Theo);
+    members.add(Theo);
+    members.add(Theo);
+    members.add(Theo);
 
-    TribeWithTraits<Human> myTribe = new TribeWithTraits<>(10, 10, AIStateMachine.State.NEUTRAL, members, null);
+    TribeWithTraits<Human> myTribe = new TribeWithTraits<>(750, 250, AIStateMachine.State.NEUTRAL, members, null);
 
-    TribeWithTraits<Human> myTribe2 = new TribeWithTraits<>(50, 10, AIStateMachine.State.NEUTRAL, members, null);
+    Tribe<Human> myTribe2 = new Fugitive<>(new Aggressive<>(new TribeWithTraits<>(140, 220, AIStateMachine.State.NEUTRAL, members, null)));
 
     ArrayList<Tribe> tribes = new ArrayList<>();
     tribes.add(myTribe);
@@ -42,8 +54,6 @@ public class Applet extends PApplet {
 
     Simulation simulation = Simulation.initialize(tribes);
 
-    fill(255,0,0);
-    stroke(0,255,0);
     clear();
 
     simulation.render(this);

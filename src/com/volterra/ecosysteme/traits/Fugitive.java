@@ -24,7 +24,7 @@ public class Fugitive<T extends Species> extends Trait<T> {
 
     @Override
     public int getAggressiveness() {
-        return this._originalTribe.getAggressiveness() - 20;
+        return this._originalTribe.getAggressiveness() -20;
     }
 
     @Override

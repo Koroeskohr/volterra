@@ -9,6 +9,6 @@ public class Human extends Species {
      */
     public Human() {
         // super(friendlySpecies, averageLifeSpan, litterSize, aggressiveness, force, reproductivity, mutualAid, courage, speed);
-        super(null, 0, 0, 0, 0, 0, 0, 0, 0);
+        super(null, 0, 0, 30, 10, 0, 0, 50, 0);
     }
 }
