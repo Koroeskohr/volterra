@@ -163,6 +163,6 @@ public class Simulation implements Renderable {
         for (Tribe tribe :tribes) {
             tribe.render(ctx);
         }
-        ctx.filter(PConstants.BLUR, 2);
+        //ctx.filter(PConstants.BLUR, 2);
     }
 }
