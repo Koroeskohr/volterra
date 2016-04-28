@@ -29,6 +29,18 @@ public class Simulation implements Renderable {
      */
     private AggressionManager aggressionManager;
 
+
+    private final int windowWidth = 1366;
+    private final int windowHeight = 720;
+
+    public int getWindowWidth() {
+        return windowWidth;
+    }
+
+    public int getWindowHeight() {
+        return windowHeight;
+    }
+
     private Simulation() {
         super();
     }
@@ -68,7 +80,7 @@ public class Simulation implements Renderable {
      * Return the <i>Simulation</i> object
      * @return A reference on the <i>Simulation</i> created before or a null pointer.
      */
-    public Simulation getSimulation() {
+    public static Simulation getSimulation() {
         if (Simulation.instance != null) {
             return Simulation.instance;
         }
