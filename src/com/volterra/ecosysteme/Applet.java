@@ -16,14 +16,14 @@ public class Applet extends PApplet {
 
   public void settings() {
     //fullScreen();
-    size(1000, 500);
+    simulation = Simulation.initialize(3);
+    size(Simulation.getSimulation().getWindowWidth(), Simulation.getSimulation().getWindowHeight());
   }
 
   public void setup(){
     background(125);
     smooth();
 
-    simulation = Simulation.initialize(3);
   }
 
   public void draw(){
