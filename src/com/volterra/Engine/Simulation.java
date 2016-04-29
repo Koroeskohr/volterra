@@ -101,6 +101,7 @@ public class Simulation implements Renderable {
             if (!tribe.equals(t)) {
                 tribe.setTarget(t);
                 if (t.getTarget() == null && tribe.isInAggressionRange()) {
+                    System.out.println(tribe.hashCode() + " aggress " + t.hashCode() );
                     this.aggressionManager.addAggression(tribe, t);
                     break;
                 }
