@@ -176,6 +176,10 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     this.target.getDamages(damages);
   }
 
+  /**
+   * Remove members depending on the damages given
+   * @param damages
+   */
   public void getDamages(int damages) {
     int i = damages;
     while (i > 0 && this.size() >= 1) {
@@ -184,6 +188,10 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     }
   }
 
+  /**
+   * Return true if members size > 0
+   * @return
+   */
   public boolean isAlive() {
     return (this.size() >= 1);
   }
