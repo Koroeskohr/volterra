@@ -31,6 +31,7 @@ public class AggressionManager {
             // Remove the aggression
             if (processAggression(aggression)) {
                 System.out.println(aggression.getAssailant().hashCode() + " stop " + aggression.getVictim().hashCode());
+                setIdleState(aggression);
                 aggression.setAssailantTarget(null);
                 aggression.setVictimTarget(null);
 
@@ -66,20 +67,13 @@ public class AggressionManager {
         setIdleState(aggression);
 
         if (aggression.getAssailant().aggressionTest()) {
-            System.out.println("Assailant aggression test OK");
             if (aggression.getVictim().aggressionTest()) {
-                System.out.println("Mutual aggression");
                 setPursuitMutualState(aggression);
             }
             else {
-                System.out.println("Fleeing");
                 setPursuitFleeingState(aggression);
             }
         }
-        else {
-            System.out.println("Aggression test failed");
-        }
-
     }
 
     /**
@@ -138,7 +132,7 @@ public class AggressionManager {
      * @return true if the time ellapsed since the begining of the aggression is superior to aggression.aggressionDurationLimit
      */
     private boolean processIdle(Aggression aggression) {
-        return (Duration.between(Instant.now(), aggression.getAggressionStart().plusSeconds(aggression.getAggressionDurationLimit())).getSeconds() <= 0);
+        return (Duration.between(Instant.now(), aggression.getActionStart().plusSeconds(aggression.getAggressionDurationLimit())).getSeconds() <= 0);
     }
 
     /**
@@ -148,11 +142,14 @@ public class AggressionManager {
      */
     private boolean processPursuit(Aggression aggression) {
         if (aggression.getAssailant().isInAttackRange()) {
-            System.out.println("Fight start");
             setFightState(aggression);
+            return false;
         }
-
-        return false;
+        else {
+            // TODO: implement proper pursuit duration
+            // For the moment, a pursuit last maxAggressionDuration/2 seconds
+            return (Duration.between(Instant.now(), aggression.getActionStart().plusSeconds(aggression.getAggressionDurationLimit()/2)).getSeconds() <= 0);
+        }
     }
 
     /**
@@ -161,11 +158,9 @@ public class AggressionManager {
      * @return
      */
     private boolean processFight(Aggression aggression) {
-        /*
-        TODO: implement proper ia for fight
-         */
-        if (Duration.between(Instant.now(), aggression.getAggressionStart().plusSeconds(aggression.getAggressionDurationLimit()/2)).getSeconds() <= 0) {
-            System.out.println("Fight over");
+        // TODO: implement proper ia for fight
+        // For the moment, a fight last maxAggressionDuration/5 seconds, and at the end the two tribes are set to IDLE state
+        if (Duration.between(Instant.now(), aggression.getActionStart().plusSeconds(aggression.getAggressionDurationLimit()/5)).getSeconds() <= 0) {
             setIdleState(aggression);
         }
         return false;
