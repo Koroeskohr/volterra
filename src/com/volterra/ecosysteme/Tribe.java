@@ -171,10 +171,21 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Damages the target based on force and number of units
-   * @param enemy the tribe *this* is attacking
    */
-  public void attack(Tribe enemy) {
-    // math magic
+  public void attack(int damages) {
+    this.target.getDamages(damages);
+  }
+
+  public void getDamages(int damages) {
+    int i = damages;
+    while (i > 0 && this.size() >= 1) {
+      this.members.remove(this.size() - 1);
+      i--;
+    }
+  }
+
+  public boolean isAlive() {
+    return (this.size() >= 1);
   }
 
   /**

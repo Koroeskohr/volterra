@@ -127,9 +127,15 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     public boolean aggressionTest() { return _originalTribe.aggressionTest(); }
 
     @Override
-    public void attack(Tribe enemy) {
-        _originalTribe.attack(enemy);
+    public void attack(int damages) {
+        _originalTribe.attack(damages);
     }
+
+    @Override
+    public void getDamages(int i) { _originalTribe.getDamages(i); }
+
+    @Override
+    public boolean isAlive() { return _originalTribe.isAlive(); }
 
     @Override
     public void runAI(float deltaTime) {
