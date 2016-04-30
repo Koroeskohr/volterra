@@ -17,7 +17,10 @@ public class Aggression {
     private AggressionState state;
     private Tribe assailant;
     private Tribe victim;
-    private Instant aggressionStart;
+    /**
+     * Action start time. Reset when changing state
+     */
+    private Instant actionStart;
 
     /**
      * Max duration for the PURSUIT state
@@ -30,7 +33,7 @@ public class Aggression {
      * @param victim The Tribe victim
      */
     public Aggression(Tribe assailant, Tribe victim) {
-        this.aggressionStart = Instant.now();
+        this.actionStart = null;
 
         this.assailant = assailant;
         this.victim = victim;
@@ -64,8 +67,8 @@ public class Aggression {
      * Return the time when the aggression was created
      * @return aggressionsStart
      */
-    public Instant getAggressionStart() {
-        return aggressionStart;
+    public Instant getActionStart() {
+        return actionStart;
     }
 
     /**
@@ -97,6 +100,7 @@ public class Aggression {
      * Set assailant and victim states to NEUTRAL
      */
     public void setIdleState() {
+        this.actionStart = Instant.now();
         this.state = AggressionState.IDLE;
         this.assailant.setState(AIStateMachine.State.NEUTRAL);
         this.victim.setState(AIStateMachine.State.NEUTRAL);
@@ -108,6 +112,7 @@ public class Aggression {
      * Set victim state to FLEEING
      */
     public void setPursuitFleeingState() {
+        this.actionStart = Instant.now();
         this.state = AggressionState.PURSUIT;
         this.assailant.setState(AIStateMachine.State.AGGRESSING);
         this.victim.setState(AIStateMachine.State.FLEEING);
@@ -118,6 +123,7 @@ public class Aggression {
      * Set assailant and victim states to AGGRESSING
      */
     public void setPursuitMutualState() {
+        this.actionStart = Instant.now();
         this.state = AggressionState.PURSUIT;
         this.assailant.setState(AIStateMachine.State.AGGRESSING);
         this.victim.setState(AIStateMachine.State.AGGRESSING);
@@ -128,6 +134,7 @@ public class Aggression {
      * Set assailant and victim states to FIGHT
      */
     public void setFightState() {
+        this.actionStart = Instant.now();
         this.state = AggressionState.FIGHT;
         this.assailant.setState(AIStateMachine.State.FIGHT);
         this.victim.setState(AIStateMachine.State.FIGHT);

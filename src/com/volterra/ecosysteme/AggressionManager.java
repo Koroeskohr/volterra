@@ -1,6 +1,7 @@
 package com.volterra.ecosysteme;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -29,6 +30,8 @@ public class AggressionManager {
 
             // Remove the aggression
             if (processAggression(aggression)) {
+                System.out.println(aggression.getAssailant().hashCode() + " stop " + aggression.getVictim().hashCode());
+                setIdleState(aggression);
                 aggression.setAssailantTarget(null);
                 aggression.setVictimTarget(null);
 
@@ -62,8 +65,7 @@ public class AggressionManager {
      */
     private void initNewAggression(Aggression aggression) {
         setIdleState(aggression);
-        /*
-        // TODO: define Tribe.aggressionTest()
+
         if (aggression.getAssailant().aggressionTest()) {
             if (aggression.getVictim().aggressionTest()) {
                 setPursuitMutualState(aggression);
@@ -72,7 +74,6 @@ public class AggressionManager {
                 setPursuitFleeingState(aggression);
             }
         }
-        */
     }
 
     /**
@@ -131,7 +132,7 @@ public class AggressionManager {
      * @return true if the time ellapsed since the begining of the aggression is superior to aggression.aggressionDurationLimit
      */
     private boolean processIdle(Aggression aggression) {
-        return (Duration.between(aggression.getAggressionStart(), aggression.getAggressionStart().plusSeconds(aggression.getAggressionDurationLimit())).getSeconds() <= 0);
+        return (Duration.between(Instant.now(), aggression.getActionStart().plusSeconds(aggression.getAggressionDurationLimit())).getSeconds() <= 0);
     }
 
     /**
@@ -142,9 +143,13 @@ public class AggressionManager {
     private boolean processPursuit(Aggression aggression) {
         if (aggression.getAssailant().isInAttackRange()) {
             setFightState(aggression);
+            return false;
         }
-
-        return false;
+        else {
+            // TODO: implement proper pursuit duration
+            // For the moment, a pursuit last maxAggressionDuration/2 seconds
+            return (Duration.between(Instant.now(), aggression.getActionStart().plusSeconds(aggression.getAggressionDurationLimit()/2)).getSeconds() <= 0);
+        }
     }
 
     /**
@@ -153,6 +158,11 @@ public class AggressionManager {
      * @return
      */
     private boolean processFight(Aggression aggression) {
+        // TODO: implement proper ia for fight
+        // For the moment, a fight last maxAggressionDuration/5 seconds, and at the end the two tribes are set to IDLE state
+        if (Duration.between(Instant.now(), aggression.getActionStart().plusSeconds(aggression.getAggressionDurationLimit()/5)).getSeconds() <= 0) {
+            setIdleState(aggression);
+        }
         return false;
     }
 
