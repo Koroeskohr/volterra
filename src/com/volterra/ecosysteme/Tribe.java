@@ -161,15 +161,6 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   /**
-   * TODO: define a better test
-   * @return
-   */
-  public boolean aggressionTest() {
-    Random random = new Random();
-    return (random.nextInt(this.getAggressiveness()) > random.nextInt(50));
-  }
-
-  /**
    * Damages the target based on force and number of units
    */
   public void attack(int damages) {

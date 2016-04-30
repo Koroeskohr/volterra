@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Created by YellowFish on 26/04/2016.
@@ -65,14 +66,19 @@ public class AggressionManager {
     private void initNewAggression(Aggression aggression) {
         setIdleState(aggression);
 
-        if (aggression.getAssailant().aggressionTest()) {
-            if (aggression.getVictim().aggressionTest()) {
+        if (aggressionTest(aggression.getAssailant())) {
+            if (aggressionTest(aggression.getVictim())) {
                 setPursuitMutualState(aggression);
             }
             else {
                 setPursuitFleeingState(aggression);
             }
         }
+    }
+
+    private boolean aggressionTest(Tribe tribe) {
+        Random random = new Random();
+        return (random.nextInt(tribe.getAggressiveness()) > random.nextInt(50));
     }
 
     /**
@@ -157,13 +163,11 @@ public class AggressionManager {
      * @return
      */
     private boolean processFight(Aggression aggression) {
-        // TODO: implement proper ia for fight
-        // For the moment, a fight last maxAggressionDuration/5 seconds, and at the end the two tribes are set to IDLE state
-        if (Duration.between(Instant.now(), aggression.getActionStart().plusSeconds(aggression.getAggressionDurationLimit()/5)).getSeconds() <= 0) {
-            setIdleState(aggression);
+
+        if (!aggression.getAssailant().isAlive() || !aggression.getVictim().isAlive()) {
+            return true;
         }
+
         return false;
     }
-
-
 }

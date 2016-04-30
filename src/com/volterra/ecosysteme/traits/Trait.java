@@ -124,9 +124,6 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
-    public boolean aggressionTest() { return _originalTribe.aggressionTest(); }
-
-    @Override
     public void attack(int damages) {
         _originalTribe.attack(damages);
     }

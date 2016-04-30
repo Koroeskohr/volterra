@@ -6,6 +6,7 @@ import processing.core.PConstants;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -84,16 +85,36 @@ public class Simulation implements Renderable {
         return null;
     }
 
+    public void removeDeadTribes() {
+        int nb = tribes.size();
+        for (Iterator<Tribe> iterator = tribes.iterator(); iterator.hasNext();) {
+            Tribe tribe = iterator.next();
+
+            if (!tribe.isAlive()) iterator.remove();
+        }
+
+        if (nb != tribes.size()) System.out.println("Tribes left: " + this.tribes.size());
+    }
+
     /**
      * Process Tribes AI
      */
-    public void runAi() {
-        for (Tribe tribe :tribes) {
-            if (tribe.getTarget() == null) {
-                processAiReproduction(tribe);
-                processAiAggression(tribe);
+    public void runAi(int delta) {
+        for (Tribe tribe : tribes) {
+            if (tribe.isAlive()) {
+                if (tribe.getTarget() == null) {
+                    processAiReproduction(tribe);
+                    processAiAggression(tribe);
+                }
+                else {
+                    processAiAttack(tribe, delta);
+                }
             }
         }
+
+        this.aggressionManager.processAgressions();
+
+        removeDeadTribes();
     }
 
     /**
@@ -110,7 +131,7 @@ public class Simulation implements Renderable {
      */
     private void processAiAggression(Tribe tribe) {
         for (Tribe t : tribes) {
-            if (!tribe.equals(t)) {
+            if (!tribe.equals(t) && t.isAlive()) {
                 tribe.setTarget(t);
                 if (t.getTarget() == null && tribe.isInAggressionRange()) {
                     this.aggressionManager.addAggression(tribe, t);
@@ -123,11 +144,24 @@ public class Simulation implements Renderable {
         }
     }
 
-    public void update(float delta) {
-        this.aggressionManager.processAgressions();
+    private void processAiAttack(Tribe tribe, int delta) {
+        if (tribe.getState() == AIStateMachine.State.FIGHT && (delta % (int)(60/tribe.getSpeed()) == 0)) {
+            if (tribe.getTarget() == null) return;
 
-        for (Tribe tribe :tribes) {
-            updateTribeCoordinates((int) delta, tribe);
+            Random random = new Random();
+            // change this line for damages tweak
+            int forceFactor = tribe.getForce() + tribe.getForce() * ((tribe.size()-tribe.getTarget().size())/5);
+            if (forceFactor < 0) forceFactor = 0;
+
+            int damages = random.nextInt(forceFactor + 1);
+
+            tribe.attack(damages);
+        }
+    }
+
+    public void update(float delta) {
+        for (Tribe tribe : tribes) {
+            if (tribe.isAlive()) updateTribeCoordinates((int) delta, tribe);
         }
     }
 
@@ -202,7 +236,7 @@ public class Simulation implements Renderable {
      */
     public void render(PApplet ctx) {
         for (Tribe tribe :tribes) {
-            tribe.render(ctx);
+            if (tribe.isAlive()) tribe.render(ctx);
         }
         //ctx.filter(PConstants.BLUR, 2);
     }

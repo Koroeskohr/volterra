@@ -27,7 +27,7 @@ public class Applet extends PApplet {
     time++;
     clear();
 
-    if (time >= 5) simulation.runAi();
+    if (time >= 5) simulation.runAi(time);
     simulation.update(time);
     simulation.render(this);
 
