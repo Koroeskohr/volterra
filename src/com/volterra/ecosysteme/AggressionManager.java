@@ -30,7 +30,6 @@ public class AggressionManager {
 
             // Remove the aggression
             if (processAggression(aggression)) {
-                System.out.println(aggression.getAssailant().hashCode() + " stop " + aggression.getVictim().hashCode());
                 setIdleState(aggression);
                 aggression.setAssailantTarget(null);
                 aggression.setVictimTarget(null);
