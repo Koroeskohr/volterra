@@ -14,7 +14,7 @@ public class Applet extends PApplet {
 
   public void settings() {
     //fullScreen();
-    simulation = Simulation.initialize(3);
+    simulation = Simulation.initialize(10);
     size(Simulation.getSimulation().getWindowWidth(), Simulation.getSimulation().getWindowHeight());
   }
 
@@ -27,6 +27,7 @@ public class Applet extends PApplet {
     time++;
     clear();
 
+    if (time >= 5) simulation.runAi();
     simulation.update(time);
     simulation.render(this);
 
