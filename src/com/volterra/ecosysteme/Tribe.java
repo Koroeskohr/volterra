@@ -267,8 +267,17 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
      */
   public void render(PApplet ctx) {
     ctx.fill(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
-    ctx.stroke(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
-    ctx.strokeWeight(this.radius());
+    if (this.getState() == State.AGGRESSING || this.getState() == State.FIGHT) {
+      ctx.stroke(255, 0, 0);
+    } else if (this.getState() == State.FLEEING) {
+      ctx.stroke(255, 0, 255);
+    } else {
+      ctx.noStroke();
+      //ctx.stroke(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
+    }
+    //ctx.strokeWeight(this.radius());
     ctx.ellipse(this.x, this.y, this.size(), this.size());
+    ctx.fill(255);
+    ctx.text(this.size(), this.x + this.radius(), this.y + this.radius());
   }
 }
