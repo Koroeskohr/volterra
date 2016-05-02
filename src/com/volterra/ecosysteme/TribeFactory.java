@@ -1,6 +1,7 @@
 package com.volterra.ecosysteme;
 
-import com.volterra.Engine.Simulation;
+import com.volterra.engine.Simulation;
+import com.volterra.ecosysteme.traits.Trait;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -44,7 +45,8 @@ public class TribeFactory {
     ArrayList<Species> members = null;
     members = generateMembers(associatedClass, size);
 
-    tribe = new TribeWithTraits(members, x, y);
+    tribe = new TribeWithTraits(members, x, y, associatedClass);
+
     String[] speciesBaseTraits = null;
     try {
       Method method = associatedClass.getMethod("getSpeciesTraits");
@@ -73,7 +75,7 @@ public class TribeFactory {
       }
 
       try {
-        tribe = (Tribe) constructor.newInstance(tribe);
+        tribe = (Trait) constructor.newInstance(tribe);
       } catch (InvocationTargetException e) {
         e.printStackTrace();
       } catch (InstantiationException e) {
@@ -95,17 +97,21 @@ public class TribeFactory {
    */
   private static ArrayList<Species> generateMembers(Class<? extends Species> klass, int amount){
     ArrayList<Species> list = new ArrayList<>();
-    Species dude = null;
 
     for( int i = 0 ; i < amount ; ++i ) {
       try {
-        dude = klass.newInstance();
+        java.lang.reflect.Constructor<?> ctor = klass.getConstructor();
+        Species dude = ((Species) ctor.newInstance());
+        list.add(klass.cast(dude));
       } catch (InstantiationException e) {
         e.printStackTrace();
       } catch (IllegalAccessException e) {
         e.printStackTrace();
+      } catch (NoSuchMethodException e) {
+        e.printStackTrace();
+      } catch (InvocationTargetException e) {
+        e.printStackTrace();
       }
-      list.add(dude);
     }
 
     return list;
