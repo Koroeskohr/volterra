@@ -1,4 +1,4 @@
-package com.volterra.Engine.visualeffects;
+package com.volterra.engine.visualeffects;
 
 import com.volterra.ecosysteme.Renderable;
 

@@ -1,6 +1,6 @@
-package com.volterra.Engine.visualeffects;
+package com.volterra.engine.visualeffects;
 
-import com.volterra.Engine.Simulation;
+import com.volterra.engine.Simulation;
 import processing.core.PApplet;
 
 import java.time.Instant;
