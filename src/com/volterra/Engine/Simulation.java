@@ -17,6 +17,11 @@ import java.util.Random;
 public class Simulation implements Renderable {
     static private Simulation instance = null;
 
+  /**
+   * Instance of the effectsDisplayer;
+   */
+  private EffectsDisplayer effectsDisplayer;
+
     /**
      * The list of <i>Tribes</i> on the map.
      */
@@ -58,6 +63,7 @@ public class Simulation implements Renderable {
                 if (Simulation.instance == null) {
                     Simulation.instance = new Simulation();
                     Simulation.instance.tribes = new ArrayList<>();
+                    Simulation.instance.effectsDisplayer = new EffectsDisplayer();
                     Tribe tmpTribe;
                     int indexEnum;
                     long seed = new Date().getTime();
@@ -83,6 +89,10 @@ public class Simulation implements Renderable {
             return Simulation.instance;
         }
         return null;
+    }
+
+    public EffectsDisplayer getEffectsDisplayer(){
+        return this.effectsDisplayer;
     }
 
     public void removeDeadTribes() {
@@ -163,6 +173,7 @@ public class Simulation implements Renderable {
         for (Tribe tribe : tribes) {
             if (tribe.isAlive()) updateTribeCoordinates((int) delta, tribe);
         }
+        effectsDisplayer.update(delta);
     }
 
     private void updateTribeCoordinates(int delta, Tribe tribe) {
@@ -235,9 +246,12 @@ public class Simulation implements Renderable {
      * @param ctx The PApplet which draw the <i>Renderable</i> elements.
      */
     public void render(PApplet ctx) {
-        for (Tribe tribe :tribes) {
+        for (Tribe tribe : tribes) {
             if (tribe.isAlive()) tribe.render(ctx);
         }
+        this.effectsDisplayer.render(ctx);
+
+        ctx.text(ctx.frameRate, 10, 10);
         //ctx.filter(PConstants.BLUR, 2);
     }
 }
