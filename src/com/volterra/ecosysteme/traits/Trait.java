@@ -5,6 +5,8 @@ import com.volterra.ecosysteme.Tribe;
 import processing.core.PApplet;
 
 import java.awt.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by Christophe on 25/04/2016.
@@ -224,6 +226,22 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
 
     @Override
     public boolean isAlive() { return _originalTribe.isAlive(); }
+
+    @Override
+    public void newMembers(int litterSize) {
+        for(int i = 0 ; i < litterSize ; i++) {
+            try {
+                if (_originalTribe.getSpecies() == null) throw new NullPointerException("node must have children");
+                Constructor ctor = _originalTribe.getSpecies().getConstructor();
+                _originalTribe.setMembers(((_originalTribe.getSpecies().cast(ctor.newInstance()))));
+            } catch (NoSuchMethodException |
+                    InvocationTargetException |
+                    IllegalAccessException |
+                    InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public void runAI(float deltaTime) {

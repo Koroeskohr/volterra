@@ -1,12 +1,13 @@
 package com.volterra.ecosysteme;
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import java.lang.reflect.Constructor;
-import com.volterra.Engine.Simulation;
-import com.volterra.Engine.visualeffects.DamageEffect;
+import com.volterra.engine.Simulation;
+import com.volterra.engine.visualeffects.DamageEffect;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -31,7 +32,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   /**
    * All the members of a group. They all belong to the same species.
    */
-  public ArrayList<T> members;
+  protected ArrayList<T> members;
 
   /**
    * The species that composes the <i>Tribe</i>.
@@ -375,8 +376,12 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * Return the species attribute of the <i>Tribe</i>
    * @return A <i>Class</i> which is the <i>Species</i> cmposing the <i>Tribe</i>
      */
-  public final Class<T> getSpecies() {
+  public Class<T> getSpecies() {
     return this.species;
+  }
+
+  public void setMembers(T newMember) {
+    this.members.add(newMember);
   }
 
   /**
