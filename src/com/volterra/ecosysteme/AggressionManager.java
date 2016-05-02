@@ -67,7 +67,7 @@ public class AggressionManager {
         setIdleState(aggression);
 
         if (aggressionTest(aggression.getAssailant())) {
-            if (aggressionTest(aggression.getVictim())) {
+            if (courageTest(aggression.getVictim())) {
                 setPursuitMutualState(aggression);
             }
             else {
@@ -79,6 +79,11 @@ public class AggressionManager {
     private boolean aggressionTest(Tribe tribe) {
         Random random = new Random();
         return (random.nextInt(tribe.getAggressiveness()) > random.nextInt(50));
+    }
+
+    private boolean courageTest(Tribe tribe) {
+        Random random = new Random();
+        return (random.nextInt(tribe.getCourage()) > random.nextInt(50));
     }
 
     /**
@@ -146,7 +151,7 @@ public class AggressionManager {
      * @return false, this method does not end an aggression
      */
     private boolean processPursuit(Aggression aggression) {
-        if (aggression.getAssailant().isInAttackRange()) {
+        if (aggression.getAssailant().isInAttackRange() || aggression.getVictim().isInAttackRange()) {
             setFightState(aggression);
             return false;
         }
@@ -163,11 +168,32 @@ public class AggressionManager {
      * @return
      */
     private boolean processFight(Aggression aggression) {
-
-        if (!aggression.getAssailant().isAlive() || !aggression.getVictim().isAlive()) {
+        if (!aggression.getAssailant().isAlive()) {
+            postFightModifications(aggression.getVictim());
+            return true;
+        }
+        if (!aggression.getVictim().isAlive()) {
+            postFightModifications(aggression.getAssailant());
             return true;
         }
 
         return false;
+    }
+
+    private void postFightModifications(Tribe tribe) {
+        Random random = new Random();
+        
+        // 1/2 chance of aggressiveness up
+        if (true || random.nextInt(2) >= 1) {
+            tribe.addAggressiveness(5);
+        }
+        // 1/2 chance of courage up
+        if (true || random.nextInt(2) >= 1) {
+            tribe.addCourage(5);
+        }
+        // 1/10 chance of force up
+        if (true || random.nextInt(10) >= 9) {
+            tribe.addForce(1);
+        }
     }
 }
