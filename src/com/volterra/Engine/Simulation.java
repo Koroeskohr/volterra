@@ -5,6 +5,7 @@ import processing.core.PApplet;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -14,6 +15,11 @@ import java.util.Random;
  */
 public class Simulation implements Renderable {
     static private Simulation instance = null;
+
+  /**
+   * Instance of the effectsDisplayer;
+   */
+  private EffectsDisplayer effectsDisplayer;
 
     /**
      * The list of <i>Tribes</i> on the map.
@@ -56,6 +62,7 @@ public class Simulation implements Renderable {
                 if (Simulation.instance == null) {
                     Simulation.instance = new Simulation();
                     Simulation.instance.tribes = new ArrayList<>();
+                    Simulation.instance.effectsDisplayer = new EffectsDisplayer();
                     Tribe tmpTribe;
                     int indexEnum;
                     long seed = new Date().getTime();
@@ -83,26 +90,89 @@ public class Simulation implements Renderable {
         return null;
     }
 
-    public void runAi() {
-        for (Tribe tribe :tribes) {
-            tribe.runAI(1);
+    public EffectsDisplayer getEffectsDisplayer(){
+        return this.effectsDisplayer;
+    }
+
+    public void removeDeadTribes() {
+        int nb = tribes.size();
+        for (Iterator<Tribe> iterator = tribes.iterator(); iterator.hasNext();) {
+            Tribe tribe = iterator.next();
+
+            if (!tribe.isAlive()) iterator.remove();
+        }
+
+        if (nb != tribes.size()) System.out.println("Tribes left: " + this.tribes.size());
+    }
+
+    /**
+     * Process Tribes AI
+     */
+    public void runAi(int delta) {
+        for (Tribe tribe : tribes) {
+            if (tribe.isAlive()) {
+                if (tribe.getTarget() == null) {
+                    processAiReproduction(tribe);
+                    processAiAggression(tribe);
+                }
+                else {
+                    processAiAttack(tribe, delta);
+                }
+            }
+        }
+
+        this.aggressionManager.processAgressions();
+
+        removeDeadTribes();
+    }
+
+    /**
+     * TODO: Process Tribe reproduction
+     * @param tribe
+     */
+    private void processAiReproduction(Tribe tribe) {
+
+    }
+
+    /**
+     * Process Tribe Aggression AI if NEUTRAL
+     * @param tribe
+     */
+    private void processAiAggression(Tribe tribe) {
+        for (Tribe t : tribes) {
+            if (!tribe.equals(t) && t.isAlive()) {
+                tribe.setTarget(t);
+                if (t.getTarget() == null && tribe.isInAggressionRange()) {
+                    this.aggressionManager.addAggression(tribe, t);
+                    break;
+                }
+                else {
+                    tribe.setTarget(null);
+                }
+            }
+        }
+    }
+
+    private void processAiAttack(Tribe tribe, int delta) {
+        if (tribe.getState() == AIStateMachine.State.FIGHT && (delta % (int)(60/tribe.getSpeed()) == 0)) {
+            if (tribe.getTarget() == null) return;
+
+            Random random = new Random();
+            // change this line for damages tweak
+            int forceFactor = tribe.getForce() + tribe.getForce() * ((tribe.size()-tribe.getTarget().size())/5);
+            if (forceFactor < 0) forceFactor = 0;
+
+            int damages = random.nextInt(forceFactor + 1);
+
+            tribe.attack(damages);
         }
     }
 
     public void update(float delta) {
-        this.aggressionManager.processAgressions();
-
-        // REMOVE when AggressionManager functional: test code for aggressing and fleeing movement
-        if (delta % 300 == 0) {
-            tribes.get(0).setTarget(tribes.get(1));
-            tribes.get(0).setState(AIStateMachine.State.AGGRESSING);
-            tribes.get(1).setTarget(tribes.get(0));
-            tribes.get(1).setState(AIStateMachine.State.FLEEING);
+        for (Tribe tribe : tribes) {
+            if (tribe.isAlive()) updateTribeCoordinates((int) delta, tribe);
         }
-
-        for (Tribe tribe :tribes) {
-            updateTribeCoordinates((int) delta, tribe);
-        }
+        effectsDisplayer.update(delta);
     }
 
     private void updateTribeCoordinates(int delta, Tribe tribe) {
@@ -151,6 +221,10 @@ public class Simulation implements Renderable {
             if (yAssailant > y) yd = -1;
             else if (yAssailant < y) yd = 1;
         }
+        else if (state == AIStateMachine.State.FIGHT) {
+            xd = 0;
+            yd = 0;
+        }
 
         x += xd*tribe.getSpeed();
         y += yd*tribe.getSpeed();
@@ -171,9 +245,14 @@ public class Simulation implements Renderable {
      * @param ctx The PApplet which draw the <i>Renderable</i> elements.
      */
     public void render(PApplet ctx) {
-        for (Tribe tribe :tribes) {
-            tribe.render(ctx);
+        for (Tribe tribe : tribes) {
+            if (tribe.isAlive()) tribe.render(ctx);
         }
+        this.effectsDisplayer.render(ctx);
+
+        // Displaying framerate
+        ctx.fill(255);
+        ctx.text(ctx.frameRate, 10, 10);
         //ctx.filter(PConstants.BLUR, 2);
     }
 }

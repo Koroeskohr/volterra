@@ -1,8 +1,10 @@
 package com.volterra.ecosysteme;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Created by YellowFish on 26/04/2016.
@@ -29,6 +31,7 @@ public class AggressionManager {
 
             // Remove the aggression
             if (processAggression(aggression)) {
+                setIdleState(aggression);
                 aggression.setAssailantTarget(null);
                 aggression.setVictimTarget(null);
 
@@ -62,17 +65,25 @@ public class AggressionManager {
      */
     private void initNewAggression(Aggression aggression) {
         setIdleState(aggression);
-        /*
-        // TODO: define Tribe.aggressionTest()
-        if (aggression.getAssailant().aggressionTest()) {
-            if (aggression.getVictim().aggressionTest()) {
+
+        if (aggressionTest(aggression.getAssailant())) {
+            if (courageTest(aggression.getVictim())) {
                 setPursuitMutualState(aggression);
             }
             else {
                 setPursuitFleeingState(aggression);
             }
         }
-        */
+    }
+
+    private boolean aggressionTest(Tribe tribe) {
+        Random random = new Random();
+        return (random.nextInt(tribe.getAggressiveness()) > random.nextInt(50));
+    }
+
+    private boolean courageTest(Tribe tribe) {
+        Random random = new Random();
+        return (random.nextInt(tribe.getCourage()) > random.nextInt(50));
     }
 
     /**
@@ -131,7 +142,7 @@ public class AggressionManager {
      * @return true if the time ellapsed since the begining of the aggression is superior to aggression.aggressionDurationLimit
      */
     private boolean processIdle(Aggression aggression) {
-        return (Duration.between(aggression.getAggressionStart(), aggression.getAggressionStart().plusSeconds(aggression.getAggressionDurationLimit())).getSeconds() <= 0);
+        return (Duration.between(Instant.now(), aggression.getActionStart().plusSeconds(aggression.getAggressionDurationLimit())).getSeconds() <= 0);
     }
 
     /**
@@ -140,11 +151,15 @@ public class AggressionManager {
      * @return false, this method does not end an aggression
      */
     private boolean processPursuit(Aggression aggression) {
-        if (aggression.getAssailant().isInAttackRange()) {
+        if (aggression.getAssailant().isInAttackRange() || aggression.getVictim().isInAttackRange()) {
             setFightState(aggression);
+            return false;
         }
-
-        return false;
+        else {
+            // TODO: implement proper pursuit duration
+            // For the moment, a pursuit last maxAggressionDuration/2 seconds
+            return (Duration.between(Instant.now(), aggression.getActionStart().plusSeconds(aggression.getAggressionDurationLimit()/2)).getSeconds() <= 0);
+        }
     }
 
     /**
@@ -153,8 +168,32 @@ public class AggressionManager {
      * @return
      */
     private boolean processFight(Aggression aggression) {
+        if (!aggression.getAssailant().isAlive()) {
+            postFightModifications(aggression.getVictim());
+            return true;
+        }
+        if (!aggression.getVictim().isAlive()) {
+            postFightModifications(aggression.getAssailant());
+            return true;
+        }
+
         return false;
     }
 
-
+    private void postFightModifications(Tribe tribe) {
+        Random random = new Random();
+        
+        // 1/2 chance of aggressiveness up
+        if (true || random.nextInt(2) >= 1) {
+            tribe.addAggressiveness(5);
+        }
+        // 1/2 chance of courage up
+        if (true || random.nextInt(2) >= 1) {
+            tribe.addCourage(5);
+        }
+        // 1/10 chance of force up
+        if (true || random.nextInt(10) >= 9) {
+            tribe.addForce(1);
+        }
+    }
 }
