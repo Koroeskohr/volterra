@@ -4,6 +4,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.volterra.Engine.Simulation;
+import com.volterra.Engine.visualeffects.DamageEffect;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -164,6 +166,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * Damages the target based on force and number of units
    */
   public void attack(int damages) {
+    Simulation.getSimulation().getEffectsDisplayer().add(new DamageEffect(damages, this.target.getX(), this.target.getY()));
     this.target.getDamages(damages);
   }
 
@@ -267,16 +270,19 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
      */
   public void render(PApplet ctx) {
     ctx.fill(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
-    if (this.getState() == State.AGGRESSING || this.getState() == State.FIGHT) {
-      ctx.stroke(255, 0, 0);
-    } else if (this.getState() == State.FLEEING) {
-      ctx.stroke(255, 0, 255);
-    } else {
-      ctx.noStroke();
-      //ctx.stroke(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
+    ctx.strokeWeight(3);
+
+    switch (this.getState()){
+      case AGGRESSING:
+      case FIGHT:
+        ctx.stroke(255, 0, 0);
+      case FLEEING:
+        ctx.stroke(255, 255, 255);
+      default:
+        ctx.noStroke();
     }
-    //ctx.strokeWeight(this.radius());
-    ctx.ellipse(this.x, this.y, this.size(), this.size());
+
+    ctx.ellipse(this.x, this.y, this.size()*3, this.size()*3);
     ctx.fill(255);
     ctx.text(this.size(), this.x + this.radius(), this.y + this.radius());
   }
