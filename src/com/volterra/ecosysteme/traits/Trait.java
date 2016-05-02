@@ -22,6 +22,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
      * @param originalTribe The <i>Tribe</i> on wich apply the trait.
      */
     Trait(Tribe<T> originalTribe) {
+        super(originalTribe.getSpecies());
         this._originalTribe = originalTribe;
     }
 
@@ -176,5 +177,10 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     @Override
     public int getAverageLifeSpan() {
         return this._originalTribe.getAverageLifeSpan();
+    }
+
+    @Override
+    public void newMembers(int littersize) {
+        _originalTribe.newMembers(littersize);
     }
 }

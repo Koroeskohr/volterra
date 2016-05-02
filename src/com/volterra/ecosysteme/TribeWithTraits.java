@@ -17,7 +17,8 @@ public class TribeWithTraits<T extends Species> extends Tribe<T> {
    * @param members An <i>ArrayList</i> containing the individuals that the <i>Tribe</i> contains
    * @param target The <i>Tribe</i> that the current <i>Tribe</i> will attack
    */
-  public TribeWithTraits(float x, float y, State state, ArrayList<T> members, Tribe target) {
+  public TribeWithTraits(float x, float y, State state, ArrayList<T> members, Tribe target, Class<T> species) {
+      super(species);
       this.x = x;
       this.y = y;
       this.state = state;
@@ -25,7 +26,8 @@ public class TribeWithTraits<T extends Species> extends Tribe<T> {
       this.target = target;
   }
 
-  public TribeWithTraits(ArrayList<T> members, float x, float y) {
+  public TribeWithTraits(ArrayList<T> members, float x, float y, Class<T> species) {
+    super(species);
     this.x = x;
     this.y = y;
     this.state = State.NEUTRAL;
