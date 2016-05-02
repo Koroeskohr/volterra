@@ -160,7 +160,7 @@ public class Simulation implements Renderable {
             Random random = new Random();
             // change this line for damages tweak
             int forceFactor = tribe.getForce() + tribe.getForce() * ((tribe.size()-tribe.getTarget().size())/5);
-            if (forceFactor < 0) forceFactor = 0;
+            if (forceFactor < 1) forceFactor = 1;
 
             int damages = random.nextInt(forceFactor + 1);
 
