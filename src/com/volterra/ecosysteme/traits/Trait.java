@@ -89,6 +89,96 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
+    public Species[] getFriendlySpecies() {
+        return this._originalTribe.getFriendlySpecies();
+    }
+
+    @Override
+    public void setFriendlySpecies(Species[] friendlySpecies) {
+        this._originalTribe.setFriendlySpecies(friendlySpecies);
+    }
+
+    @Override
+    public float getSpeed() {
+        return this._originalTribe.getSpeed();
+    }
+
+    @Override
+    public void addSpeed(float speed) {
+        this._originalTribe.addSpeed(speed);
+    }
+
+    @Override
+    public int getAggressiveness() {
+        return this._originalTribe.getAggressiveness();
+    }
+
+    @Override
+    public void addAggressiveness(int aggressiveness) {
+        this._originalTribe.addAggressiveness(aggressiveness);
+    }
+
+    @Override
+    public int getForce() {
+        return this._originalTribe.getForce();
+    }
+
+    @Override
+    public void addForce(int force) {
+        this._originalTribe.addForce(force);
+    }
+
+    @Override
+    public int getReproductivity() {
+        return this._originalTribe.getReproductivity();
+    }
+
+    @Override
+    public void addReproductivity(int reproductivity) {
+        this._originalTribe.addReproductivity(reproductivity);
+    }
+
+    @Override
+    public int getMutualAid() {
+        return this._originalTribe.getMutualAid();
+    }
+
+    @Override
+    public void addMutualAid(int mutualAid) {
+        this._originalTribe.addMutualAid(mutualAid);
+    }
+
+    @Override
+    public int getCourage() {
+        return this._originalTribe.getCourage();
+    }
+
+    @Override
+    public void addCourage(int courage) {
+        this._originalTribe.addCourage(courage);
+    }
+
+    @Override
+    public int getLitterSize() {
+        return this._originalTribe.getLitterSize();
+    }
+
+    @Override
+    public void addLitterSize(int litterSize) {
+        this._originalTribe.addLitterSize(litterSize);
+    }
+
+    @Override
+    public int getAverageLifeSpan() {
+        return this._originalTribe.getAverageLifeSpan();
+    }
+
+    @Override
+    public void addAverageLifeSpan(int averageLifeSpan) {
+        this._originalTribe.addAverageLifeSpan(averageLifeSpan);
+    }
+
+    @Override
     public int size() {
         return _originalTribe.size();
     }
@@ -149,43 +239,4 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
         _originalTribe.render(ctx);
     }
 
-    @Override
-    public float getSpeed() {
-        return this._originalTribe.getSpeed();
-    }
-
-    @Override
-    public int getAggressiveness() {
-        return this._originalTribe.getAggressiveness();
-    }
-
-    @Override
-    public int getForce() {
-        return this._originalTribe.getForce();
-    }
-
-    @Override
-    public int getReproductivity() {
-        return this._originalTribe.getReproductivity();
-    }
-
-    @Override
-    public int getMutualAid() {
-        return this._originalTribe.getMutualAid();
-    }
-
-    @Override
-    public int getCourage() {
-        return this._originalTribe.getCourage();
-    }
-
-    @Override
-    public int getLitterSize() {
-        return this._originalTribe.getLitterSize();
-    }
-
-    @Override
-    public int getAverageLifeSpan() {
-        return this._originalTribe.getAverageLifeSpan();
-    }
 }

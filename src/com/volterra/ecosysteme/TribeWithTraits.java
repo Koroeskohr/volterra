@@ -1,5 +1,6 @@
 package com.volterra.ecosysteme;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -23,6 +24,8 @@ public class TribeWithTraits<T extends Species> extends Tribe<T> {
       this.state = state;
       this.members = members;
       this.target = target;
+
+      setTribeAttributes();
   }
 
   public TribeWithTraits(ArrayList<T> members, float x, float y) {
@@ -31,6 +34,21 @@ public class TribeWithTraits<T extends Species> extends Tribe<T> {
     this.state = State.NEUTRAL;
     this.members = members;
     this.target = null;
+
+    setTribeAttributes();
   }
+
+    private void setTribeAttributes() {
+        this.friendlySpecies = members.get(0).getFriendlySpecies();
+        this.averageLifeSpan = members.get(0).getAverageLifeSpan();
+        this.litterSize = members.get(0).getLitterSize();
+        this.aggressiveness = members.get(0).getAggressiveness();
+        this.force = members.get(0).getForce();
+        this.reproductivity = members.get(0).getReproductivity();
+        this.mutualAid = members.get(0).getMutualAid();
+        this.courage = members.get(0).getCourage();
+        this.speed = members.get(0).getSpeed();
+        this.color = members.get(0).getColor();
+    }
 
 }

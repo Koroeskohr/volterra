@@ -32,14 +32,33 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    */
   protected ArrayList<T> members;
 
-  public void setTarget(Tribe target) {
-    this.target = target;
-  }
+  protected Species[] friendlySpecies;
+  protected int averageLifeSpan;
+  protected int litterSize;
+  protected int aggressiveness;
+  protected int force;
+  protected int reproductivity;
+  protected int mutualAid;
+  protected int courage;
+  protected float speed;
+  protected Color color;
 
   /**
    * The tribe *this* is aggressing. NULL if not aggressing anyone.
    */
   protected Tribe target;
+
+  /**
+   * Get the tribe which is the current tribe's target in a battle.
+   * @return The target tribe
+   */
+  public Tribe getTarget() {
+    return target;
+  }
+
+  public void setTarget(Tribe target) {
+    this.target = target;
+  }
 
   public float getY() {
     return y;
@@ -74,14 +93,6 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   /**
-   * Get the tribe which is the current tribe's target in a battle.
-   * @return The target tribe
-   */
-  public Tribe getTarget() {
-    return target;
-  }
-
-  /**
    * Get the current state of a tribe
    * @return The state of the tribe
    */
@@ -96,6 +107,163 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   public void setState(State state) {
     this.state = state;
   }
+
+  /**
+   * Return the current friendly species of Tribe
+   * @return friendly species
+   */
+  public Species[] getFriendlySpecies() {
+    return friendlySpecies;
+  }
+
+  /**
+   * Set friendly species for the Tribe
+   * @param friendlySpecies
+   */
+  public void setFriendlySpecies(Species[] friendlySpecies) {
+    this.friendlySpecies = friendlySpecies;
+  }
+
+  /**
+   * Get the average lifespan of a species
+   * @return The average lifespan
+   */
+  public int getAverageLifeSpan() {
+    return this.averageLifeSpan;
+  }
+
+  /**
+   * Add average lifespan to current average lifespan
+   * @param averageLifeSpan
+   */
+  public void addAverageLifeSpan(int averageLifeSpan) {
+    this.averageLifeSpan += averageLifeSpan;
+    if (this.averageLifeSpan > 100) this.averageLifeSpan = 100;
+  }
+
+  /**
+   * Get litter size, the maximum number of children when giving birth
+   * @return litter size
+   */
+  public int getLitterSize() {
+    return this.litterSize;
+  }
+
+  /**
+   * Add littersize to current littersize
+   * @param litterSize
+   */
+  public void addLitterSize(int litterSize) {
+    this.litterSize += litterSize;
+    if (this.litterSize > 100) this.litterSize = 100;
+  }
+
+  /**
+   * Get the aggressiveness value
+   * @return Agressiveness value
+   */
+  public int getAggressiveness() {
+    return this.aggressiveness;
+  }
+
+  /**
+   * Add aggressiveness to current aggressiveness
+   * @param aggressiveness
+   */
+  public void addAggressiveness(int aggressiveness) {
+    this.aggressiveness += aggressiveness;
+    if (this.aggressiveness > 100) this.aggressiveness = 100;
+  }
+
+  /**
+   * Get the force of the species
+   * @return Force of the species
+   */
+  public int getForce() {
+    return this.force;
+  }
+
+  /**
+   * Add force to current force
+   * @param force
+   */
+  public void addForce(int force) {
+    this.force += force;
+    if (this.force > 100) this.force = 100;
+  }
+
+  /**
+   * Get the reproductivity chance of the species
+   * @return Value of the reproductivity
+   */
+  public int getReproductivity() {
+    return this.reproductivity;
+  }
+
+  /**
+   * Add reproductivity chance to current reproductivity chance
+   * @param reproductivity
+   */
+  public void addReproductivity(int reproductivity) {
+    this.reproductivity += reproductivity;
+    if (this.reproductivity > 100) this.reproductivity = 100;
+  }
+
+  /**
+   * Get the value of the mutual aid chance of the species
+   * @return Value of the mutual aid
+   */
+  public int getMutualAid() {
+    return this.mutualAid;
+  }
+
+  /**
+   * Add mutual aid chance to current mutual aid chance
+   * @param mutualAid
+   */
+  public void addMutualAid(int mutualAid) {
+    this.mutualAid += mutualAid;
+    if (this.mutualAid > 100) this.mutualAid = 100;
+  }
+
+  /**
+   * Get the value of courage of the species
+   * @return Value of courage
+   */
+  public int getCourage() {
+    return this.courage;
+  }
+
+  /**
+   * Add courage to current courage
+   * @param courage
+   */
+  public void addCourage(int courage) {
+    this.courage += courage;
+    if (this.courage > 100) this.courage = 100;
+  }
+
+  /**
+   * Get the speed value of the species
+   * @return Value of the speed
+   */
+  public float getSpeed() {
+    return this.speed;
+  }
+
+  /**
+   * Add speed to curret speed
+   * @param speed
+   */
+  public void addSpeed(float speed) {
+    this.speed += speed;
+  }
+
+  /**
+   * Return current tribe's color
+   * @return
+     */
+  public Color getColor() { return this.color; }
 
   /**
    * Computes the amount of members in a tribe
@@ -189,72 +357,6 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   public boolean isAlive() {
     return (this.size() >= 1);
   }
-
-  /**
-   * Get the average lifespan of a species
-   * @return The average lifespan
-   */
-  public int getAverageLifeSpan() {
-    return this.members.get(0).getAverageLifeSpan();
-  }
-
-  /**
-   * Get litter size, the maximum number of children when giving birth
-   * @return litter size
-   */
-  public int getLitterSize() {
-    return this.members.get(0).getLitterSize();
-  }
-
-  /**
-   * Get the aggressiveness value
-   * @return Agressiveness value
-   */
-  public int getAggressiveness() {
-    return this.members.get(0).getAggressiveness();
-  }
-
-  /**
-   * Get the force of the species
-   * @return Force of the species
-   */
-  public int getForce() {
-    return this.members.get(0).getForce();
-  }
-
-  /**
-   * Get the reproductivity chance of the species
-   * @return Value of the reproductivity
-   */
-  public int getReproductivity() {
-    return this.members.get(0).getReproductivity();
-  }
-
-  /**
-   * Get the value of the mutual aid chance of the species
-   * @return Value of the mutual aid
-   */
-  public int getMutualAid() {
-    return this.members.get(0).getMutualAid();
-  }
-
-  /**
-   * Get the value of courage of the species
-   * @return Value of courage
-   */
-  public int getCourage() {
-    return this.members.get(0).getCourage();
-  }
-
-  /**
-   * Get the speed value of the species
-   * @return Value of the speed
-   */
-  public float getSpeed() {
-    return this.members.get(0).getSpeed();
-  }
-
-  public Color getColor() { return this.members.get(0).getColor(); }
 
   public void runAI(float deltaTime) {
 
