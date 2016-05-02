@@ -1,6 +1,6 @@
 package com.volterra.ecosysteme;
 
-import com.volterra.Engine.Simulation;
+import com.volterra.engine.Simulation;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
