@@ -31,20 +31,6 @@ public class Applet extends PApplet {
     simulation.update(time);
     simulation.render(this);
 
-
-    /*fill(255,0,0);
-    stroke(0,255,0);
-    clear();
-
-    rect(0, 0, x++, 35);*/
-
-    // for each renderable
-      //update
-
-    // for each renderable
-      // render
-
-
   }
 
 
