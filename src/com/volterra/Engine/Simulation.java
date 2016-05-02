@@ -1,8 +1,7 @@
-package com.volterra.Engine;
+package com.volterra.engine;
 
 import com.volterra.ecosysteme.*;
 import processing.core.PApplet;
-import processing.core.PConstants;
 
 import java.util.ArrayList;
 import java.util.Date;
