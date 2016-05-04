@@ -1,9 +1,11 @@
 package com.volterra.Engine.visualeffects;
 
 import com.volterra.Engine.Simulation;
+import com.volterra.ecosysteme.utils.Utils;
 import processing.core.PApplet;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Created by Koroeskohr on 02/05/2016.
@@ -34,7 +36,11 @@ public class DamageEffect extends VisualEffect {
   }
 
   public void render(PApplet ctx){
-    ctx.fill(255, 100, 100);
-    ctx.text("-" + damageValue, x, y);
+    // Goes up to 500, window is 720px high
+    long timeTillSpawn = this.creationTime.until(Instant.now(), ChronoUnit.MILLIS);
+    ctx.fill(255, 100, 100, Utils.clamp(300 - timeTillSpawn/2, 0, 255));
+    ctx.textSize(15);
+    ctx.text("-" + damageValue, x, y - (timeTillSpawn / 18));
+
   }
 }

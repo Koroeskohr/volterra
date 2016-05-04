@@ -386,6 +386,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
     ctx.ellipse(this.x, this.y, this.size()*3, this.size()*3);
     ctx.fill(255);
+    ctx.textSize(12);
     ctx.text(this.size(), this.x + this.radius(), this.y + this.radius());
   }
 }

@@ -252,6 +252,7 @@ public class Simulation implements Renderable {
         this.effectsDisplayer.render(ctx);
 
         // Displaying framerate
+        ctx.textSize(12);
         ctx.fill(255);
         ctx.text(ctx.frameRate, 10, 10);
         //ctx.filter(PConstants.BLUR, 2);
