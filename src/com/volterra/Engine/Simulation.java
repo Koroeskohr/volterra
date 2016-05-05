@@ -223,58 +223,88 @@ public class Simulation implements Renderable {
         float yd = tribe.getYd();
         float x = tribe.getX();
         float y = tribe.getY();
+        float speed = tribe.getSpeed();
         AIStateMachine.State state = tribe.getState();
 
         if (state == AIStateMachine.State.NEUTRAL || state == AIStateMachine.State.MIGRATING) {
-            if (delta % (random.nextInt(30) + (this.framerate/2)) == 0) {
-                if (x >= 1000) xd = random.nextInt(2) - 1;
-                else if (x <= 0) xd = random.nextInt(2);
-                else xd = random.nextInt(3) - 1;
-
-                if (y >= 500) yd = random.nextInt(2) - 1;
-                else if (y <= 0) yd = random.nextInt(2);
-                else yd = random.nextInt(3) - 1;
-
-                if (random.nextInt(4) == 0) {
+            //if (delta % (random.nextInt(30) + (this.framerate/2)) == 0) {
+            if (xd == 0 && yd == 0) {
+                if (random.nextFloat() > 0.99) {
+                    /* Define direction */
+                    xd = random.nextFloat() * (speed - (-speed)) - speed;
+                    yd = (float) Math.sqrt((speed * speed) - (xd * xd));
+                    if (random.nextBoolean()) {
+                        yd = -yd;
+                    }
+                }
+            }
+            else {
+                if (random.nextFloat() > 0.99) {
                     xd = 0;
                     yd = 0;
+                }
+                else {
+                    double a = random.nextDouble() * (0.1 - (-0.1)) - 0.1;
+                    float tmpXd = xd * (float)Math.cos(a) - yd * (float)Math.sin(a);
+                    yd = xd * (float)Math.sin(a) + yd * (float)Math.cos(a);
+                    xd = tmpXd;
                 }
             }
         }
         else if (state == AIStateMachine.State.AGGRESSING) {
             float xVictim = tribe.getTarget().getX();
             float yVictim = tribe.getTarget().getY();
+            float distanceToVictim = (float)Math.sqrt((xVictim - x) * (xVictim - x) + (yVictim - y) * (yVictim - y));
 
-            if (xVictim > x) xd = 1;
-            else if (xVictim < x) xd = -1;
-            else xd = 0;
-
-            if (yVictim > y) yd = 1;
-            else if (yVictim < y) yd = -1;
-            else yd = 0;
+            if (distanceToVictim > tribe.size()*0.5 + tribe.getTarget().size() * 0.5) {
+                float ratio = speed / distanceToVictim;
+                xd = ratio * (xVictim - x);
+                yd = ratio * (yVictim - y);
+            }
+            else {
+                xd = 0;
+                yd = 0;
+            }
         }
         else if (state == AIStateMachine.State.FLEEING) {
             float xAssailant = tribe.getTarget().getX();
             float yAssailant = tribe.getTarget().getY();
+            float distanceToAssaillant = (float)Math.sqrt((xAssailant - x) * (xAssailant - x) + (yAssailant - y) * (yAssailant - y));
 
-            if (xAssailant > x) xd = -1;
-            else if (xAssailant < x) xd = 1;
-
-            if (yAssailant > y) yd = -1;
-            else if (yAssailant < y) yd = 1;
+            if (distanceToAssaillant > tribe.size()*0.5 + tribe.getTarget().size() * 0.5) {
+                float ratio = speed / distanceToAssaillant;
+                xd = -ratio * (xAssailant - x);
+                yd = -ratio * (yAssailant - y);
+            }
         }
         else if (state == AIStateMachine.State.FIGHT) {
             xd = 0;
             yd = 0;
         }
 
-        x += xd*tribe.getSpeed();
-        y += yd*tribe.getSpeed();
+        x += xd;
+        y += yd;
 
-        if (x > this.windowWidth) x = this.windowWidth;
-        else if (x < 0) x = 0;
-        if (y > this.windowHeight) y = this.windowHeight;
-        else if (y < 0) y = 0;
+        if (x > this.windowWidth) {
+            x = this.windowWidth;
+            xd = 0;
+            yd = 0;
+        }
+        else if (x < 0) {
+            x = 0;
+            xd = 0;
+            yd = 0;
+        }
+        if (y > this.windowHeight) {
+            y = this.windowHeight;
+            xd = 0;
+            yd = 0;
+        }
+        else if (y < 0) {
+            y = 0;
+            xd = 0;
+            yd = 0;
+        }
 
         tribe.setX(x);
         tribe.setY(y);
