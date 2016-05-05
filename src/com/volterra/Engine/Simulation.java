@@ -4,6 +4,8 @@ import com.volterra.ecosysteme.*;
 import com.volterra.ecosysteme.utils.Dice;
 import processing.core.PApplet;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -111,18 +113,30 @@ public class Simulation implements Renderable {
      * Process Tribes AI
      */
     public void runAi(int delta) {
-        for (Tribe tribe : tribes) {
+        ArrayList<Tribe> tribesToAdd = new ArrayList<>();
+
+        for (Tribe tribe : this.tribes) {
             if (tribe.isAlive()) {
-                if (tribe.getState() == AIStateMachine.State.NEUTRAL) {
-                    processAiReproduction(tribe, delta);
+                if (tribe.getState() == AIStateMachine.State.MIGRATING || tribe.getState() == AIStateMachine.State.NEUTRAL) {
+                    Tribe newTribe = processAiReproduction(tribe, delta);
+                    if (newTribe != null) {
+                        tribesToAdd.add(newTribe);
+                    }
                 }
 
-                if (tribe.getTarget() == null) {
+                if (tribe.getState() == AIStateMachine.State.MIGRATING) {
                     processAiAggression(tribe);
                 }
-                else {
+
+                if (tribe.getState() == AIStateMachine.State.FIGHT) {
                     processAiAttack(tribe, delta);
                 }
+            }
+        }
+
+        if (tribesToAdd.size() > 0) {
+            for (Tribe t : tribesToAdd) {
+                this.tribes.add(t);
             }
         }
 
@@ -133,13 +147,31 @@ public class Simulation implements Renderable {
 
     /**
      * Process Tribe reproduction
+     * There is a slight chance that a new tribe will be generated if the given tribe has enough members
      * @param tribe
      * @param delta
      */
-    private void processAiReproduction(Tribe tribe, int delta) {
-        if (delta % (this.framerate * (100/tribe.getReproductivity())) == 0 && Dice.winRoll(tribe.getReproductivity(), 100)) {
-            tribe.newMembers(Dice.rollDice(tribe.getLitterSize()));
+    private Tribe processAiReproduction(Tribe tribe, int delta) {
+        if (Duration.between(tribe.getLastBirth(), Instant.now()).getSeconds() > (1 * (200/tribe.getReproductivity())) && Dice.winRoll(tribe.getReproductivity(), 100)) {
+            if (Dice.winRoll(tribe.size()/2, 100)) {
+                // Generate a new tribe
+                return generateNewTribeFromReproduction(tribe);
+            }
+            else {
+                // Add a member to current tribe
+                tribe.newMembers(Dice.rollDice(tribe.getLitterSize()));
+            }
+
+            tribe.resetLastBirth();
         }
+        return null;
+    }
+
+    private Tribe generateNewTribeFromReproduction(Tribe tribe) {
+        Tribe t = TribeFactory.create(TribeFactory.getSpeciesFromClass(tribe.getSpecies()), Dice.rollDice(tribe.getLitterSize()));
+        t.setX(tribe.getX());
+        t.setY(tribe.getY());
+        return t;
     }
 
     /**
@@ -148,7 +180,7 @@ public class Simulation implements Renderable {
      */
     private void processAiAggression(Tribe tribe) {
         for (Tribe t : tribes) {
-            if (!tribe.equals(t) && t.isAlive()) {
+            if (!tribe.equals(t) && !tribe.getSpecies().equals(t.getSpecies()) && t.isAlive()) {
                 tribe.setTarget(t);
                 if (t.getTarget() == null && tribe.isInAggressionRange()) {
                     this.aggressionManager.addAggression(tribe, t);
@@ -190,7 +222,7 @@ public class Simulation implements Renderable {
         float y = tribe.getY();
         AIStateMachine.State state = tribe.getState();
 
-        if (state == AIStateMachine.State.NEUTRAL) {
+        if (state == AIStateMachine.State.NEUTRAL || state == AIStateMachine.State.MIGRATING) {
             if (delta % (random.nextInt(30) + (this.framerate/2)) == 0) {
                 if (x >= 1000) xd = random.nextInt(2) - 1;
                 else if (x <= 0) xd = random.nextInt(2);
