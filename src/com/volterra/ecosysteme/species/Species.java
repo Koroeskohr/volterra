@@ -56,6 +56,12 @@ public abstract class Species {
   private float speed;
 
   /**
+   * Attack speed
+   * 1 = normal
+   */
+  private float attackSpeed;
+
+  /**
    * R, G, B components to define the tribe color
    */
   private Color color;
@@ -73,6 +79,7 @@ public abstract class Species {
     this.mutualAid = 0;
     this.courage = 0;
     this.speed = 0;
+    this.attackSpeed = 0;
     this.color = new Color((int)0,(int)0,(int)0);
   }
 
@@ -88,7 +95,7 @@ public abstract class Species {
    * @param courage
    * @param speed
    */
-  public Species(Species[] friendlySpecies, int averageLifeSpan, int litterSize, int aggressiveness, int force, int reproductivity, int mutualAid, int courage, float speed, Color color) {
+  public Species(Species[] friendlySpecies, int averageLifeSpan, int litterSize, int aggressiveness, int force, int reproductivity, int mutualAid, int courage, float speed, float attackSpeed, Color color) {
     this.friendlySpecies = friendlySpecies;
     this.averageLifeSpan = averageLifeSpan;
     this.litterSize = litterSize;
@@ -98,6 +105,7 @@ public abstract class Species {
     this.mutualAid = mutualAid;
     this.courage = courage;
     this.speed = speed;
+    this.attackSpeed = attackSpeed;
     this.color = color;
   }
 
@@ -234,7 +242,7 @@ public abstract class Species {
    * @return Value of the speed
    */
   public float getSpeed() {
-      return speed;
+    return speed;
   }
 
   /**
@@ -242,7 +250,23 @@ public abstract class Species {
    * @param speed Value of the speed
    */
   public void setSpeed(float speed) {
-      this.speed = speed;
+    this.speed = speed;
+  }
+
+  /**
+   * Get the attack speed value of the species
+   * @return Value of the attack speed
+   */
+  public float getAttackSpeed() {
+    return attackSpeed;
+  }
+
+  /**
+   * Set new value for the attack speed of the species
+   * @param attackSpeed Value of the speed
+   */
+  public void setAttackSpeed(float attackSpeed) {
+    this.attackSpeed = attackSpeed;
   }
 
   /**

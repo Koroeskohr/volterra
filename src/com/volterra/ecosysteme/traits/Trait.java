@@ -114,6 +114,16 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     }
 
     @Override
+    public float getAttackSpeed() {
+        return this._originalTribe.getAttackSpeed();
+    }
+
+    @Override
+    public void addAttackSpeed(float attackSpeed) {
+        this._originalTribe.addAttackSpeed(attackSpeed);
+    }
+
+    @Override
     public int getAggressiveness() {
         return this._originalTribe.getAggressiveness();
     }

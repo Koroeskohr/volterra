@@ -51,6 +51,7 @@ public class TribeWithTraits<T extends Species> extends Tribe<T> {
         this.mutualAid = members.get(0).getMutualAid();
         this.courage = members.get(0).getCourage();
         this.speed = members.get(0).getSpeed();
+        this.attackSpeed = members.get(0).getAttackSpeed();
         this.color = members.get(0).getColor();
     }
 

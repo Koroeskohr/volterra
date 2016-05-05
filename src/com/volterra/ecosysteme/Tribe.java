@@ -53,6 +53,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   protected int mutualAid;
   protected int courage;
   protected float speed;
+  protected float attackSpeed;
   protected Color color;
 
   /**
@@ -271,12 +272,24 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   /**
-   * Add speed to curret speed
+   * Add speed to current speed
    * @param speed
    */
   public void addSpeed(float speed) {
     this.speed += speed;
   }
+
+  /**
+   * Get the attack speed value of the species
+   * @return Value of the attack speed
+   */
+  public float getAttackSpeed() { return this.attackSpeed; }
+
+  /**
+   * Add attack speed to current attack speed
+   * @param attackSpeed
+   */
+  public void addAttackSpeed(float attackSpeed) { this.attackSpeed += attackSpeed; }
 
   /**
    * Return current tribe's color

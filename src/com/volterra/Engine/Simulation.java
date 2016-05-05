@@ -162,7 +162,7 @@ public class Simulation implements Renderable {
     }
 
     private void processAiAttack(Tribe tribe, int delta) {
-        if (tribe.getState() == AIStateMachine.State.FIGHT && (delta % (int)(this.framerate/tribe.getSpeed()) == 0)) {
+        if (tribe.getState() == AIStateMachine.State.FIGHT && (delta % (int)(this.framerate/tribe.getAttackSpeed()) == 0)) {
             if (tribe.getTarget() == null) return;
 
             // change this line for damages tweak
