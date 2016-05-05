@@ -35,7 +35,7 @@ public class TribeWithTraits<T extends Species> extends Tribe<T> {
     super(species);
     this.x = x;
     this.y = y;
-    this.state = State.NEUTRAL;
+    this.state = State.MIGRATING;
     this.members = members;
     this.target = null;
 
