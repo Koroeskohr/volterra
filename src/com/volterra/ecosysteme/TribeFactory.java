@@ -145,6 +145,23 @@ public class TribeFactory {
     return SpeciesEnum.values()[index];
   }
 
+  /**
+   * Return an element of <i>SpeciesEnum</i> corresponding to the given Species
+   * @param species The species
+   * @return The SpeciesEnum corresponding
+   */
+  public static SpeciesEnum getSpeciesFromClass(Class species) {
+    SpeciesEnum r = null;
+
+    for ( Map.Entry<SpeciesEnum, Class> entry : enumClassMap.entrySet() ) {
+      if (entry.getValue().equals(species)) {
+        r = entry.getKey();
+      }
+    }
+
+    return r;
+  }
+
   public static void main(String[] args) {
     Tribe<Human> t = TribeFactory.create(SpeciesEnum.HUMAN);
   }
