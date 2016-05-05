@@ -449,14 +449,22 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     ctx.fill(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
     ctx.strokeWeight(3);
 
-    switch (this.getState()){
+    switch (this.state){
       case AGGRESSING:
+        ctx.stroke(255, 100, 0);
+        break;
       case FIGHT:
         ctx.stroke(255, 0, 0);
+        break;
       case FLEEING:
+        ctx.stroke(0, 255, 255);
+        break;
+      case NEUTRAL:
         ctx.stroke(255, 255, 255);
+        break;
       default:
         ctx.noStroke();
+        break;
     }
 
     ctx.ellipse(this.x, this.y, this.radius(), this.radius());
