@@ -1,11 +1,13 @@
 package com.volterra.ecosysteme;
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.volterra.Engine.Simulation;
-import com.volterra.Engine.visualeffects.DamageEffect;
+import java.lang.reflect.Constructor;
+import com.volterra.engine.Simulation;
+import com.volterra.engine.visualeffects.DamageEffect;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -32,6 +34,11 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    */
   protected ArrayList<T> members;
 
+  /**
+   * The species that composes the <i>Tribe</i>.
+   */
+  private final Class<T> species;
+
   protected Species[] friendlySpecies;
   protected int averageLifeSpan;
   protected int litterSize;
@@ -48,6 +55,13 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    */
   protected Tribe target;
 
+  /**
+   * Define the species attribute of a <i>Tribe</i>
+   * @param species Class contained in species attribute. It is the same class which is passed in template.
+     */
+  public Tribe(Class<T> species) {
+    this.species = species;
+  }
   /**
    * Get the tribe which is the current tribe's target in a battle.
    * @return The target tribe
@@ -356,6 +370,37 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    */
   public boolean isAlive() {
     return (this.size() >= 1);
+  }
+
+  /**
+   * Return the species attribute of the <i>Tribe</i>
+   * @return A <i>Class</i> which is the <i>Species</i> cmposing the <i>Tribe</i>
+     */
+  public Class<T> getSpecies() {
+    return this.species;
+  }
+
+  public void setMembers(T newMember) {
+    this.members.add(newMember);
+  }
+
+  /**
+   * Simulate birth in the tribe. Create new people and add them to the tribe.
+   * @param litterSize number of individual to add to the tribe.
+     */
+  public void newMembers(int litterSize) {
+    for(int i = 0 ; i < litterSize ; i++) {
+      try {
+        if (this.species == null) throw new NullPointerException("node must have children");
+        Constructor ctor = this.species.getConstructor();
+        this.members.add(((this.species.cast(ctor.newInstance()))));
+      } catch (NoSuchMethodException |
+              InvocationTargetException |
+              IllegalAccessException |
+              InstantiationException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   public void runAI(float deltaTime) {
