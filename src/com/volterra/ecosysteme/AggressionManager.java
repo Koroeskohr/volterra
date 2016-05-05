@@ -33,8 +33,8 @@ public class AggressionManager {
             // Remove the aggression
             if (processAggression(aggression)) {
                 resetTribes(aggression);
-                aggression.setAssailantTarget(null);
-                aggression.setVictimTarget(null);
+                aggression.setAssailantsTarget(null);
+                aggression.setVictimsTarget(null);
 
                 iterator.remove();
             }
@@ -67,8 +67,8 @@ public class AggressionManager {
     private void initNewAggression(Aggression aggression) {
         setIdleState(aggression);
 
-        if (aggressionTest(aggression.getAssailant())) {
-            if (courageTest(aggression.getVictim())) {
+        if (aggressionTest(aggression.getFirstAssailant())) {
+            if (courageTest(aggression.getFirstVictim())) {
                 setPursuitMutualState(aggression);
             }
             else {
@@ -155,7 +155,7 @@ public class AggressionManager {
      * @return false, this method does not end an aggression
      */
     private boolean processPursuit(Aggression aggression) {
-        if (aggression.getAssailant().isInAttackRange() || aggression.getVictim().isInAttackRange()) {
+        if (aggression.getFirstAssailant().isInAttackRange() || aggression.getFirstVictim().isInAttackRange()) {
             setFightState(aggression);
             return false;
         }
@@ -166,36 +166,48 @@ public class AggressionManager {
         }
     }
 
+    private boolean areAlive(ArrayList<Tribe> tribes) {
+        for (Tribe tribe : tribes) {
+            if (tribe.isAlive()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      *
      * @param aggression
      * @return
      */
     private boolean processFight(Aggression aggression) {
-        if (!aggression.getAssailant().isAlive()) {
-            postFightModifications(aggression.getVictim());
+        if (!areAlive(aggression.getAssailants())) {
+            postFightModifications(aggression.getVictims());
             return true;
         }
-        if (!aggression.getVictim().isAlive()) {
-            postFightModifications(aggression.getAssailant());
+        if (!areAlive(aggression.getVictims())) {
+            postFightModifications(aggression.getAssailants());
             return true;
         }
 
         return false;
     }
 
-    private void postFightModifications(Tribe tribe) {
-        // 1/2 chance of aggressiveness up
-        if (true || winRoll(1, 2)) {
-            tribe.addAggressiveness(5);
-        }
-        // 1/2 chance of courage up
-        if (true || winRoll(1, 2)) {
-            tribe.addCourage(5);
-        }
-        // 1/10 chance of force up
-        if (true || winRoll(1, 10)) {
-            tribe.addForce(1);
+    private void postFightModifications(ArrayList<Tribe> tribes) {
+        for (Tribe tribe : tribes) {
+            // 1/2 chance of aggressiveness up
+            if (true || winRoll(1, 2)) {
+                tribe.addAggressiveness(5);
+            }
+            // 1/2 chance of courage up
+            if (true || winRoll(1, 2)) {
+                tribe.addCourage(5);
+            }
+            // 1/10 chance of force up
+            if (true || winRoll(1, 10)) {
+                tribe.addForce(1);
+            }
         }
     }
 }
