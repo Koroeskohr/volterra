@@ -1,17 +1,13 @@
 package com.volterra.ecosysteme;
 
-import com.volterra.ecosysteme.species.Alien;
-import com.volterra.ecosysteme.species.Human;
-import com.volterra.ecosysteme.species.Species;
+import com.volterra.ecosysteme.species.*;
 import com.volterra.engine.Simulation;
 import com.volterra.ecosysteme.traits.Trait;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Victor on 26/04/2016.
@@ -29,17 +25,27 @@ public class TribeFactory {
 
   private static final int BASE_TRIBE_SIZE = 15;
 
+  public static Tribe create(SpeciesEnum species) {
+    return create(species, 0);
+  }
+
   /**
    * Handles all the creation process for tribe, factory pattern. Full static methods for maximal laziness.
    * @param species Species we want to instantiate.
    * @return Tribe with members (? extends Species) and decorators (Trait)
    */
-  public static Tribe create(SpeciesEnum species) {
+  public static Tribe create(SpeciesEnum species, int number) {
     Tribe tribe = null;
 
     Random rand = new Random();
-    int variation = rand.nextInt((5 - (-5)) + 1) + (-5);
-    int size = BASE_TRIBE_SIZE + variation;
+    int size;
+    if (number == 0) {
+      int variation = rand.nextInt((5 - (-5)) + 1) + (-5);
+      size = BASE_TRIBE_SIZE + variation;
+    }
+    else {
+      size = number;
+    }
     float x = rand.nextFloat() * Simulation.getSimulation().getWindowWidth();
     float y = rand.nextFloat() * Simulation.getSimulation().getWindowHeight();
     System.out.println(x + "    " + y);
