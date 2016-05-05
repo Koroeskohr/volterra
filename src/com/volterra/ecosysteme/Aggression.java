@@ -95,6 +95,11 @@ public class Aggression {
         this.victim.setTarget(tribe);
     }
 
+    public void resetTribes() {
+        this.assailant.setState(AIStateMachine.State.MIGRATING);
+        this.victim.setState(AIStateMachine.State.MIGRATING);
+    }
+
     /**
      * Set aggression state to IDLE
      * Set assailant and victim states to NEUTRAL

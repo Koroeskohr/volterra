@@ -32,7 +32,7 @@ public class AggressionManager {
 
             // Remove the aggression
             if (processAggression(aggression)) {
-                setIdleState(aggression);
+                resetTribes(aggression);
                 aggression.setAssailantTarget(null);
                 aggression.setVictimTarget(null);
 
@@ -102,6 +102,10 @@ public class AggressionManager {
             default:
                 return false;
         }
+    }
+
+    private void resetTribes(Aggression aggression) {
+        aggression.resetTribes();
     }
 
     /**
