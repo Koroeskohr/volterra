@@ -35,6 +35,7 @@ public class Simulation implements Renderable {
 
     private final int windowWidth = 1366;
     private final int windowHeight = 720;
+    private final int framerate = 60;
 
     public int getWindowWidth() {
         return windowWidth;
@@ -112,8 +113,11 @@ public class Simulation implements Renderable {
     public void runAi(int delta) {
         for (Tribe tribe : tribes) {
             if (tribe.isAlive()) {
-                if (tribe.getTarget() == null) {
+                if (tribe.getState() == AIStateMachine.State.NEUTRAL) {
                     processAiReproduction(tribe, delta);
+                }
+
+                if (tribe.getTarget() == null) {
                     processAiAggression(tribe);
                 }
                 else {
@@ -128,11 +132,14 @@ public class Simulation implements Renderable {
     }
 
     /**
-     * TODO: Process Tribe reproduction
+     * Process Tribe reproduction
      * @param tribe
+     * @param delta
      */
     private void processAiReproduction(Tribe tribe, int delta) {
-        
+        if (delta % (this.framerate * (100/tribe.getReproductivity())) == 0 && Dice.winRoll(tribe.getReproductivity(), 100)) {
+            tribe.newMembers(Dice.rollDice(tribe.getLitterSize()));
+        }
     }
 
     /**
@@ -155,7 +162,7 @@ public class Simulation implements Renderable {
     }
 
     private void processAiAttack(Tribe tribe, int delta) {
-        if (tribe.getState() == AIStateMachine.State.FIGHT && (delta % (int)(60/tribe.getSpeed()) == 0)) {
+        if (tribe.getState() == AIStateMachine.State.FIGHT && (delta % (int)(this.framerate/tribe.getSpeed()) == 0)) {
             if (tribe.getTarget() == null) return;
 
             // change this line for damages tweak
@@ -184,7 +191,7 @@ public class Simulation implements Renderable {
         AIStateMachine.State state = tribe.getState();
 
         if (state == AIStateMachine.State.NEUTRAL) {
-            if (delta % (random.nextInt(30) + 30) == 0) {
+            if (delta % (random.nextInt(30) + (this.framerate/2)) == 0) {
                 if (x >= 1000) xd = random.nextInt(2) - 1;
                 else if (x <= 0) xd = random.nextInt(2);
                 else xd = random.nextInt(3) - 1;
@@ -229,9 +236,9 @@ public class Simulation implements Renderable {
         x += xd*tribe.getSpeed();
         y += yd*tribe.getSpeed();
 
-        if (x > 1000) x = 1000;
+        if (x > this.windowWidth) x = this.windowWidth;
         else if (x < 0) x = 0;
-        if (y > 500) y = 500;
+        if (y > this.windowHeight) y = this.windowHeight;
         else if (y < 0) y = 0;
 
         tribe.setX(x);
