@@ -14,7 +14,7 @@ import java.util.Random;
  * Created by Victor on 26/04/2016.
  */
 public class TribeFactory {
-  enum SpeciesEnum { HUMAN, ALIEN };
+  enum SpeciesEnum { HUMAN, ALIEN }
 
   private static final HashMap<SpeciesEnum, Class> enumClassMap;
   static
