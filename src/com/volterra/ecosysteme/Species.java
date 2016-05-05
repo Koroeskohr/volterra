@@ -28,27 +28,30 @@ public abstract class Species {
   private int aggressiveness;
 
   /**
-   * Force, affects damages given
+   * Force, affects damages given (Range from 1 to 100
    */
   private int force;
 
   /**
-   * Chance of reproduction
+   * Chance and delay of reproduction (Range from 1 to 100)
+   * 100 = 1 reproduction per second and 100% change of success
+   * 50 = 1 reproduction per two seconds, 50% chance of success
    */
   private int reproductivity;
 
   /**
-   * Chance of helping friendly species. Currently not used.
+   * Chance of helping friendly species (Range 1 to 100). Currently not used.
    */
   private int mutualAid;
 
   /**
-   * Courage, affects actions such as aggression
+   * Courage, affects actions such as aggression (Range 1 to 100)
    */
   private int courage;
 
   /**
    * Speed of the tribe
+   * 1 = normal speed
    */
   private float speed;
 

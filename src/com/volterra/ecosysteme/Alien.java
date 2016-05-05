@@ -22,6 +22,6 @@ public class Alien extends Species {
 
     public Alien() {
         // super(friendlySpecies, averageLifeSpan, litterSize, aggressiveness, force, reproductivity, mutualAid, courage, speed, color);
-        super(null, 0, 0, 30, 1, 0, 0, 50, 1.2f, new Color(0,255,0));
+        super(null, 0, 5, 30, 1, 20, 0, 50, 1.2f, new Color(0,200,100));
     }
 }
