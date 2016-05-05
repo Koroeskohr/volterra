@@ -39,7 +39,7 @@ public class DamageEffect extends VisualEffect {
     // Goes up to 500, window is 720px high
     long timeTillSpawn = this.creationTime.until(Instant.now(), ChronoUnit.MILLIS);
 
-    ctx.fill(255, 100, 100, Utils.clamp(400 - timeTillSpawn, 0, 255));
+    ctx.fill(255, 0, 0, Utils.clamp(400 - timeTillSpawn, 0, 255));
     ctx.textSize(15);
     ctx.text("-" + damageValue, x, y - (timeTillSpawn / 18));
 
