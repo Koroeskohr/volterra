@@ -226,6 +226,9 @@ public class AggressionManager {
      * @return
      */
     private boolean processFight(Aggression aggression) {
+        int assailantsCount = aggression.getAssailants().size();
+        int victimsCount = aggression.getVictims().size();
+
         aggression.removeDeadAssailants();
         aggression.removeDeadVictims();
 
@@ -238,10 +241,26 @@ public class AggressionManager {
             return true;
         }
 
-        aggression.setAssailantsTarget(aggression.getFirstVictim());
-        aggression.setVictimsTarget(aggression.getFirstAssailant());
+        if (assailantsCount != aggression.getAssailants().size() || victimsCount != aggression.getVictims().size()) {
+            aggression.setAssailantsTarget(aggression.getFirstVictim());
+            aggression.setVictimsTarget(aggression.getFirstAssailant());
+            updateFightStates(aggression);
+        }
 
         return false;
+    }
+
+    public void updateFightStates(Aggression aggression) {
+        for (Tribe assailant : aggression.getAssailants()) {
+            if (!assailant.isInAttackRange()) {
+                aggression.setTribeState(assailant, AIStateMachine.State.AGGRESSING);
+            }
+        }
+        for (Tribe victim : aggression.getVictims()) {
+            if (!victim.isInAttackRange()) {
+                aggression.setTribeState(victim, AIStateMachine.State.AGGRESSING);
+            }
+        }
     }
 
     /**
