@@ -28,7 +28,7 @@ public class Alien extends Species {
                 6,      // force
                 30,     // reproductivity
                 0,      // mutualAid
-                30,     // courage
+                10,     // courage
                 1.2f,   // speed
                 1.0f,   // attackSpeed
                 new Color(0,200,50));

@@ -25,7 +25,7 @@ public class Aggression {
     /**
      * Max duration for the PURSUIT state
      */
-    private int aggressionDurationLimit = 10;
+    private int aggressionDurationLimit = 4;
 
     /**
      * Aggression constructor

@@ -25,7 +25,7 @@ public class Goblin extends Species {
                 5,      // litterSize
                 70,     // aggressiveness
                 1,      // force
-                60,     // reproductivity
+                40,     // reproductivity
                 0,      // mutualAid
                 55,     // courage
                 0.9f,   // speed
