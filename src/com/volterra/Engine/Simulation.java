@@ -275,7 +275,7 @@ public class Simulation implements Renderable {
      * @return
      */
     private boolean mutualAidTest(Tribe tribe, int sizeGroup1, int sizeGroup2) {
-        return Dice.winRoll(tribe.getMutualAid() + sizeGroup1 - sizeGroup2, 100);
+        return Dice.winRoll(Math.min(tribe.getMutualAid() + sizeGroup1 - sizeGroup2, 100), 100);
     }
 
     /**
