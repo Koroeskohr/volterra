@@ -2,6 +2,7 @@ package com.volterra.ecosysteme;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
 import java.util.ArrayList;
 
 import java.lang.reflect.Constructor;
@@ -60,6 +61,8 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * The tribe *this* is aggressing. NULL if not aggressing anyone.
    */
   protected Tribe target;
+
+  protected Instant lastBirth;
 
   /**
    * Define the species attribute of a <i>Tribe</i>
@@ -296,6 +299,14 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @return
      */
   public Color getColor() { return this.color; }
+
+  public Instant getLastBirth() {
+    return this.lastBirth;
+  }
+
+  public void resetLastBirth() {
+    this.lastBirth = Instant.now();
+  }
 
   /**
    * Computes the amount of members in a tribe

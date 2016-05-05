@@ -2,6 +2,7 @@ package com.volterra.ecosysteme;
 
 import com.volterra.ecosysteme.species.Species;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
 /**
@@ -53,6 +54,7 @@ public class TribeWithTraits<T extends Species> extends Tribe<T> {
         this.speed = members.get(0).getSpeed();
         this.attackSpeed = members.get(0).getAttackSpeed();
         this.color = members.get(0).getColor();
+        this.lastBirth = Instant.now();
     }
 
 }

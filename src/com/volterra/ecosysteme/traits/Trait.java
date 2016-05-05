@@ -9,6 +9,7 @@ import processing.core.PApplet;
 import java.awt.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
 
 /**
  * Created by Christophe on 25/04/2016.
@@ -192,6 +193,12 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     public void addAverageLifeSpan(int averageLifeSpan) {
         this._originalTribe.addAverageLifeSpan(averageLifeSpan);
     }
+
+    @Override
+    public Instant getLastBirth() { return this._originalTribe.getLastBirth(); }
+
+    @Override
+    public void resetLastBirth() { this._originalTribe.resetLastBirth(); }
 
     @Override
     public int size() {
