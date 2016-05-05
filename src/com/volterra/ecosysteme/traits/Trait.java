@@ -1,6 +1,6 @@
 package com.volterra.ecosysteme.traits;
 
-import com.volterra.ecosysteme.Species;
+import com.volterra.ecosysteme.species.Species;
 import com.volterra.ecosysteme.Tribe;
 import com.volterra.engine.Simulation;
 import com.volterra.engine.visualeffects.BirthEffect;

@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import java.lang.reflect.Constructor;
+
+import com.volterra.ecosysteme.species.Species;
 import com.volterra.engine.Simulation;
 import com.volterra.engine.visualeffects.BirthEffect;
 import com.volterra.engine.visualeffects.DamageEffect;

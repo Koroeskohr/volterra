@@ -1,5 +1,8 @@
 package com.volterra.ecosysteme;
 
+import com.volterra.ecosysteme.species.Alien;
+import com.volterra.ecosysteme.species.Human;
+import com.volterra.ecosysteme.species.Species;
 import com.volterra.engine.Simulation;
 import com.volterra.ecosysteme.traits.Trait;
 

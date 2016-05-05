@@ -1,4 +1,4 @@
-package com.volterra.ecosysteme;
+package com.volterra.ecosysteme.species;
 
 import java.awt.*;
 

@@ -1,5 +1,7 @@
 package com.volterra.ecosysteme;
 
+import com.volterra.ecosysteme.species.Species;
+
 import java.util.ArrayList;
 
 /**
