@@ -26,7 +26,7 @@ public class Elf extends Species {
                 20,     // aggressiveness
                 3,      // force
                 15,     // reproductivity
-                0,      // mutualAid
+                70,      // mutualAid
                 75,     // courage
                 1.3f,   // speed
                 1.4f,   // attackSpeed

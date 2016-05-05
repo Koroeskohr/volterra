@@ -27,7 +27,7 @@ public class Human extends Species {
                 50,     // aggressiveness
                 2,      // force
                 50,     // reproductivity
-                0,      // mutualAid
+                20,     // mutualAid
                 30,     // courage
                 1.0f,   // speed
                 1.0f,   // attackSpeed

@@ -27,7 +27,7 @@ public class Alien extends Species {
                 15,     // aggressiveness
                 6,      // force
                 30,     // reproductivity
-                0,      // mutualAid
+                60,      // mutualAid
                 10,     // courage
                 1.2f,   // speed
                 1.0f,   // attackSpeed
