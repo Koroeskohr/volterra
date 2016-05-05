@@ -152,10 +152,12 @@ public class Simulation implements Renderable {
      * @param delta
      */
     private Tribe processAiReproduction(Tribe tribe, int delta) {
+        Tribe newTribe = null;
+
         if (Duration.between(tribe.getLastBirth(), Instant.now()).getSeconds() > (1 * (200/tribe.getReproductivity())) && Dice.winRoll(tribe.getReproductivity(), 100)) {
             if (Dice.winRoll(tribe.size()/2, 100)) {
                 // Generate a new tribe
-                return generateNewTribeFromReproduction(tribe);
+                newTribe = generateNewTribeFromReproduction(tribe);
             }
             else {
                 // Add a member to current tribe
@@ -164,11 +166,12 @@ public class Simulation implements Renderable {
 
             tribe.resetLastBirth();
         }
-        return null;
+
+        return newTribe;
     }
 
     private Tribe generateNewTribeFromReproduction(Tribe tribe) {
-        Tribe t = TribeFactory.create(TribeFactory.getSpeciesFromClass(tribe.getSpecies()), Dice.rollDice(tribe.getLitterSize()));
+        Tribe t = TribeFactory.create(TribeFactory.getSpeciesFromClass(tribe.getSpecies()), Dice.rollDice(tribe.getLitterSize()) + 1);
         t.setX(tribe.getX());
         t.setY(tribe.getY());
         return t;
