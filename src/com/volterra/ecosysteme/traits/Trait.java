@@ -228,12 +228,18 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     public boolean isAlive() { return _originalTribe.isAlive(); }
 
     @Override
+    public void addMember(T newMember) {
+        _originalTribe.addMember(newMember);
+    }
+
+    @Override
     public void newMembers(int litterSize) {
         for(int i = 0 ; i < litterSize ; i++) {
             try {
                 if (_originalTribe.getSpecies() == null) throw new NullPointerException("node must have children");
                 Constructor ctor = _originalTribe.getSpecies().getConstructor();
-                _originalTribe.setMembers(((_originalTribe.getSpecies().cast(ctor.newInstance()))));
+                System.out.println(_originalTribe.getSpecies().cast(ctor.newInstance()));
+                _originalTribe.addMember(((_originalTribe.getSpecies().cast(ctor.newInstance()))));
             } catch (NoSuchMethodException |
                     InvocationTargetException |
                     IllegalAccessException |

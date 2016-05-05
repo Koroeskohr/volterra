@@ -380,7 +380,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     return this.species;
   }
 
-  public void setMembers(T newMember) {
+  public void addMember(T newMember) {
     this.members.add(newMember);
   }
 
