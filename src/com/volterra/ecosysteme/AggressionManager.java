@@ -1,5 +1,8 @@
 package com.volterra.ecosysteme;
 
+import static com.volterra.ecosysteme.utils.Dice.rollDice;
+import static com.volterra.ecosysteme.utils.Dice.winRoll;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -77,13 +80,12 @@ public class AggressionManager {
     }
 
     private boolean aggressionTest(Tribe tribe) {
-        Random random = new Random();
-        return (random.nextInt(tribe.getAggressiveness()) > random.nextInt(50));
+        return winRoll(tribe.getAggressiveness(), 100);
+
     }
 
     private boolean courageTest(Tribe tribe) {
-        Random random = new Random();
-        return (random.nextInt(tribe.getCourage()) > random.nextInt(50));
+        return winRoll(tribe.getCourage(), 100);
     }
 
     /**
@@ -181,18 +183,16 @@ public class AggressionManager {
     }
 
     private void postFightModifications(Tribe tribe) {
-        Random random = new Random();
-        
         // 1/2 chance of aggressiveness up
-        if (true || random.nextInt(2) >= 1) {
+        if (true || winRoll(1, 2)) {
             tribe.addAggressiveness(5);
         }
         // 1/2 chance of courage up
-        if (true || random.nextInt(2) >= 1) {
+        if (true || winRoll(1, 2)) {
             tribe.addCourage(5);
         }
         // 1/10 chance of force up
-        if (true || random.nextInt(10) >= 9) {
+        if (true || winRoll(1, 10)) {
             tribe.addForce(1);
         }
     }

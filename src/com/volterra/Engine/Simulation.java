@@ -1,6 +1,7 @@
 package com.volterra.Engine;
 
 import com.volterra.ecosysteme.*;
+import com.volterra.ecosysteme.utils.Dice;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -163,7 +164,7 @@ public class Simulation implements Renderable {
             int forceFactor = tribe.getForce() + tribe.getForce() * ((tribe.size()-tribe.getTarget().size())/5);
             if (forceFactor < 0) forceFactor = 0;
 
-            int damages = random.nextInt(forceFactor + 1);
+            int damages = Dice.rollDice(forceFactor + 1);
 
             tribe.attack(damages);
         }

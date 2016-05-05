@@ -26,10 +26,10 @@ public class Dice {
   }
 
   public static Dice getInstance() {
-    if (Dice.instance != null) {
-      return Dice.instance;
+    if (Dice.instance == null) {
+      Dice.initialize();
     }
-    return null;
+    return Dice.instance;
   }
 
   public static boolean winRoll(int required, int max)  {
@@ -44,7 +44,7 @@ public class Dice {
   }
 
   public static int rollDice(int max)  {
-    return Dice.instance.random.nextInt(max);
+    return Dice.getInstance().random.nextInt(max);
   }
 
 
