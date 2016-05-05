@@ -3,13 +3,11 @@ package com.volterra.ecosysteme;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import java.lang.reflect.Constructor;
 import com.volterra.engine.Simulation;
 import com.volterra.engine.visualeffects.DamageEffect;
 import processing.core.PApplet;
-import processing.core.PConstants;
 
 /**
  * Created by Koroeskohr on 25/04/2016.
@@ -431,6 +429,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
     ctx.ellipse(this.x, this.y, this.size()*3, this.size()*3);
     ctx.fill(255);
+    ctx.textSize(12);
     ctx.text(this.size(), this.x + this.radius(), this.y + this.radius());
   }
 }
