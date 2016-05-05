@@ -23,6 +23,10 @@ public class AggressionManager {
         aggressions = new ArrayList<Aggression>();
     }
 
+    public ArrayList<Aggression> getAggressions() {
+        return this.aggressions;
+    }
+
     /**
      * Process all aggressions registered in the AggressionManager
      */
@@ -47,14 +51,31 @@ public class AggressionManager {
      * @param victim The Tribe victim
      */
     public void addAggression(Tribe assailant, Tribe victim) {
-        assailant.setTarget(victim);
-        victim.setTarget(assailant);
-
         Aggression aggression = new Aggression(assailant, victim);
+        aggression.setAssailantsTarget(victim);
+        aggression.setVictimsTarget(assailant);
 
         initNewAggression(aggression);
 
         aggressions.add(aggression);
+    }
+
+    /**
+     * Add a new tribe to the assailants list of the given aggression
+     * @param tribe Tribe to add
+     * @param aggression Aggression
+     */
+    public void addAssailantToAggression(Tribe tribe, Aggression aggression) {
+        aggression.addAssailant(tribe);
+    }
+
+    /**
+     * Add a new tribe to the victims list of the given aggression
+     * @param tribe Tribe to add
+     * @param aggression Aggression
+     */
+    public void addVictimToAggression(Tribe tribe, Aggression aggression) {
+        aggression.addVictim(tribe);
     }
 
     /**
@@ -77,11 +98,20 @@ public class AggressionManager {
         }
     }
 
+    /**
+     * Aggression test based on the aggressiveness level of the tribe
+     * @param tribe
+     * @return
+     */
     private boolean aggressionTest(Tribe tribe) {
         return winRoll(tribe.getAggressiveness(), 100);
-
     }
 
+    /**
+     * Courage test based on the courage level of the tribe
+     * @param tribe
+     * @return
+     */
     private boolean courageTest(Tribe tribe) {
         return winRoll(tribe.getCourage(), 100);
     }
@@ -92,6 +122,8 @@ public class AggressionManager {
      * @return true if the aggression is to be removed
      */
     private boolean processAggression(Aggression aggression) {
+        processSecondaryPursuits(aggression);
+
         switch (aggression.getState()) {
             case IDLE:
                 return processIdle(aggression);
@@ -104,6 +136,10 @@ public class AggressionManager {
         }
     }
 
+    /**
+     * Reset all tribes in an aggression to MIGRATING state
+     * @param aggression
+     */
     private void resetTribes(Aggression aggression) {
         aggression.resetTribes();
     }
@@ -117,7 +153,7 @@ public class AggressionManager {
     }
 
     /**
-     * Set the given aggression to the PURSUIT state with the victim state to FLEEING
+     * Set the given aggression to the PURSUIT state with the victims state to FLEEING
      * @param aggression
      */
     private void setPursuitFleeingState(Aggression aggression) {
@@ -125,7 +161,7 @@ public class AggressionManager {
     }
 
     /**
-     * Set the given aggression to the PURSUIT state with both the assailant and the victim states to AGGRESSING
+     * Set the given aggression to the PURSUIT state with both the assailants and the victims states to AGGRESSING
      * @param aggression
      */
     private void setPursuitMutualState(Aggression aggression) {
@@ -150,6 +186,23 @@ public class AggressionManager {
     }
 
     /**
+     * Process all secondary assailants and victims.
+     * If they are in attack range, their state is switched to FIGHT and they enter the fight
+     * @param aggression
+     */
+    private void processSecondaryPursuits(Aggression aggression) {
+        for (Tribe assailant : aggression.getAssailants()) {
+            if (assailant.getState() == AIStateMachine.State.AGGRESSING && assailant.isInAttackRange()) {
+                aggression.setTribeState(assailant, AIStateMachine.State.FIGHT);
+            }
+        }
+        for (Tribe victim : aggression.getVictims()) {
+            if (victim.getState() == AIStateMachine.State.AGGRESSING && victim.isInAttackRange()) {
+                aggression.setTribeState(victim, AIStateMachine.State.FIGHT);
+            }
+        }
+    }
+    /**
      * Check if the two Tribes are in attack range
      * @param aggression
      * @return false, this method does not end an aggression
@@ -166,34 +219,35 @@ public class AggressionManager {
         }
     }
 
-    private boolean areAlive(ArrayList<Tribe> tribes) {
-        for (Tribe tribe : tribes) {
-            if (tribe.isAlive()) {
-                return true;
-            }
+    /**
+     * Check if all the assailants and victims are still alive
+     * If one group is completly dead, the remaining group gain some bonus defined in <i>postFightModifictions</i>
+     * @param aggression
+     * @return
+     */
+    private boolean processFight(Aggression aggression) {
+        aggression.removeDeadAssailants();
+        aggression.removeDeadVictims();
+
+        if (aggression.getAssailants().size() <= 0) {
+            postFightModifications(aggression.getVictims());
+            return true;
         }
+        if (aggression.getVictims().size() <= 0) {
+            postFightModifications(aggression.getAssailants());
+            return true;
+        }
+
+        aggression.setAssailantsTarget(aggression.getFirstVictim());
+        aggression.setVictimsTarget(aggression.getFirstAssailant());
 
         return false;
     }
 
     /**
-     *
-     * @param aggression
-     * @return
+     * Process bonus after a combat ends
+     * @param tribes
      */
-    private boolean processFight(Aggression aggression) {
-        if (!areAlive(aggression.getAssailants())) {
-            postFightModifications(aggression.getVictims());
-            return true;
-        }
-        if (!areAlive(aggression.getVictims())) {
-            postFightModifications(aggression.getAssailants());
-            return true;
-        }
-
-        return false;
-    }
-
     private void postFightModifications(ArrayList<Tribe> tribes) {
         for (Tribe tribe : tribes) {
             // 1/2 chance of aggressiveness up

@@ -98,6 +98,9 @@ public class Simulation implements Renderable {
         return this.effectsDisplayer;
     }
 
+    /**
+     * Remove all dead tribes from the tribes list
+     */
     public void removeDeadTribes() {
         int nb = tribes.size();
         for (Iterator<Tribe> iterator = tribes.iterator(); iterator.hasNext();) {
@@ -147,7 +150,7 @@ public class Simulation implements Renderable {
 
     /**
      * Process Tribe reproduction
-     * There is a slight chance that a new tribe will be generated if the given tribe has enough members
+     * There is a slight chance that a new tribe will be generated if the given tribe has enough members.
      * @param tribe
      * @param delta
      */
@@ -170,6 +173,11 @@ public class Simulation implements Renderable {
         return newTribe;
     }
 
+    /**
+     * Generate a new tribe after a successful reproduction
+     * @param tribe Original tribe, used for x and y position of the newly created tribe
+     * @return the tribe that will be added to the tribes list
+     */
     private Tribe generateNewTribeFromReproduction(Tribe tribe) {
         Tribe t = TribeFactory.create(TribeFactory.getSpeciesFromClass(tribe.getSpecies()), Dice.rollDice(tribe.getLitterSize()) + 1);
         t.setX(tribe.getX());
@@ -178,24 +186,73 @@ public class Simulation implements Renderable {
     }
 
     /**
-     * Process Tribe Aggression AI if NEUTRAL
+     * Process Tribe Aggression AI
      * @param tribe
      */
     private void processAiAggression(Tribe tribe) {
+        if (processAiMutualAid(tribe)) return;
+
         for (Tribe t : tribes) {
-            if (!tribe.equals(t) && !tribe.getSpecies().equals(t.getSpecies()) && t.isAlive()) {
+            if (!tribe.equals(t) && !tribe.getSpecies().equals(t.getSpecies()) && t.isAlive() && t.getState() == AIStateMachine.State.MIGRATING) {
                 tribe.setTarget(t);
-                if (t.getTarget() == null && tribe.isInAggressionRange()) {
+                if (tribe.isInAggressionRange()) {
                     this.aggressionManager.addAggression(tribe, t);
                     break;
                 }
-                else {
-                    tribe.setTarget(null);
-                }
             }
         }
+
+        if (tribe.getState() == AIStateMachine.State.MIGRATING) tribe.setTarget(null);
     }
 
+    /**
+     * Check if there is an aggression near the tribe and process a Mutual Aid test.
+     * If success, the tribe will join the battle to help its friends
+     * @param tribe
+     * @return
+     */
+    private boolean processAiMutualAid(Tribe tribe) {
+        if (!Dice.winRoll(tribe.getMutualAid(), 100)) return false;
+
+        boolean isInMutualAid = false;
+
+        for (Aggression aggression : aggressionManager.getAggressions()) {
+            if (aggression.getState() == Aggression.AggressionState.FIGHT) {
+                Tribe assailant = aggression.getFirstAssailant();
+                Tribe victim = aggression.getFirstVictim();
+
+                if (assailant.getSpecies().equals(tribe.getSpecies())) {
+                    tribe.setTarget(victim);
+
+                    if (tribe.isInAggressionRange()) {
+                        aggressionManager.addAssailantToAggression(tribe, aggression);
+                        isInMutualAid = true;
+                    }
+                }
+                else if (victim.getSpecies().equals(tribe.getSpecies())) {
+                    tribe.setTarget(assailant);
+
+                    if (tribe.isInAttackRange()) {
+                        aggressionManager.addVictimToAggression(tribe, aggression);
+                        isInMutualAid = true;
+                    }
+                }
+
+            }
+            if (isInMutualAid) break;
+        }
+
+        if (isInMutualAid) return true;
+
+        tribe.setTarget(null);
+        return false;
+    }
+
+    /**
+     * Process a tribe attack if it has a target and if in FIGHT state
+     * @param tribe
+     * @param delta
+     */
     private void processAiAttack(Tribe tribe, int delta) {
         if (tribe.getState() == AIStateMachine.State.FIGHT && (delta % (int)(this.framerate/tribe.getAttackSpeed()) == 0)) {
             if (tribe.getTarget() == null) return;
@@ -207,8 +264,10 @@ public class Simulation implements Renderable {
             int damages = Dice.rollDice(forceFactor + 1);
 
             tribe.attack(damages);
+            //System.out.println(tribe.hashCode() + " -> " + tribe.getTarget().hashCode());
         }
     }
+
 
     public void update(float delta) {
         for (Tribe tribe : tribes) {

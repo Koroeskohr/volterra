@@ -2,6 +2,7 @@ package com.volterra.ecosysteme;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by YellowFish on 26/04/2016.
@@ -13,7 +14,7 @@ public class Aggression {
      * PURSUIT: If the assailant is pursuing the victim
      * FIGHT: If the two Tribes are fighting
      */
-    enum AggressionState { IDLE, PURSUIT, FIGHT }
+    public enum AggressionState { IDLE, PURSUIT, FIGHT }
 
     private AggressionState state;
     private ArrayList<Tribe> assailants;
@@ -51,14 +52,40 @@ public class Aggression {
     }
 
     /**
-     * Return the assailant
-     * @return assailant
+     * Return the assailants
+     * @return assailants
      */
     public ArrayList<Tribe> getAssailants() {
         return assailants;
     }
 
+    /**
+     * Return the first assailant
+     * The first assailant is the victim's target
+     * @return first assailant
+     */
     public Tribe getFirstAssailant() { return assailants.get(0); }
+
+    /**
+     * Add a new tribe to the assailants
+     * @param tribe
+     */
+    public void addAssailant(Tribe tribe) {
+        tribe.setTarget(this.getFirstVictim());
+        this.assailants.add(tribe);
+        this.setTribeState(tribe, AIStateMachine.State.AGGRESSING);
+    }
+
+    /**
+     * Remove all dead assailants from the assailants list
+     */
+    public void removeDeadAssailants() {
+        for (Iterator<Tribe> iterator = assailants.iterator(); iterator.hasNext();) {
+            Tribe assailant = iterator.next();
+
+            if (!assailant.isAlive()) iterator.remove();
+        }
+    }
 
     /**
      * Return the victim of the aggression
@@ -68,7 +95,33 @@ public class Aggression {
         return victims;
     }
 
+    /**
+     * Return the first victim
+     * The first victim is the assailant's target
+     * @return the first victim
+     */
     public Tribe getFirstVictim() { return victims.get(0); }
+
+    /**
+     * Add a tribe to the victims
+     * @param tribe
+     */
+    public void addVictim(Tribe tribe) {
+        tribe.setTarget(this.getFirstAssailant());
+        this.setTribeState(tribe, AIStateMachine.State.AGGRESSING);
+        this.victims.add(tribe);
+    }
+
+    /**
+     * Remove all dead victims from the victims list
+     */
+    public void removeDeadVictims() {
+        for (Iterator<Tribe> iterator = victims.iterator(); iterator.hasNext();) {
+            Tribe assailant = iterator.next();
+
+            if (!assailant.isAlive()) iterator.remove();
+        }
+    }
 
     /**
      * Return the time when the aggression was created
@@ -87,92 +140,95 @@ public class Aggression {
     }
 
     /**
-     * Set a new target for the assailant
+     * Set a new target for the assailants
      * @param tribe new target
      */
     public void setAssailantsTarget(Tribe tribe) {
-        for (Tribe assailant : assailants) {
+        for (Tribe assailant : this.assailants) {
             assailant.setTarget(tribe);
         }
     }
 
     /**
-     * Set a new target for the victim
+     * Set a new target for the victims
      * @param tribe new target
      */
     public void setVictimsTarget(Tribe tribe) {
-        for (Tribe victim : victims) {
+        for (Tribe victim : this.victims) {
             victim.setTarget(tribe);
         }
     }
 
+    /**
+     * Change a groupe state
+     * @param group ArrayList of tribes
+     * @param state New state
+     */
+    private void setGroupState(ArrayList<Tribe> group, AIStateMachine.State state) {
+        for (Tribe tribe : group) {
+            tribe.setState(state);
+        }
+    }
+
+    /**
+     * Set a new state for a tribe
+     * @param tribe
+     * @param state
+     */
+    public void setTribeState(Tribe tribe, AIStateMachine.State state) {
+        tribe.setState(state);
+    }
+
+    /**
+     * Reset all remaining assailants and victims to the MIGRATING state
+     */
     public void resetTribes() {
-        for (Tribe assailant : assailants) {
-            assailant.setState(AIStateMachine.State.MIGRATING);
-        }
-        for (Tribe victim : victims) {
-            victim.setState(AIStateMachine.State.MIGRATING);
-        }
+        setGroupState(assailants, AIStateMachine.State.MIGRATING);
+        setGroupState(victims, AIStateMachine.State.MIGRATING);
     }
 
     /**
      * Set aggression state to IDLE
-     * Set assailant and victim states to NEUTRAL
+     * Set assailants and victims states to NEUTRAL
      */
     public void setIdleState() {
         this.actionStart = Instant.now();
         this.state = AggressionState.IDLE;
-        for (Tribe assailant : assailants) {
-            assailant.setState(AIStateMachine.State.NEUTRAL);
-        }
-        for (Tribe victim : victims) {
-            victim.setState(AIStateMachine.State.NEUTRAL);
-        }
+        setGroupState(assailants, AIStateMachine.State.NEUTRAL);
+        setGroupState(victims, AIStateMachine.State.NEUTRAL);
     }
 
     /**
      * Set aggression state to PURSUIT
-     * Set assailant state to AGGRESSING
-     * Set victim state to FLEEING
+     * Set assailants state to AGGRESSING
+     * Set victims state to FLEEING
      */
     public void setPursuitFleeingState() {
         this.actionStart = Instant.now();
         this.state = AggressionState.PURSUIT;
-        for (Tribe assailant : assailants) {
-            assailant.setState(AIStateMachine.State.AGGRESSING);
-        }
-        for (Tribe victim : victims) {
-            victim.setState(AIStateMachine.State.FLEEING);
-        }
+        setGroupState(assailants, AIStateMachine.State.AGGRESSING);
+        setGroupState(victims, AIStateMachine.State.FLEEING);
     }
 
     /**
      * Set aggression state to PURSUIT
-     * Set assailant and victim states to AGGRESSING
+     * Set assailants and victims states to AGGRESSING
      */
     public void setPursuitMutualState() {
         this.actionStart = Instant.now();
         this.state = AggressionState.PURSUIT;
-        for (Tribe assailant : assailants) {
-            assailant.setState(AIStateMachine.State.AGGRESSING);
-        }
-        for (Tribe victim : victims) {
-            victim.setState(AIStateMachine.State.AGGRESSING);
-        }
+        setGroupState(assailants, AIStateMachine.State.AGGRESSING);
+        setGroupState(victims, AIStateMachine.State.AGGRESSING);
     }
 
     /**
      * Set aggression state to FIGHT
-     * Set assailant and victim states to FIGHT
+     * Set assailants and victims states to FIGHT
      */
     public void setFightState() {
         this.actionStart = Instant.now();
         this.state = AggressionState.FIGHT;
-        for (Tribe assailant : assailants) {
-            assailant.setState(AIStateMachine.State.FIGHT);
-        }
-        for (Tribe victim : victims) {
-            victim.setState(AIStateMachine.State.FIGHT);
-        }
+        setGroupState(assailants, AIStateMachine.State.FIGHT);
+        setGroupState(victims, AIStateMachine.State.FIGHT);
     }
 }
