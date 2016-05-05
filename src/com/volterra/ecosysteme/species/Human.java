@@ -9,7 +9,7 @@ public class Human extends Species {
     /**
      * Default constructor. Calls Species default constructor
      */
-    private static final String[] speciesTraits = { "Fertile", "Coward", "Heavy", "Fast" };
+    private static final String[] speciesTraits = { };//"Fertile", "Coward", "Heavy", "Fast" };
 
     /**
      * Returns the array of class names as Strings that represents all the base traits for Human
@@ -23,7 +23,7 @@ public class Human extends Species {
     public Human() {
         super(null,     // friendlySpecies
                 0,      // averageLifeSpan
-                3,      // litterSize
+                2,      // litterSize
                 50,     // aggressiveness
                 2,      // force
                 50,     // reproductivity
