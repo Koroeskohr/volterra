@@ -248,7 +248,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
                 e.printStackTrace();
             }
         }
-        if (litterSize > 0) Simulation.getSimulation().getEffectsDisplayer().add(new BirthEffect(litterSize, this.getX(), this.getY()));
+        if (litterSize > 0) Simulation.getSimulation().getEffectsDisplayer().add(new BirthEffect(litterSize, this.getX()+this.size(), this.getY()+this.size()));
     }
 
     @Override

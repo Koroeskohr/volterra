@@ -17,6 +17,8 @@ import processing.core.PApplet;
  */
 public abstract class Tribe<T extends Species> implements AIStateMachine, Renderable {
 
+  private final int sizeFactor = 3;
+
   /**
    * Coordinates of the tribe and center of the circle
    */
@@ -24,6 +26,8 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   protected float xd = 0.0f;
   protected float yd = 0.0f;
+
+
 
   /**
    * Current state of the tribe AI.
@@ -290,7 +294,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   public int radius() {
     // FIXME: for now
-    return this.size();
+    return this.size()*this.sizeFactor;
   }
 
   /**
@@ -308,7 +312,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @return Distance as double
    */
   public double getDistanceToTarget() {
-    return getDistance((this.target.getX() - this.x), (this.target.getY() - this.y));
+    return getDistance((this.target.getX()+this.sizeFactor - this.x), (this.target.getY()+this.sizeFactor - this.y));
   }
 
   /**
@@ -349,7 +353,6 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * Damages the target based on force and number of units
    */
   public void attack(int damages) {
-    Simulation.getSimulation().getEffectsDisplayer().add(new DamageEffect(damages, this.target.getX(), this.target.getY()));
     this.target.getDamages(damages);
   }
 
@@ -363,6 +366,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
       this.members.remove(this.size() - 1);
       i--;
     }
+    Simulation.getSimulation().getEffectsDisplayer().add(new DamageEffect(damages, this.getX()+this.size(), this.getY()+this.size()));
   }
 
   /**
@@ -402,7 +406,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
         e.printStackTrace();
       }
     }
-    if (litterSize > 0) Simulation.getSimulation().getEffectsDisplayer().add(new BirthEffect(litterSize, this.getX(), this.getY()));
+    if (litterSize > 0) Simulation.getSimulation().getEffectsDisplayer().add(new BirthEffect(litterSize, this.getX()+this.size(), this.getY()+this.size()));
   }
 
   public void runAI(float deltaTime) {
@@ -431,9 +435,9 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
         ctx.noStroke();
     }
 
-    ctx.ellipse(this.x, this.y, this.size()*3, this.size()*3);
+    ctx.ellipse(this.x, this.y, this.radius(), this.radius());
     ctx.fill(255);
     ctx.textSize(12);
-    ctx.text(this.size(), this.x + this.radius(), this.y + this.radius());
+    ctx.text(this.size(), this.x+this.size(), this.y+this.size());
   }
 }
