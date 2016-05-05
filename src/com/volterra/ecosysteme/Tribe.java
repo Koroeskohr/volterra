@@ -5,8 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import java.lang.reflect.Constructor;
-import com.volterra.Engine.Simulation;
-import com.volterra.Engine.visualeffects.DamageEffect;
+import com.volterra.engine.Simulation;
+import com.volterra.engine.visualeffects.DamageEffect;
 import processing.core.PApplet;
 
 /**

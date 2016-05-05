@@ -1,4 +1,4 @@
-package com.volterra.Engine;
+package com.volterra.engine;
 
 import com.volterra.ecosysteme.*;
 import com.volterra.ecosysteme.utils.Dice;
@@ -113,7 +113,7 @@ public class Simulation implements Renderable {
         for (Tribe tribe : tribes) {
             if (tribe.isAlive()) {
                 if (tribe.getTarget() == null) {
-                    processAiReproduction(tribe);
+                    processAiReproduction(tribe, delta);
                     processAiAggression(tribe);
                 }
                 else {
@@ -131,8 +131,8 @@ public class Simulation implements Renderable {
      * TODO: Process Tribe reproduction
      * @param tribe
      */
-    private void processAiReproduction(Tribe tribe) {
-
+    private void processAiReproduction(Tribe tribe, int delta) {
+        
     }
 
     /**
@@ -158,7 +158,6 @@ public class Simulation implements Renderable {
         if (tribe.getState() == AIStateMachine.State.FIGHT && (delta % (int)(60/tribe.getSpeed()) == 0)) {
             if (tribe.getTarget() == null) return;
 
-            Random random = new Random();
             // change this line for damages tweak
             int forceFactor = tribe.getForce() + tribe.getForce() * ((tribe.size()-tribe.getTarget().size())/5);
             if (forceFactor < 1) forceFactor = 1;

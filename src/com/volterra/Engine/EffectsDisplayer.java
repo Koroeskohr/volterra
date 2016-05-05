@@ -1,6 +1,6 @@
-package com.volterra.Engine;
+package com.volterra.engine;
 
-import com.volterra.Engine.visualeffects.VisualEffect;
+import com.volterra.engine.visualeffects.VisualEffect;
 import com.volterra.ecosysteme.Renderable;
 import processing.core.PApplet;
 
