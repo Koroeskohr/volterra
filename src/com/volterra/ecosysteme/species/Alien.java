@@ -9,7 +9,7 @@ public class Alien extends Species {
     /**
      * Default constructor. Calls Species default constructor
      */
-    private static final String[] speciesTraits = { "Aggressive"};
+    private static final String[] speciesTraits = { "Infertile", "Coward", "Light", "Fast"};
 
     /**
      * Returns the array of class names as Strings that represents all the base traits for Human
@@ -21,7 +21,16 @@ public class Alien extends Species {
 
 
     public Alien() {
-        // super(friendlySpecies, averageLifeSpan, litterSize, aggressiveness, force, reproductivity, mutualAid, courage, speed, attackSpeed, color);
-        super(null, 0, 5, 30, 1, 20, 0, 50, 1.2f, 1.2f, new Color(0,200,100));
+        super(null,     // friendlySpecies
+                0,      // averageLifeSpan
+                2,      // litterSize
+                15,     // aggressiveness
+                6,      // force
+                30,     // reproductivity
+                0,      // mutualAid
+                30,     // courage
+                1.2f,   // speed
+                1.0f,   // attackSpeed
+                new Color(0,200,50));
     }
 }

@@ -3,13 +3,13 @@ package com.volterra.ecosysteme.species;
 import java.awt.*;
 
 /**
- * Created by YellowFish on 25/04/2016.
+ * Created by YellowFish on 05/05/2016.
  */
-public class Human extends Species {
+public class Elf extends Species {
     /**
      * Default constructor. Calls Species default constructor
      */
-    private static final String[] speciesTraits = { "Fertile", "Coward", "Heavy", "Fast" };
+    private static final String[] speciesTraits = { "Infertile", "Aggressive", "Light", "Fast" };
 
     /**
      * Returns the array of class names as Strings that represents all the base traits for Human
@@ -19,18 +19,17 @@ public class Human extends Species {
         return speciesTraits;
     }
 
-
-    public Human() {
+    public Elf() {
         super(null,     // friendlySpecies
                 0,      // averageLifeSpan
-                3,      // litterSize
-                50,     // aggressiveness
-                2,      // force
-                50,     // reproductivity
+                2,      // litterSize
+                20,     // aggressiveness
+                3,      // force
+                15,     // reproductivity
                 0,      // mutualAid
-                30,     // courage
-                1.0f,   // speed
-                1.0f,   // attackSpeed
-                new Color(0,100,200));
+                75,     // courage
+                1.3f,   // speed
+                1.4f,   // attackSpeed
+                new Color(100,200,150));
     }
 }
