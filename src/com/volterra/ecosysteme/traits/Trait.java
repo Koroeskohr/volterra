@@ -2,6 +2,8 @@ package com.volterra.ecosysteme.traits;
 
 import com.volterra.ecosysteme.Species;
 import com.volterra.ecosysteme.Tribe;
+import com.volterra.engine.Simulation;
+import com.volterra.engine.visualeffects.BirthEffect;
 import processing.core.PApplet;
 
 import java.awt.*;
@@ -238,7 +240,6 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
             try {
                 if (_originalTribe.getSpecies() == null) throw new NullPointerException("node must have children");
                 Constructor ctor = _originalTribe.getSpecies().getConstructor();
-                System.out.println(_originalTribe.getSpecies().cast(ctor.newInstance()));
                 _originalTribe.addMember(((_originalTribe.getSpecies().cast(ctor.newInstance()))));
             } catch (NoSuchMethodException |
                     InvocationTargetException |
@@ -247,6 +248,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
                 e.printStackTrace();
             }
         }
+        if (litterSize > 0) Simulation.getSimulation().getEffectsDisplayer().add(new BirthEffect(litterSize, this.getX(), this.getY()));
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import java.lang.reflect.Constructor;
 import com.volterra.engine.Simulation;
+import com.volterra.engine.visualeffects.BirthEffect;
 import com.volterra.engine.visualeffects.DamageEffect;
 import processing.core.PApplet;
 
@@ -399,6 +400,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
         e.printStackTrace();
       }
     }
+    if (litterSize > 0) Simulation.getSimulation().getEffectsDisplayer().add(new BirthEffect(litterSize, this.getX(), this.getY()));
   }
 
   public void runAI(float deltaTime) {
