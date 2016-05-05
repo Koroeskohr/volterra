@@ -6,25 +6,24 @@ import com.volterra.ecosysteme.Tribe;
 /**
  * Created by Christophe on 25/04/2016.
  *
- * Add the <i>Fertile</i> trait to a <i>Tribe</i>.
+ * Add the <i>Fast</i> trait to a <i>Tribe</i>.
  */
-public class Fertile<T extends Species> extends Trait<T> {
+public class Fast<T extends Species> extends Trait<T> {
     /**
      * Constructor
      * @param originalTribe The <i>Tribe</i> on wich apply the trait.
      */
-    public Fertile(Tribe<T> originalTribe) {
+    public Fast(Tribe<T> originalTribe) {
         super(originalTribe);
     }
 
     @Override
-    public int getReproductivity() {
-        return Math.min(this._originalTribe.getReproductivity() + 10, 100);
+    public float getSpeed() {
+        return this._originalTribe.getSpeed() + 0.2f;
     }
 
     @Override
-    public int getLitterSize() {
-        return this._originalTribe.getLitterSize() + 1;
+    public float getAttackSpeed() {
+        return this._originalTribe.getAttackSpeed() + 0.2f;
     }
-
 }

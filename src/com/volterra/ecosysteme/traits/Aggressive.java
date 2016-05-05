@@ -19,21 +19,11 @@ public class Aggressive<T extends Species> extends Trait<T> {
 
     @Override
     public int getAggressiveness() {
-        return this._originalTribe.getAggressiveness() + 50;
-    }
-
-    @Override
-    public int getForce() {
-        return this._originalTribe.getForce() + 1;
-    }
-
-    @Override
-    public int getMutualAid() {
-        return this._originalTribe.getMutualAid() + 5;
+        return Math.min(this._originalTribe.getAggressiveness() + 20, 100);
     }
 
     @Override
     public int getCourage() {
-        return this._originalTribe.getCourage() + 5;
+        return Math.min(this._originalTribe.getCourage() + 10, 100);
     }
 }
