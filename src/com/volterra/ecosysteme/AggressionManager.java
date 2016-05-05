@@ -1,13 +1,11 @@
 package com.volterra.ecosysteme;
 
-import static com.volterra.ecosysteme.utils.Dice.rollDice;
 import static com.volterra.ecosysteme.utils.Dice.winRoll;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 /**
  * Created by YellowFish on 26/04/2016.

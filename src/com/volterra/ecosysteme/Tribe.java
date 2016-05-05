@@ -3,13 +3,11 @@ package com.volterra.ecosysteme;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import java.lang.reflect.Constructor;
-import com.volterra.engine.Simulation;
-import com.volterra.engine.visualeffects.DamageEffect;
+import com.volterra.Engine.Simulation;
+import com.volterra.Engine.visualeffects.DamageEffect;
 import processing.core.PApplet;
-import processing.core.PConstants;
 
 /**
  * Created by Koroeskohr on 25/04/2016.

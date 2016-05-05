@@ -1,6 +1,6 @@
 package com.volterra.ecosysteme;
 
-import com.volterra.engine.Simulation;
+import com.volterra.Engine.Simulation;
 import com.volterra.ecosysteme.traits.Trait;
 
 import java.lang.reflect.Constructor;

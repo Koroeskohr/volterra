@@ -1,9 +1,7 @@
 package com.volterra.ecosysteme;
 
-import com.volterra.engine.Simulation;
+import com.volterra.Engine.Simulation;
 import processing.core.PApplet;
-
-import java.util.ArrayList;
 
 /**
  * Created by Koroeskohr on 08/04/2016.

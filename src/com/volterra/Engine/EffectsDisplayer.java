@@ -4,7 +4,6 @@ import com.volterra.Engine.visualeffects.VisualEffect;
 import com.volterra.ecosysteme.Renderable;
 import processing.core.PApplet;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 

@@ -1,6 +1,5 @@
 package com.volterra.ecosysteme;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
