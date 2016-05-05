@@ -24,4 +24,7 @@ public class Coward<T extends Species> extends Trait<T> {
     public int getCourage() {
         return this._originalTribe.getCourage() - 20;
     }
+
+    @Override
+    public int getMutualAid() { return this._originalTribe.getMutualAid() - 20; }
 }
