@@ -38,6 +38,7 @@ public class Simulation implements Renderable {
     private final int windowWidth = 1366;
     private final int windowHeight = 720;
     private final int framerate = 60;
+    private final int maxTribes = 50;
 
     public int getWindowWidth() {
         return windowWidth;
@@ -158,7 +159,7 @@ public class Simulation implements Renderable {
         Tribe newTribe = null;
 
         if (Duration.between(tribe.getLastBirth(), Instant.now()).getSeconds() > (1 * (200/tribe.getReproductivity())) && Dice.winRoll(tribe.getReproductivity(), 100)) {
-            if (Dice.winRoll(tribe.size()/2, 100)) {
+            if (Dice.winRoll(tribe.size()/2, 100) && tribes.size() < maxTribes) {
                 // Generate a new tribe
                 newTribe = generateNewTribeFromReproduction(tribe);
             }
@@ -212,8 +213,6 @@ public class Simulation implements Renderable {
      * @return
      */
     private boolean processAiMutualAid(Tribe tribe) {
-        if (!Dice.winRoll(tribe.getMutualAid(), 100)) return false;
-
         boolean isInMutualAid = false;
 
         for (Aggression aggression : aggressionManager.getAggressions()) {
@@ -221,20 +220,40 @@ public class Simulation implements Renderable {
                 Tribe assailant = aggression.getFirstAssailant();
                 Tribe victim = aggression.getFirstVictim();
 
-                if (assailant.getSpecies().equals(tribe.getSpecies())) {
-                    tribe.setTarget(victim);
-
-                    if (tribe.isInAggressionRange()) {
+                // If the assailant is the same species as the tribe and the mutual aid test success
+                if (assailant.getSpecies().equals(tribe.getSpecies()) && mutualAidTest(tribe, aggression.getAssailants().size(), aggression.getVictims().size())) {
+                    // First test if the friendly assailant is in mutual aid range
+                    tribe.setTarget(assailant);
+                    if (tribe.isInMutualAidRange()) {
+                        tribe.setTarget(victim);
                         aggressionManager.addAssailantToAggression(tribe, aggression);
                         isInMutualAid = true;
                     }
+                    // If the friendly assailant is not in range, test if the enemy victim is in mutual aid range
+                    if (!isInMutualAid) {
+                        tribe.setTarget(victim);
+                        if (tribe.isInMutualAidRange()) {
+                            aggressionManager.addAssailantToAggression(tribe, aggression);
+                            isInMutualAid = true;
+                        }
+                    }
                 }
-                else if (victim.getSpecies().equals(tribe.getSpecies())) {
-                    tribe.setTarget(assailant);
-
-                    if (tribe.isInAttackRange()) {
+                // If the victim is the same species as the tribe and the mutual aid test success
+                else if (victim.getSpecies().equals(tribe.getSpecies()) && mutualAidTest(tribe, aggression.getVictims().size(), aggression.getAssailants().size())) {
+                    // First test if the friendly victim is in mutual aid range
+                    tribe.setTarget(victim);
+                    if (tribe.isInMutualAidRange()) {
+                        tribe.setTarget(assailant);
                         aggressionManager.addVictimToAggression(tribe, aggression);
                         isInMutualAid = true;
+                    }
+                    // If the friendly victim is not in range, test if the enemy assailant is in mutual aid range
+                    if (!isInMutualAid) {
+                        tribe.setTarget(assailant);
+                        if (tribe.isInMutualAidRange()) {
+                            aggressionManager.addVictimToAggression(tribe, aggression);
+                            isInMutualAid = true;
+                        }
                     }
                 }
 
@@ -246,6 +265,17 @@ public class Simulation implements Renderable {
 
         tribe.setTarget(null);
         return false;
+    }
+
+    /**
+     *
+     * @param tribe Tribe that will try to aid
+     * @param sizeGroup1 Friendly group size
+     * @param sizeGroup2 Enemy group size
+     * @return
+     */
+    private boolean mutualAidTest(Tribe tribe, int sizeGroup1, int sizeGroup2) {
+        return Dice.winRoll(tribe.getMutualAid() + sizeGroup1 - sizeGroup2, 100);
     }
 
     /**
