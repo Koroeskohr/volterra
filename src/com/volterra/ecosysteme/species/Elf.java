@@ -23,10 +23,10 @@ public class Elf extends Species {
         super(null,     // friendlySpecies
                 0,      // averageLifeSpan
                 2,      // litterSize
-                20,     // aggressiveness
-                3,      // force
-                15,     // reproductivity
-                0,      // mutualAid
+                25,     // aggressiveness
+                8,      // force
+                25,     // reproductivity
+                70,     // mutualAid
                 75,     // courage
                 1.3f,   // speed
                 1.4f,   // attackSpeed

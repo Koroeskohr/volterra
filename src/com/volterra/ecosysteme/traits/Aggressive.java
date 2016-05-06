@@ -26,4 +26,7 @@ public class Aggressive<T extends Species> extends Trait<T> {
     public int getCourage() {
         return Math.min(this._originalTribe.getCourage() + 10, 100);
     }
+    
+    @Override
+    public int getMutualAid() { return Math.min(this._originalTribe.getMutualAid() + 20, 100); }
 }

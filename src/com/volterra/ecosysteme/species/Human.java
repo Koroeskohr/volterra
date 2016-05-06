@@ -23,11 +23,11 @@ public class Human extends Species {
     public Human() {
         super(null,     // friendlySpecies
                 0,      // averageLifeSpan
-                3,      // litterSize
+                2,      // litterSize
                 50,     // aggressiveness
                 2,      // force
                 50,     // reproductivity
-                0,      // mutualAid
+                20,     // mutualAid
                 30,     // courage
                 1.0f,   // speed
                 1.0f,   // attackSpeed

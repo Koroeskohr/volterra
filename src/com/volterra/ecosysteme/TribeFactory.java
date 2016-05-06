@@ -14,7 +14,7 @@ import java.util.*;
  * Created by Victor on 26/04/2016.
  */
 public class TribeFactory {
-  enum SpeciesEnum { HUMAN, ALIEN, GOBLIN, ELF }
+  enum SpeciesEnum { HUMAN, ORC, GOBLIN, ELF }
   private static String[] traitClassNames = { "Aggressive", "Coward", "Fast", "Fertile", "Heavy", "Infertile", "Light", "Slow" };
 
   private static final HashMap<SpeciesEnum, Class> enumClassMap;
@@ -22,7 +22,7 @@ public class TribeFactory {
   {
     enumClassMap = new HashMap<>();
     enumClassMap.put(SpeciesEnum.HUMAN, Human.class);
-    enumClassMap.put(SpeciesEnum.ALIEN, Alien.class);
+    enumClassMap.put(SpeciesEnum.ORC, Orc.class);
     enumClassMap.put(SpeciesEnum.GOBLIN, Goblin.class);
     enumClassMap.put(SpeciesEnum.ELF, Elf.class);
   }

@@ -356,6 +356,8 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     return getDistanceToTarget() < radius();
   }
 
+  public boolean isInMutualAidRange() { return getDistanceToTarget() < (radius()+size()); }
+
   /**
    * TODO: define dynamic value for aggression range in Specie definition
    * @return if enemy if in aggression range

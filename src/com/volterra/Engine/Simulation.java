@@ -39,6 +39,7 @@ public class Simulation implements Renderable {
     private final int windowWidth = 1366;
     private final int windowHeight = 720;
     private final int framerate = 60;
+    private final int maxTribes = 50;
 
     private DebugInfos debugInfos;
     private final boolean debug = true;
@@ -103,6 +104,9 @@ public class Simulation implements Renderable {
         return this.effectsDisplayer;
     }
 
+    /**
+     * Remove all dead tribes from the tribes list
+     */
     public void removeDeadTribes() {
         int nb = tribes.size();
         for (Iterator<Tribe> iterator = tribes.iterator(); iterator.hasNext();) {
@@ -152,7 +156,7 @@ public class Simulation implements Renderable {
 
     /**
      * Process Tribe reproduction
-     * There is a slight chance that a new tribe will be generated if the given tribe has enough members
+     * There is a slight chance that a new tribe will be generated if the given tribe has enough members.
      * @param tribe
      * @param delta
      */
@@ -160,7 +164,7 @@ public class Simulation implements Renderable {
         Tribe newTribe = null;
 
         if (Duration.between(tribe.getLastBirth(), Instant.now()).getSeconds() > (1 * (200/tribe.getReproductivity())) && Dice.winRoll(tribe.getReproductivity(), 100)) {
-            if (Dice.winRoll(tribe.size()/2, 100)) {
+            if (Dice.winRoll(tribe.size()/2, 100) && tribes.size() < maxTribes) {
                 // Generate a new tribe
                 newTribe = generateNewTribeFromReproduction(tribe);
             }
@@ -175,6 +179,11 @@ public class Simulation implements Renderable {
         return newTribe;
     }
 
+    /**
+     * Generate a new tribe after a successful reproduction
+     * @param tribe Original tribe, used for x and y position of the newly created tribe
+     * @return the tribe that will be added to the tribes list
+     */
     private Tribe generateNewTribeFromReproduction(Tribe tribe) {
         Tribe t = TribeFactory.create(TribeFactory.getSpeciesFromClass(tribe.getSpecies()), Dice.rollDice(tribe.getLitterSize()) + 1);
         t.setX(tribe.getX());
@@ -183,24 +192,102 @@ public class Simulation implements Renderable {
     }
 
     /**
-     * Process Tribe Aggression AI if NEUTRAL
+     * Process Tribe Aggression AI
      * @param tribe
      */
     private void processAiAggression(Tribe tribe) {
+        if (processAiMutualAid(tribe)) return;
+
         for (Tribe t : tribes) {
-            if (!tribe.equals(t) && !tribe.getSpecies().equals(t.getSpecies()) && t.isAlive()) {
+            if (!tribe.equals(t) && !tribe.getSpecies().equals(t.getSpecies()) && t.isAlive() && t.getState() == AIStateMachine.State.MIGRATING) {
                 tribe.setTarget(t);
-                if (t.getTarget() == null && tribe.isInAggressionRange()) {
+                if (tribe.isInAggressionRange()) {
                     this.aggressionManager.addAggression(tribe, t);
                     break;
                 }
-                else {
-                    tribe.setTarget(null);
-                }
             }
         }
+
+        if (tribe.getState() == AIStateMachine.State.MIGRATING) tribe.setTarget(null);
     }
 
+    /**
+     * Check if there is an aggression near the tribe and process a Mutual Aid test.
+     * If success, the tribe will join the battle to help its friends
+     * @param tribe
+     * @return
+     */
+    private boolean processAiMutualAid(Tribe tribe) {
+        boolean isInMutualAid = false;
+
+        for (Aggression aggression : aggressionManager.getAggressions()) {
+            if (aggression.getState() == Aggression.AggressionState.FIGHT) {
+                Tribe assailant = aggression.getFirstAssailant();
+                Tribe victim = aggression.getFirstVictim();
+
+                // If the assailant is the same species as the tribe and the mutual aid test success
+                if (assailant.getSpecies().equals(tribe.getSpecies()) && mutualAidTest(tribe, aggression.getAssailants().size(), aggression.getVictims().size())) {
+                    // First test if the friendly assailant is in mutual aid range
+                    tribe.setTarget(assailant);
+                    if (tribe.isInMutualAidRange()) {
+                        tribe.setTarget(victim);
+                        aggressionManager.addAssailantToAggression(tribe, aggression);
+                        isInMutualAid = true;
+                    }
+                    // If the friendly assailant is not in range, test if the enemy victim is in mutual aid range
+                    if (!isInMutualAid) {
+                        tribe.setTarget(victim);
+                        if (tribe.isInMutualAidRange()) {
+                            aggressionManager.addAssailantToAggression(tribe, aggression);
+                            isInMutualAid = true;
+                        }
+                    }
+                }
+                // If the victim is the same species as the tribe and the mutual aid test success
+                else if (victim.getSpecies().equals(tribe.getSpecies()) && mutualAidTest(tribe, aggression.getVictims().size(), aggression.getAssailants().size())) {
+                    // First test if the friendly victim is in mutual aid range
+                    tribe.setTarget(victim);
+                    if (tribe.isInMutualAidRange()) {
+                        tribe.setTarget(assailant);
+                        aggressionManager.addVictimToAggression(tribe, aggression);
+                        isInMutualAid = true;
+                    }
+                    // If the friendly victim is not in range, test if the enemy assailant is in mutual aid range
+                    if (!isInMutualAid) {
+                        tribe.setTarget(assailant);
+                        if (tribe.isInMutualAidRange()) {
+                            aggressionManager.addVictimToAggression(tribe, aggression);
+                            isInMutualAid = true;
+                        }
+                    }
+                }
+
+            }
+            if (isInMutualAid) break;
+        }
+
+        if (isInMutualAid) return true;
+
+        tribe.setTarget(null);
+        return false;
+    }
+
+    /**
+     *
+     * @param tribe Tribe that will try to aid
+     * @param sizeGroup1 Friendly group size
+     * @param sizeGroup2 Enemy group size
+     * @return
+     */
+    private boolean mutualAidTest(Tribe tribe, int sizeGroup1, int sizeGroup2) {
+        return Dice.winRoll(Math.min(tribe.getMutualAid() + sizeGroup1 - sizeGroup2, 100), 100);
+    }
+
+    /**
+     * Process a tribe attack if it has a target and if in FIGHT state
+     * @param tribe
+     * @param delta
+     */
     private void processAiAttack(Tribe tribe, int delta) {
         if (tribe.getState() == AIStateMachine.State.FIGHT && (delta % (int)(this.framerate/tribe.getAttackSpeed()) == 0)) {
             if (tribe.getTarget() == null) return;
@@ -212,8 +299,10 @@ public class Simulation implements Renderable {
             int damages = Dice.rollDice(forceFactor + 1);
 
             tribe.attack(damages);
+            //System.out.println(tribe.hashCode() + " -> " + tribe.getTarget().hashCode());
         }
     }
+
 
     public void update(float delta) {
         for (Tribe tribe : tribes) {
