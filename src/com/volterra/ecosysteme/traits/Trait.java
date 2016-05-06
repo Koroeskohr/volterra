@@ -32,7 +32,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
   }
 
   /**
-   * Simple proxy from getting the tribe's Y coordinate
+   * Simple proxy for getting the tribe's Y coordinate
    * @return the tribe's Y coordinate
    */
   @Override
@@ -41,7 +41,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
   }
 
   /**
-   * Simple proxy from getting the tribe's X coordinate
+   * Simple proxy for getting the tribe's X coordinate
    * @return the tribe's X coordinate
    */
   @Override
@@ -67,21 +67,37 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
     _originalTribe.setY(y);
   }
 
-  @Override
-  public float getYd() {
-    return _originalTribe.getYd();
-  }
-
+  /**
+   * Getter for horizontal movement coefficient
+   * @return horizontal movement coefficient
+   */
   @Override
   public float getXd() {
     return _originalTribe.getXd();
   }
 
+  /**
+   * Setter for horizontal movement coefficient
+   * @param xd horizontal movement coefficient
+   */
   @Override
   public void setXd(float xd) {
     _originalTribe.setXd(xd);
   }
 
+  /**
+   * Getter for vertical movement coefficient
+   * @return vertical movement coefficient
+   */
+  @Override
+  public float getYd() {
+    return _originalTribe.getYd();
+  }
+
+  /**
+   * Setter for vertical movement coefficient
+   * @param yd vertical movement coefficient
+   */
   @Override
   public void setYd(float yd) {
     _originalTribe.setYd(yd);
@@ -278,7 +294,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
   }
 
   /**
-   * Get the litterSize value of a Tribe.
+   * Get the litterSize value of a Tribe, the maximum number of children when giving birth
    * @return the litterSize value of a Tribe
    */
   @Override
@@ -356,7 +372,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
 
   /**
    * Determines if a Tribe is able to undergo an action
-   * @return The ability of a Tribe to do something
+   * @return Whether a tribe is in an action or not
    */
   @Override
   public boolean isBusy() {
@@ -382,7 +398,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
   }
 
   /**
-   * Starts the process of aggressing an enemy
+   * Starts an aggression with a tribe, putting it in fleeing or aggressing state as well, depending on a courage test.
    * @param enemy the tribe *this* is attacking
    */
   @Override
@@ -407,7 +423,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
   public void getDamages(int i) { _originalTribe.getDamages(i); }
 
   /**
-   * Returns
+   * Returns whether a Tribe is alive or not
    * @return Whether a Tribe is alive or not
    */
   @Override
@@ -423,7 +439,7 @@ public abstract class Trait<T extends Species> extends Tribe<T> {
   }
 
   /**
-   * Add <i>litterSize</i> amount of members to the members ArrayList
+   * Simulate birth in the tribe. Create new people and add them to the tribe.
    * @param litterSize number of individual to add to the tribe.
    */
   @Override

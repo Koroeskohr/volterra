@@ -151,9 +151,4 @@ public class TribeFactory {
 
     return r;
   }
-
-  public static void main(String[] args) {
-    //Tribe<Human> t = TribeFactory.create(SpeciesEnum.HUMAN);
-    //SpeciesEnum.HUMAN.name();
-  }
 }
