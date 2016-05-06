@@ -9,7 +9,7 @@ public class Elf extends Species {
     /**
      * Default constructor. Calls Species default constructor
      */
-    private static final String[] speciesTraits = { };//"Infertile", "Aggressive", "Light", "Fast" };
+    private static final String[] speciesTraits = { "Infertile", "Aggressive", "Light", "Fast" };
 
     /**
      * Returns the array of class names as Strings that represents all the base traits for Human
