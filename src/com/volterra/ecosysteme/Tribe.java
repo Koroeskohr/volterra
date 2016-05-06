@@ -18,7 +18,9 @@ import processing.core.PApplet;
  * Created by Koroeskohr on 25/04/2016.
  */
 public abstract class Tribe<T extends Species> implements AIStateMachine, Renderable {
-
+  /**
+   * Factor of the actual size of the drawn circles
+   */
   private final int sizeFactor = 3;
 
   /**
@@ -26,10 +28,15 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    */
   protected float x, y;
 
+  /**
+   * Horizontal speed coefficient
+   */
   protected float xd = 0.0f;
+
+  /**
+   * Vertical speed coefficient
+   */
   protected float yd = 0.0f;
-
-
 
   /**
    * Current state of the tribe AI.
@@ -46,23 +53,69 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    */
   private final Class<T> species;
 
+  /**
+   * Friendly species of the tribe. They will not aggress it.
+   */
   protected Species[] friendlySpecies;
+
+  /**
+   * The average amount of time a member of a tribe lives
+   */
   protected int averageLifeSpan;
+
+  /**
+   * Amount of children a tribe can have, based on species.
+   */
   protected int litterSize;
+
+  /**
+   * Coefficient that influences probability to aggress other tribes
+   */
   protected int aggressiveness;
+
+  /**
+   * Coefficient that influences damage dealt
+   */
   protected int force;
+
+  /**
+   * Coefficient that influences probability to have births in the tribe
+   */
   protected int reproductivity;
+
+  /**
+   * Coefficient that influences probability to help friendly aggressed tribes
+   */
   protected int mutualAid;
+
+  /**
+   * Coefficient that influences probability to start any action
+   */
   protected int courage;
+
+  /**
+   * Coefficient that influences movement speed on the screen
+   */
   protected float speed;
+
+  /**
+   * Coefficient that influences how often a tribe will attack
+   */
   protected float attackSpeed;
+
+  /**
+   * Display color of the tribe in the simulation
+   */
   protected Color color;
 
   /**
-   * The tribe *this* is aggressing. NULL if not aggressing anyone.
+   * The tribe *this* is aggressing. Equals null if not aggressing anyone.
    */
   protected Tribe target;
 
+  /**
+   * Timepoint when the last birth occured in the tribe.
+   */
   protected Instant lastBirth;
 
   /**
@@ -72,6 +125,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   public Tribe(Class<T> species) {
     this.species = species;
   }
+
   /**
    * Get the tribe which is the current tribe's target in a battle.
    * @return The target tribe
@@ -80,52 +134,90 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     return target;
   }
 
+  /**
+   * Set Tribe's target, used during an aggression sequence.
+   * @param target
+   * @see Simulation#processAiAggression(Tribe)
+   */
   public void setTarget(Tribe target) {
     this.target = target;
   }
 
+  /**
+   * Getter for the tribe's Y coordinate
+   * @return the tribe's Y coordinate
+   */
   public float getY() {
     return y;
   }
 
+  /**
+   * Getter for the tribe's X coordinate
+   * @return the tribe's X coordinate
+   */
   public float getX() {
     return x;
   }
 
+  /**
+   * Setter for the X coordinate
+   * @param x Value to set the horizontal coordinate to.
+   */
   public void setX(float x) {
     this.x = x;
   }
 
+  /**
+   * Setter for the Y coordinate
+   * @param y Value to set the vertical coordinate to.
+   */
   public void setY(float y) {
     this.y = y;
   }
 
+  /**
+   * Getter for horizontal movement coefficient
+   * @return horizontal movement coefficient
+   */
   public float getXd() {
     return xd;
   }
 
+  /**
+   * Setter for horizontal movement coefficient
+   * @param xd horizontal movement coefficient
+   */
   public void setXd(float xd) {
     this.xd = xd;
   }
 
+  /**
+   * Getter for vertical movement coefficient
+   * @return vertical movement coefficient
+   */
   public float getYd() {
     return yd;
   }
 
+  /**
+   * Setter for vertical movement coefficient
+   * @param yd vertical movement coefficient
+   */
   public void setYd(float yd) {
     this.yd = yd;
   }
 
   /**
-   * Get the current state of a tribe
-   * @return The state of the tribe
+   * Get the current AIStateMachine state of a tribe.
+   * @return A state from the enum AIStateMachine.State.
+   * @see com.volterra.ecosysteme.AIStateMachine.State
    */
   public State getState() {
     return this.state;
   }
 
   /**
-   * Set the state of a tribe
+   * Changes the state. Used in the AI loop.
    * @param state The new state to apply on the tribe
    */
   public void setState(State state) {
@@ -133,8 +225,8 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   /**
-   * Return the current friendly species of Tribe
-   * @return friendly species
+   * Get an array of species that could help or at least not attack the Tribe.
+   * @return An array of species that could help or at least not attack the Tribe.
    */
   public Species[] getFriendlySpecies() {
     return friendlySpecies;
@@ -142,26 +234,26 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Set friendly species for the Tribe
-   * @param friendlySpecies
+   * @param friendlySpecies Friend species
    */
   public void setFriendlySpecies(Species[] friendlySpecies) {
     this.friendlySpecies = friendlySpecies;
   }
 
   /**
-   * Get the average lifespan of a species
-   * @return The average lifespan
+   * Get the average life span of a Tribe.
+   * @return the average life span value of a Tribe
    */
   public int getAverageLifeSpan() {
     return this.averageLifeSpan;
   }
 
   /**
-   * Add average lifespan to current average lifespan
-   * @param averageLifeSpan
+   * Add a value to the averageLifeSpan param. Necessary proxy due to the use of decorators.
+   * @param lifeSpan Amount of life span added to the Tribe parameter
    */
-  public void addAverageLifeSpan(int averageLifeSpan) {
-    this.averageLifeSpan += averageLifeSpan;
+  public void addAverageLifeSpan(int lifeSpan) {
+    this.averageLifeSpan += lifeSpan;
     if (this.averageLifeSpan > 100) this.averageLifeSpan = 100;
   }
 
@@ -175,7 +267,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Add littersize to current littersize
-   * @param litterSize
+   * @param litterSize Amount of litter size added to the Tribe parameter
    */
   public void addLitterSize(int litterSize) {
     this.litterSize += litterSize;
@@ -183,8 +275,8 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   /**
-   * Get the aggressiveness value
-   * @return Agressiveness value
+   * Get the aggressiveness value of a Tribe.
+   * @return the aggressiveness value of a Tribe
    */
   public int getAggressiveness() {
     return Utils.clamp(this.aggressiveness, 1, 100);
@@ -192,7 +284,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Add aggressiveness to current aggressiveness
-   * @param aggressiveness
+   * @param aggressiveness Amount of aggressiveness added to the Tribe parameter
    */
   public void addAggressiveness(int aggressiveness) {
     this.aggressiveness += aggressiveness;
@@ -200,8 +292,8 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   /**
-   * Get the force of the species
-   * @return Force of the species
+   * Get the force value of a Tribe. Determines the damage dealt by a Tribe.
+   * @return the force value of a Tribe
    */
   public int getForce() {
     return Utils.clamp(this.force, 1, 100);
@@ -209,7 +301,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Add force to current force
-   * @param force
+   * @param force Amount of force added to the Tribe parameter
    */
   public void addForce(int force) {
     this.force += force;
@@ -226,7 +318,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Add reproductivity chance to current reproductivity chance
-   * @param reproductivity
+   * @param reproductivity Amount of reproductivity added to the Tribe parameter
    */
   public void addReproductivity(int reproductivity) {
     this.reproductivity += reproductivity;
@@ -243,7 +335,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Add mutual aid chance to current mutual aid chance
-   * @param mutualAid
+   * @param mutualAid Amount of mutual aid added to the Tribe parameter
    */
   public void addMutualAid(int mutualAid) {
     this.mutualAid += mutualAid;
@@ -260,7 +352,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Add courage to current courage
-   * @param courage
+   * @param courage Amount of courage added to the Tribe parameter
    */
   public void addCourage(int courage) {
     this.courage += courage;
@@ -277,7 +369,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Add speed to current speed
-   * @param speed
+   * @param speed Amount of speed added to the Tribe parameter
    */
   public void addSpeed(float speed) {
     this.speed += speed;
@@ -291,20 +383,28 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Add attack speed to current attack speed
-   * @param attackSpeed
+   * @param attackSpeed Amount of attack speed added to the Tribe parameter
    */
   public void addAttackSpeed(float attackSpeed) { this.attackSpeed += attackSpeed; }
 
   /**
-   * Return current tribe's color
-   * @return
-     */
+   * Get the color of the tribe.
+   * @return The color of the tribe, that depends on the tribe's species.
+   * @see Species#getColor()
+   */
   public Color getColor() { return this.color; }
 
+  /**
+   * Returns the last time a Tribe had a birth
+   * @return Instant of the last birth
+   */
   public Instant getLastBirth() {
     return this.lastBirth;
   }
 
+  /**
+   * Set the last birth to now.
+   */
   public void resetLastBirth() {
     this.lastBirth = Instant.now();
   }
@@ -317,6 +417,10 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     return this.members.size();
   }
 
+  /**
+   * Return the size of the Tribe of the screen
+   * @return size of the Tribe of the screen
+   */
   public int radius() {
     // FIXME: for now
     return this.size()*this.sizeFactor;
@@ -333,16 +437,16 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   /**
-   * Get distance from Tribe pos to this.target pos
-   * @return Distance as double
+   * Returns the distance to the target tribe
+   * @return the distance to the target tribe
    */
   public double getDistanceToTarget() {
     return getDistance((this.target.getX()+this.sizeFactor - this.x), (this.target.getY()+this.sizeFactor - this.y));
   }
 
   /**
-   *
-   * @return if Tribe is currently in a action (aggressing, fleeing)
+   * Determines if a Tribe is able to undergo an action
+   * @return Whether a tribe is in an action or not
    */
   public boolean isBusy() {
     // TODO : probably more conditions
@@ -350,19 +454,24 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   /**
-   *
-   * @return if enemy is close enough to be hit
+   * Determines if a Tribe can attack its target
+   * @return The ability of a tribe to hit its target
    */
   public boolean isInAttackRange() {
     return getDistanceToTarget() < radius();
   }
 
+  /**
+   * Determines if a Tribe is close enough to help a friendly tribe
+   * @return Whether or not the tribe is close enough to help
+   */
   public boolean isInMutualAidRange() { return getDistanceToTarget() < (radius()+size()); }
 
   /**
-   * TODO: define dynamic value for aggression range in Specie definition
-   * @return if enemy if in aggression range
-     */
+   * Determines if a Tribe can start an aggression on its target
+   * @return The ability of a tribe to aggress its target
+   */
+  //TODO: define dynamic value for aggression range in Species definition
   public boolean isInAggressionRange() { return getDistanceToTarget() < (radius() + 100); }
 
   /**
@@ -371,13 +480,13 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    */
   public void aggress(Tribe enemy) {
     setState(State.AGGRESSING);
-
     // TODO : determine what to do with that
     // enemy.notifyOfAggression(this);
   }
 
   /**
    * Damages the target based on force and number of units
+   * @param damages Amount of damage
    */
   public void attack(int damages) {
     this.target.getDamages(damages);
@@ -385,7 +494,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Remove members depending on the damages given
-   * @param damages
+   * @param damages Amount of damage taken
    */
   public void getDamages(int damages) {
     int i = damages;
@@ -397,8 +506,8 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   /**
-   * Return true if members size > 0
-   * @return
+   * Returns whether a Tribe is alive or not
+   * @return Whether a Tribe is alive or not
    */
   public boolean isAlive() {
     return (this.size() >= 1);
@@ -406,12 +515,16 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
 
   /**
    * Return the species attribute of the <i>Tribe</i>
-   * @return A <i>Class</i> which is the <i>Species</i> cmposing the <i>Tribe</i>
+   * @return A <i>Class</i> which is the <i>Species</i> composing the <i>Tribe</i>
      */
   public Class<T> getSpecies() {
     return this.species;
   }
 
+  /**
+   * Add a Species to the members ArrayList
+   * @param newMember Member of a species
+   */
   public void addMember(T newMember) {
     this.members.add(newMember);
   }
@@ -419,7 +532,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   /**
    * Simulate birth in the tribe. Create new people and add them to the tribe.
    * @param litterSize number of individual to add to the tribe.
-     */
+   */
   public void newMembers(int litterSize) {
     for(int i = 0 ; i < litterSize ; i++) {
       try {
@@ -436,6 +549,9 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     if (litterSize > 0) Simulation.getSimulation().getEffectsDisplayer().add(new BirthEffect(litterSize, this.getX()+this.size(), this.getY()+this.size()));
   }
 
+  /**
+   * @see com.volterra.ecosysteme.Renderable#update
+   */
   public void runAI(float deltaTime) {
 
   }
