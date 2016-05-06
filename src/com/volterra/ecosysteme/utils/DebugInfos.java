@@ -6,7 +6,7 @@ import com.volterra.ecosysteme.Tribe;
 import com.volterra.ecosysteme.species.Elf;
 import com.volterra.ecosysteme.species.Goblin;
 import com.volterra.ecosysteme.species.Human;
-import com.volterra.ecosysteme.species.Alien;
+import com.volterra.ecosysteme.species.Orc;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
@@ -19,17 +19,17 @@ public class DebugInfos {
 
     private int nbHumans = 0;
     private int nbElves = 0;
-    private int nbAliens = 0;
+    private int nbOrcs = 0;
     private int nbGoblins = 0;
 
     private int nbHumansMembers = 0;
     private int nbElvesMembers = 0;
-    private int nbAliensMembers = 0;
+    private int nbOrcsMembers = 0;
     private int nbGoblinsMembers = 0;
 
     private int nbHumansInAggression = 0;
     private int nbElvesInAggression = 0;
-    private int nbAliensInAggression = 0;
+    private int nbOrcsInAggression = 0;
     private int nbGoblinsInAggression = 0;
 
     public DebugInfos(int time) {
@@ -40,15 +40,15 @@ public class DebugInfos {
         if (time % (int)(ctx.frameRate*2) == 0) {
             nbHumans = 0;
             nbElves = 0;
-            nbAliens = 0;
+            nbOrcs = 0;
             nbGoblins = 0;
             nbHumansMembers = 0;
             nbElvesMembers = 0;
-            nbAliensMembers = 0;
+            nbOrcsMembers = 0;
             nbGoblinsMembers = 0;
             nbHumansInAggression = 0;
             nbElvesInAggression = 0;
-            nbAliensInAggression = 0;
+            nbOrcsInAggression = 0;
             nbGoblinsInAggression = 0;
 
             for (Tribe tribe : tribes) {
@@ -62,10 +62,10 @@ public class DebugInfos {
                     nbElvesMembers += tribe.size();
                     if (tribe.getState() != AIStateMachine.State.MIGRATING) nbElvesInAggression++;
                 }
-                else if (tribe.getSpecies() == Alien.class) {
-                    nbAliens++;
-                    nbAliensMembers += tribe.size();
-                    if (tribe.getState() != AIStateMachine.State.MIGRATING) nbAliensInAggression++;
+                else if (tribe.getSpecies() == Orc.class) {
+                    nbOrcs++;
+                    nbOrcsMembers += tribe.size();
+                    if (tribe.getState() != AIStateMachine.State.MIGRATING) nbOrcsInAggression++;
                 }
                 else if (tribe.getSpecies() == Goblin.class) {
                     nbGoblins++;
@@ -79,7 +79,7 @@ public class DebugInfos {
 
         ctx.text("Humans: " + nbHumans + ", members: " + nbHumansMembers + ", aggression: " + nbHumansInAggression, 10, 40);
         ctx.text("Elves: " + nbElves + ", members: " + nbElvesMembers + ", aggression: " + nbElvesInAggression, 10, 60);
-        ctx.text("Aliens: " + nbAliens + ", members: " + nbAliensMembers + ", aggression: " + nbAliensInAggression, 10, 80);
+        ctx.text("Orcs: " + nbOrcs + ", members: " + nbOrcsMembers + ", aggression: " + nbOrcsInAggression, 10, 80);
         ctx.text("Goblins: " + nbGoblins + ", members: " + nbGoblinsMembers + ", aggression: " + nbGoblinsInAggression, 10, 100);
 
         time++;
