@@ -294,7 +294,7 @@ public class Simulation implements Renderable {
             if (tribe.getTarget() == null) return;
 
             // change this line for damages tweak
-            int forceFactor = tribe.getForce() + tribe.getForce() * ((tribe.size()-tribe.getTarget().size())/5);
+            int forceFactor = tribe.getForce() + tribe.getForce() * ((tribe.size()/tribe.getTarget().size()));
             if (forceFactor < 1) forceFactor = 1;
 
             int damages = Dice.rollDice(forceFactor + 1);
