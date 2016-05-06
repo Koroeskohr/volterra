@@ -10,7 +10,7 @@ import com.volterra.ecosysteme.utils.Utils;
 public class Coward<T extends Species> extends Trait<T> {
   /**
    * Constructor
-   * @param originalTribe The <i>Tribe</i> on wich apply the trait.
+   * @param originalTribe The <i>Tribe</i> on which apply the trait.
    */
   public Coward(Tribe<T> originalTribe) {
     super(originalTribe);
