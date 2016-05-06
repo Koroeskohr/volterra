@@ -7,6 +7,19 @@ import java.awt.*;
  */
 public class Human extends Species {
   /**
+   * Species specific traits. Will be picked at random.
+   */
+  private static final String[] speciesTraits = { "Fertile", "Coward", "Heavy", "Fast" };
+
+  /**
+   * Returns the array of class names as Strings that represents all the base traits for Human
+   * @return Array of class names as Strings
+   */
+  public static String[] getSpeciesTraits() {
+      return speciesTraits;
+  }
+
+  /**
    * Builds an Human instance with its species base characteristics
    */
   public Human() {
