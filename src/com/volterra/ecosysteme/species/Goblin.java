@@ -9,7 +9,7 @@ public class Goblin extends Species {
   /**
    * Species specific traits. Will be picked at random.
    */
-  private static final String[] speciesTraits = { "Fertile", "Coward", "Heavy", "Fast" };
+  private static final String[] speciesTraits = { "Fertile", "Coward", "Light", "Slow" };
 
   /**
    * Returns the array of class names as Strings that represents all the base traits for Human
@@ -25,11 +25,11 @@ public class Goblin extends Species {
   public Goblin() {
       super(null,     // friendlySpecies
               0,      // averageLifeSpan
-              4,      // litterSize
+              2,      // litterSize
               70,     // aggressiveness
               1,      // force
-              35,     // reproductivity
-              30,      // mutualAid
+              80,     // reproductivity
+              50,      // mutualAid
               45,     // courage
               0.9f,   // speed
               1.1f,   // attackSpeed

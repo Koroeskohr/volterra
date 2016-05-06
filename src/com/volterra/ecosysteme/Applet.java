@@ -19,7 +19,7 @@ public class Applet extends PApplet {
 
   public void settings() {
     //fullScreen();
-    simulation = Simulation.initialize(10);
+    simulation = Simulation.initialize(15);
     size(Simulation.getSimulation().getWindowWidth(), Simulation.getSimulation().getWindowHeight());
   }
 

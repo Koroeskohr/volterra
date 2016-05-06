@@ -25,14 +25,14 @@ public class Human extends Species {
   public Human() {
     super(null,     // friendlySpecies
             0,      // averageLifeSpan
-            2,      // litterSize
-            50,     // aggressiveness
+            3,      // litterSize
+            45,     // aggressiveness
             2,      // force
-            50,     // reproductivity
-            20,     // mutualAid
-            30,     // courage
+            45,     // reproductivity
+            40,     // mutualAid
+            35,     // courage
             1.0f,   // speed
             1.0f,   // attackSpeed
-            new Color(0,100,200));
+            new Color(0, 100, 200));
   }
 }

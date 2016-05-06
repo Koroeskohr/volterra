@@ -81,6 +81,11 @@ public class DebugInfos {
   private int nbGoblinsInAggression = 0;
 
   /**
+   * Total number of aggressions.
+   */
+  private int nbAggressionsTotal = 0;
+
+  /**
    * Constructor, happens one in simulation
    * @param time Starting time of simulation (0)
    */
@@ -108,6 +113,7 @@ public class DebugInfos {
       nbElvesInAggression = 0;
       nbOrcsInAggression = 0;
       nbGoblinsInAggression = 0;
+      nbAggressionsTotal = 0;
 
       for (Tribe tribe : tribes) {
         if (tribe.getSpecies() == Human.class) {
@@ -140,6 +146,8 @@ public class DebugInfos {
     ctx.text("Elves: " + nbElves + ", members: " + nbElvesMembers + ", aggression: " + nbElvesInAggression, 10, 100);
     ctx.text("Orcs: " + nbOrcs + ", members: " + nbOrcsMembers + ", aggression: " + nbOrcsInAggression, 10, 120);
     ctx.text("Goblins: " + nbGoblins + ", members: " + nbGoblinsMembers + ", aggression: " + nbGoblinsInAggression, 10, 140);
+
+    ctx.text("Aggressions total: " + aggressionManager.getAggressions().size(), 10, 160);
 
     time++;
   }
