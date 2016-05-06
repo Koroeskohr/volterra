@@ -6,8 +6,8 @@ import java.awt.*;
  * Created by YellowFish on 05/05/2016.
  */
 public class Goblin extends Species {
- /**
-   * Builds an Elf instance with its species base characteristics
+  /**
+   * Builds an Goblin instance with its species base characteristics
    */
   public Goblin() {
     super(null,     // friendlySpecies
