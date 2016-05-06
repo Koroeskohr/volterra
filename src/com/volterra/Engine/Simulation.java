@@ -40,6 +40,7 @@ public class Simulation implements Renderable {
     private final int windowHeight = 720;
     private final int framerate = 60;
     private final int maxTribes = 50;
+    private final int reproductionRate = 180;
 
     private DebugInfos debugInfos;
     private final boolean debug = true;
@@ -163,8 +164,8 @@ public class Simulation implements Renderable {
     private Tribe processAiReproduction(Tribe tribe, int delta) {
         Tribe newTribe = null;
 
-        if (Duration.between(tribe.getLastBirth(), Instant.now()).getSeconds() > (1 * (200/tribe.getReproductivity())) && Dice.winRoll(tribe.getReproductivity(), 100)) {
-            if (Dice.winRoll(tribe.size()/2, 100) && tribes.size() < maxTribes) {
+        if (Duration.between(tribe.getLastBirth(), Instant.now()).getSeconds() > (1 * (this.reproductionRate/tribe.getReproductivity())) && Dice.winRoll(tribe.getReproductivity(), 100)) {
+            if (tribes.size() < maxTribes && Dice.winRoll(tribe.size()/3, 100)) {
                 // Generate a new tribe
                 newTribe = generateNewTribeFromReproduction(tribe);
             }

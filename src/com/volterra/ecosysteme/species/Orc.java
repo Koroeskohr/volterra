@@ -9,7 +9,7 @@ public class Orc extends Species {
     /**
      * Default constructor. Calls Species default constructor
      */
-    private static final String[] speciesTraits = { "Infertile", "Aggressive", "Light", "Fast"};
+    private static final String[] speciesTraits = { "Infertile", "Aggressive", "Heavy", "Fast"};
 
     /**
      * Returns the array of class names as Strings that represents all the base traits for Human
@@ -25,10 +25,10 @@ public class Orc extends Species {
                 0,      // averageLifeSpan
                 2,      // litterSize
                 80,     // aggressiveness
-                3,      // force
-                40,     // reproductivity
-                80,      // mutualAid
-                65,     // courage
+                6,      // force
+                30,     // reproductivity
+                65,      // mutualAid
+                85,     // courage
                 1.2f,   // speed
                 1.2f,   // attackSpeed
                 new Color(100,100,110));
