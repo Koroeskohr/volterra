@@ -6,20 +6,6 @@ import java.awt.*;
  * Created by YellowFish on 25/04/2016.
  */
 public class Human extends Species {
-    /**
-     * Default constructor. Calls Species default constructor
-     */
-    private static final String[] speciesTraits = { "Fertile", "Coward", "Heavy", "Fast" };
-
-    /**
-     * Returns the array of class names as Strings that represents all the base traits for Human
-     * @return Array of class names as Strings
-     */
-    public static String[] getSpeciesTraits() {
-        return speciesTraits;
-    }
-
-
     public Human() {
         super(null,     // friendlySpecies
                 0,      // averageLifeSpan
