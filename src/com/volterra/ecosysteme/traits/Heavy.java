@@ -2,6 +2,7 @@ package com.volterra.ecosysteme.traits;
 
 import com.volterra.ecosysteme.Tribe;
 import com.volterra.ecosysteme.species.Species;
+import com.volterra.ecosysteme.utils.Utils;
 
 /**
  * Created by YellowFish on 05/05/2016.
@@ -22,6 +23,6 @@ public class Heavy<T extends Species> extends Trait<T> {
 
     @Override
     public int getForce() {
-        return Math.min(this._originalTribe.getForce() + 1, 100);
+        return Utils.clamp(this._originalTribe.getForce() + 1, 1, 100);
     }
 }

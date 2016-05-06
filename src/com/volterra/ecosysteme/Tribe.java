@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.lang.reflect.Constructor;
 
 import com.volterra.ecosysteme.species.Species;
+import com.volterra.ecosysteme.utils.Utils;
 import com.volterra.engine.Simulation;
 import com.volterra.engine.visualeffects.BirthEffect;
 import com.volterra.engine.visualeffects.DamageEffect;
@@ -169,7 +170,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @return litter size
    */
   public int getLitterSize() {
-    return this.litterSize;
+    return Utils.clamp(this.litterSize, 1, 100);
   }
 
   /**
@@ -186,7 +187,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @return Agressiveness value
    */
   public int getAggressiveness() {
-    return this.aggressiveness;
+    return Utils.clamp(this.aggressiveness, 1, 100);
   }
 
   /**
@@ -203,7 +204,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @return Force of the species
    */
   public int getForce() {
-    return this.force;
+    return Utils.clamp(this.force, 1, 100);
   }
 
   /**
@@ -220,7 +221,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @return Value of the reproductivity
    */
   public int getReproductivity() {
-    return this.reproductivity;
+    return Utils.clamp(this.reproductivity, 1, 100);
   }
 
   /**
@@ -237,7 +238,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @return Value of the mutual aid
    */
   public int getMutualAid() {
-    return this.mutualAid;
+    return Utils.clamp(this.mutualAid, 1, 100);
   }
 
   /**
@@ -254,7 +255,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @return Value of courage
    */
   public int getCourage() {
-    return this.courage;
+    return Utils.clamp(this.courage, 1, 100);
   }
 
   /**

@@ -2,6 +2,7 @@ package com.volterra.ecosysteme.traits;
 
 import com.volterra.ecosysteme.species.Species;
 import com.volterra.ecosysteme.Tribe;
+import com.volterra.ecosysteme.utils.Utils;
 
 /**
  * Created by Christophe on 25/04/2016.
@@ -19,12 +20,12 @@ public class Fertile<T extends Species> extends Trait<T> {
 
     @Override
     public int getReproductivity() {
-        return Math.min(this._originalTribe.getReproductivity() + 10, 100);
+        return Utils.clamp(this._originalTribe.getReproductivity() + 10, 1, 100);
     }
 
     @Override
     public int getLitterSize() {
-        return this._originalTribe.getLitterSize() + 1;
+        return Utils.clamp(this._originalTribe.getLitterSize() + 1, 1, 100);
     }
 
 }

@@ -1,7 +1,9 @@
 package com.volterra.ecosysteme.traits;
 
+import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
 import com.volterra.ecosysteme.species.Species;
 import com.volterra.ecosysteme.Tribe;
+import com.volterra.ecosysteme.utils.Utils;
 
 /**
  * Created by Christophe on 25/04/2016.
@@ -19,14 +21,16 @@ public class Aggressive<T extends Species> extends Trait<T> {
 
     @Override
     public int getAggressiveness() {
-        return Math.min(this._originalTribe.getAggressiveness() + 20, 100);
+        return Utils.clamp(this._originalTribe.getAggressiveness() + 20, 1, 100);
     }
 
     @Override
     public int getCourage() {
-        return Math.min(this._originalTribe.getCourage() + 10, 100);
+        return Utils.clamp(this._originalTribe.getCourage() + 10, 1, 100);
     }
     
     @Override
-    public int getMutualAid() { return Math.min(this._originalTribe.getMutualAid() + 20, 100); }
+    public int getMutualAid() {
+        return Utils.clamp(this._originalTribe.getMutualAid() + 20, 1, 100);
+    }
 }

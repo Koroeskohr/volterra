@@ -2,6 +2,7 @@ package com.volterra.ecosysteme.traits;
 
 import com.volterra.ecosysteme.Tribe;
 import com.volterra.ecosysteme.species.Species;
+import com.volterra.ecosysteme.utils.Utils;
 
 /**
  * Created by YellowFish on 05/05/2016.
@@ -17,11 +18,11 @@ public class Infertile<T extends Species> extends Trait<T> {
 
     @Override
     public int getReproductivity() {
-        return this._originalTribe.getReproductivity() - 10;
+        return Utils.clamp(this._originalTribe.getReproductivity() - 10, 1, 100);
     }
 
     @Override
     public int getLitterSize() {
-        return this._originalTribe.getLitterSize() - 1;
+        return Utils.clamp( this._originalTribe.getLitterSize() - 1, 1, 100);
     }
 }
