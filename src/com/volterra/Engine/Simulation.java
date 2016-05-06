@@ -382,23 +382,23 @@ public class Simulation implements Renderable {
 
         if (x > this.windowWidth) {
             x = this.windowWidth;
-            xd = 0;
+            xd = -xd;
             yd = 0;
         }
         else if (x < 0) {
             x = 0;
-            xd = 0;
+            xd = -xd;
             yd = 0;
         }
         if (y > this.windowHeight) {
             y = this.windowHeight;
             xd = 0;
-            yd = 0;
+            yd = -yd;
         }
         else if (y < 0) {
             y = 0;
             xd = 0;
-            yd = 0;
+            yd = -yd;
         }
 
         tribe.setX(x);
