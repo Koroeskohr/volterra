@@ -1,6 +1,7 @@
 package com.volterra.ecosysteme;
 
 import com.volterra.ecosysteme.species.*;
+import com.volterra.ecosysteme.utils.Dice;
 import com.volterra.engine.Simulation;
 import com.volterra.ecosysteme.traits.Trait;
 
@@ -14,6 +15,7 @@ import java.util.*;
  */
 public class TribeFactory {
   enum SpeciesEnum { HUMAN, ORC, GOBLIN, ELF }
+  private static String[] traitClassNames = { "Aggressive", "Coward", "Fast", "Fertile", "Heavy", "Infertile", "Light", "Slow" };
 
   private static final HashMap<SpeciesEnum, Class> enumClassMap;
   static
@@ -42,7 +44,7 @@ public class TribeFactory {
     Random rand = new Random();
     int size;
     if (number == 0) {
-      int variation = rand.nextInt((5 - (-5)) + 1) + (-5);
+      int variation = rand.nextInt(10 + 1) - 5;
       size = BASE_TRIBE_SIZE + variation;
     }
     else {
@@ -50,7 +52,7 @@ public class TribeFactory {
     }
     float x = rand.nextFloat() * Simulation.getSimulation().getWindowWidth();
     float y = rand.nextFloat() * Simulation.getSimulation().getWindowHeight();
-    System.out.println(x + "    " + y);
+    System.out.println(x + "\t" + y);
 
     Class associatedClass = enumClassMap.get(species);
     ArrayList<Species> members = null;
@@ -58,26 +60,24 @@ public class TribeFactory {
 
     tribe = new TribeWithTraits(members, x, y, associatedClass);
 
-    String[] speciesBaseTraits = null;
-    try {
-      Method method = associatedClass.getMethod("getSpeciesTraits");
-      speciesBaseTraits = (String[])method.invoke(null);
+    // New version : no species traits, just random ones
+    String[] shuffled = traitClassNames.clone();
+    ArrayList<String> chosenTraits = new ArrayList<>();
+    Collections.shuffle(Arrays.asList(shuffled));
 
-    } catch (NoSuchMethodException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
+    int amountOfTraits = Dice.rollDice(traitClassNames.length/2);
+    for(int i = 0; i < amountOfTraits; ++i) {
+      chosenTraits.add(shuffled[i]);
     }
 
-    for(String s : speciesBaseTraits) {
+    for(String s : chosenTraits) {
       Class<?> klass = null;
       try {
         klass = Class.forName("com.volterra.ecosysteme.traits." + s);
       } catch (ClassNotFoundException e) {
         e.printStackTrace();
       }
+
       Constructor constructor = null;
       try {
         constructor = klass.getConstructor(Tribe.class);
@@ -87,11 +87,7 @@ public class TribeFactory {
 
       try {
         tribe = (Trait) constructor.newInstance(tribe);
-      } catch (InvocationTargetException e) {
-        e.printStackTrace();
-      } catch (InstantiationException e) {
-        e.printStackTrace();
-      } catch (IllegalAccessException e) {
+      } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
         e.printStackTrace();
       }
 
@@ -114,13 +110,7 @@ public class TribeFactory {
         java.lang.reflect.Constructor<?> ctor = klass.getConstructor();
         Species dude = ((Species) ctor.newInstance());
         list.add(klass.cast(dude));
-      } catch (InstantiationException e) {
-        e.printStackTrace();
-      } catch (IllegalAccessException e) {
-        e.printStackTrace();
-      } catch (NoSuchMethodException e) {
-        e.printStackTrace();
-      } catch (InvocationTargetException e) {
+      } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
         e.printStackTrace();
       }
     }
@@ -163,6 +153,7 @@ public class TribeFactory {
   }
 
   public static void main(String[] args) {
-    Tribe<Human> t = TribeFactory.create(SpeciesEnum.HUMAN);
+    //Tribe<Human> t = TribeFactory.create(SpeciesEnum.HUMAN);
+    //SpeciesEnum.HUMAN.name();
   }
 }
