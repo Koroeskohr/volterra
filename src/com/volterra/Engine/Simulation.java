@@ -1,6 +1,7 @@
 package com.volterra.engine;
 
 import com.volterra.ecosysteme.*;
+import com.volterra.ecosysteme.utils.DebugInfos;
 import com.volterra.ecosysteme.utils.Dice;
 import processing.core.PApplet;
 
@@ -38,6 +39,9 @@ public class Simulation implements Renderable {
     private final int windowWidth = 1366;
     private final int windowHeight = 720;
     private final int framerate = 60;
+
+    private DebugInfos debugInfos;
+    private final boolean debug = true;
 
     public int getWindowWidth() {
         return windowWidth;
@@ -77,6 +81,7 @@ public class Simulation implements Renderable {
                         Simulation.instance.tribes.add(tmpTribe);
                     }
                     Simulation.instance.aggressionManager = new AggressionManager();
+                    Simulation.instance.debugInfos = new DebugInfos(0);
                 }
             }
         }
@@ -325,7 +330,10 @@ public class Simulation implements Renderable {
         // Displaying framerate
         ctx.textSize(12);
         ctx.fill(255);
-        ctx.text(ctx.frameRate, 10, 10);
         //ctx.filter(PConstants.BLUR, 2);
+
+        if (debug) {
+            debugInfos.debugInfos(ctx, tribes, aggressionManager);
+        }
     }
 }
