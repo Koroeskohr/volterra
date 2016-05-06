@@ -76,11 +76,12 @@ public class DebugInfos {
         }
 
         ctx.text("Framerate: " + ctx.frameRate, 10, 20);
+        ctx.text("Elapsed time: " + (time/(60*60)) + ":" + (time%(60*60))/60, 10, 40);
 
-        ctx.text("Humans: " + nbHumans + ", members: " + nbHumansMembers + ", aggression: " + nbHumansInAggression, 10, 40);
-        ctx.text("Elves: " + nbElves + ", members: " + nbElvesMembers + ", aggression: " + nbElvesInAggression, 10, 60);
-        ctx.text("Orcs: " + nbOrcs + ", members: " + nbOrcsMembers + ", aggression: " + nbOrcsInAggression, 10, 80);
-        ctx.text("Goblins: " + nbGoblins + ", members: " + nbGoblinsMembers + ", aggression: " + nbGoblinsInAggression, 10, 100);
+        ctx.text("Humans: " + nbHumans + ", members: " + nbHumansMembers + ", aggression: " + nbHumansInAggression, 10, 80);
+        ctx.text("Elves: " + nbElves + ", members: " + nbElvesMembers + ", aggression: " + nbElvesInAggression, 10, 100);
+        ctx.text("Orcs: " + nbOrcs + ", members: " + nbOrcsMembers + ", aggression: " + nbOrcsInAggression, 10, 120);
+        ctx.text("Goblins: " + nbGoblins + ", members: " + nbGoblinsMembers + ", aggression: " + nbGoblinsInAggression, 10, 140);
 
         time++;
     }
