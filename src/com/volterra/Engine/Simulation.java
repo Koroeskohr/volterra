@@ -291,7 +291,7 @@ public class Simulation implements Renderable {
      */
     private void processAiAttack(Tribe tribe, int delta) {
         if (tribe.getState() == AIStateMachine.State.FIGHT && (delta % (int)(this.framerate/tribe.getAttackSpeed()) == 0)) {
-            if (tribe.getTarget() == null) return;
+            if (tribe.getTarget() == null || tribe.getTarget().size() == 0) return;
 
             // change this line for damages tweak
             int forceFactor = tribe.getForce() + tribe.getForce() * ((tribe.size()/tribe.getTarget().size()));
@@ -307,7 +307,10 @@ public class Simulation implements Renderable {
 
     public void update(float delta) {
         for (Tribe tribe : tribes) {
-            if (tribe.isAlive()) updateTribeCoordinates((int) delta, tribe);
+            if (tribe.isAlive()) {
+                updateTribeCoordinates((int) delta, tribe);
+                tribe.update(delta);
+            }
         }
         effectsDisplayer.update(delta);
     }
