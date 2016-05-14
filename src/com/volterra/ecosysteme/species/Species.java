@@ -1,7 +1,11 @@
 package com.volterra.ecosysteme.species;
 
 
+import com.volterra.ecosysteme.Renderable;
+import processing.core.PApplet;
+
 import java.awt.*;
+import java.util.Random;
 
 /**
  * Created by YellowFish on 25/04/2016.
@@ -67,6 +71,16 @@ public abstract class Species {
   private Color color;
 
   /**
+   * Individual position
+   */
+  private float x, y;
+
+  /**
+   * Direction vector
+   */
+  private float dx, dy;
+
+  /**
    * Default constructor
    */
   public Species() {
@@ -81,6 +95,8 @@ public abstract class Species {
     this.speed = 0;
     this.attackSpeed = 0;
     this.color = new Color((int)0,(int)0,(int)0);
+    this.x = 0;
+    this.y = 0;
   }
 
   /**
@@ -275,5 +291,55 @@ public abstract class Species {
    */
   public Color getColor() {
     return color;
+  }
+
+  public float getX() {
+    return x;
+  }
+
+  public float getY() {
+    return y;
+  }
+
+  public void update(float areaRad) {
+    float x = this.x;
+    float y = this.y;
+    float dx = this.dx;
+    float dy = this.dy;
+    float areaRadius = areaRad * 0.5f;
+    float speed = 0.1f;
+    Random randomGen = new Random();
+
+    if ((x * x) + (y * y) >= (areaRadius) * (areaRadius)) {
+      float distanceToCenter = (float)Math.sqrt((x * x) + (y * y));
+      float ratio = speed / distanceToCenter;
+      dx = ratio * (-x);
+      dy = ratio * (-y);
+    }
+    else if (dx == 0 && dy == 0) {
+      /* Define new direction */
+      dx = randomGen.nextFloat() * (speed - (-speed)) - speed;
+      dy = (float) Math.sqrt(speed * speed - (dx * dx));
+      if (randomGen.nextBoolean()) {
+        dy = -dy;
+      }
+    }
+    else {
+      if (randomGen.nextFloat() > 0.99) {
+        dx = 0;
+        dy = 0;
+      }
+      else {
+        double a = randomGen.nextDouble() * (speed - (-speed)) - speed;
+        float tmpXd = dx * (float)Math.cos(a) - dy * (float)Math.sin(a);
+        dy = dx * (float)Math.sin(a) + dy * (float)Math.cos(a);
+        dx = tmpXd;
+      }
+    }
+
+    this.dx = dx;
+    this.dy = dy;
+    this.x = x+ dx;
+    this.y = y + dy;
   }
 }

@@ -441,7 +441,9 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   }
 
   public void update(float delta) {
-
+    for (T member : this.members) {
+      member.update(this.radius());
+    }
   }
 
   /**
@@ -449,7 +451,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
    * @param ctx The PApplet which draw the <i>Renderable</i> element.
      */
   public void render(PApplet ctx) {
-    ctx.fill(this.getColor().getRed(), this.getColor().getGreen(), this.getColor().getBlue());
+    ctx.fill(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), 150.f);
     ctx.strokeWeight(3);
 
     switch (this.state){
@@ -474,5 +476,14 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
     ctx.fill(255);
     ctx.textSize(12);
     ctx.text(this.size(), this.x+this.size(), this.y+this.size());
+
+    ctx.noStroke();
+    for (T member: members) {
+      float x = member.getX() + this.x;
+      float y = member.getY() + this.y;
+
+      ctx.fill(this.color.getRed(), this.color.getGreen(), this.color.getBlue());
+      ctx.ellipse(x, y, 5, 5);
+    }
   }
 }
