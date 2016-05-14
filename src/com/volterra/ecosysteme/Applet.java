@@ -7,7 +7,14 @@ import processing.core.PApplet;
  * Created by Koroeskohr on 08/04/2016.
  */
 public class Applet extends PApplet {
+  /**
+   * Frames since the start of the app
+   */
   private int time = 0;
+
+  /**
+   * Simulation
+   */
   private Simulation simulation;
 
   public void settings() {
