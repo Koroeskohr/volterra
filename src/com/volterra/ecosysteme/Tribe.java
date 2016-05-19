@@ -536,7 +536,7 @@ public abstract class Tribe<T extends Species> implements AIStateMachine, Render
   public void newMembers(int litterSize) {
     for(int i = 0 ; i < litterSize ; i++) {
       try {
-        if (this.species == null) throw new NullPointerException("node must have children");
+        if (this.species == null) throw new NullPointerException("Tribe need to have a Species defined !");
         Constructor ctor = this.species.getConstructor();
         this.members.add(((this.species.cast(ctor.newInstance()))));
       } catch (NoSuchMethodException |
